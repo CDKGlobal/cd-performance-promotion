@@ -1,11 +1,15 @@
-from ComparisonEngine import ComparisonEngine
+from comparisonengine import ComparisonEngine
 
 class Main:
-  """ Main class """
+  """
+  Continuous Integration main class
+  """
 
   def main():
-    """ Main function
-        Prints and introduction statement and starts the comparison engine """
+    """
+    Main function
+    Prints and introduction statement and starts the comparison engine
+    """
     # Print the introduction message
     print("\n######################################################\n"
           "Continuous Integration Performance Promotion Tool\n"

@@ -1,13 +1,17 @@
-from BlazeMeter import BlazeMeter
-from AppDynamics import AppDynamics
+from blazemeter import BlazeMeter
+from appdynamics import AppDynamics
 
 class ComparisonEngine:
-    """ Queries the performance tools' APIs and determines if the build passes
-        the target requirements. """
+    """
+    Queries the performance tools' APIs and determines if the build passes
+    the target requirements.
+    """
 
     def process_performance_data(self):
-        """ Process the data retrieved from the APIs and determine if the code
-            passes the user's metrics """
+        """
+        Process the data retrieved from the APIs and determine if the code
+        passes the user's metrics
+        """
         print("Processing performance data . . .")
         #TODO Process the data
         #TODO Pass or fail the build
@@ -15,7 +19,9 @@ class ComparisonEngine:
         #TODO Signal Bamboo to move the build over if the build passes
 
     def start(self):
-        """ Begin retrieving the data and comparing it against the targets """
+        """
+        Begin retrieving the data and comparing it against the targets
+        """
         # Get the configuration file targets
         #TODO Make a class that reads the configuration information
         #TODO Create a sample configuration file
