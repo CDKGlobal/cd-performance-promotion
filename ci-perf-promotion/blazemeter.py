@@ -1,4 +1,5 @@
 from packages import requests
+import json
 
 class BlazeMeter:
     """
@@ -11,16 +12,24 @@ class BlazeMeter:
         """
         #TODO Implement the data storage
 
-    def get_data(self):
+    def get_data(self, api_key, test_session):
         """
-        Get the data from the API
+        Gets the load test data from the API
         """
         print("Retrieving the BlazeMeter data . . .")
 
-        #TODO Request the data from BlazeMeter
+        # Universal API Headers
+        api_headers = {"Content-Type": "application/json", "x-api-key": api_key}
 
-        test_session = "r-op-beta5589cdb371a9d"
-        transactions_url = "https://a.blazemeter.com/api/latest/sessions/{0}/reports/main/data".format(test_session)
+        # Get all of the business transactions
+        transaction_list_url = "https://a.blazemeter.com/api/latest/sessions/{0}/reports/main/data".format(test_session)
+        transaction_list_request = requests.get(transaction_list_url, headers=api_headers)
 
-        #Need to write the request stuffs
-        #transactions_request_get = requests.get(transactions_url)
+        # Prepare the dict for data to be added
+        test_data = {}
+
+        for transaction in json.loads(transaction_list_request.text)["result"]["labels"]:
+            transaction_detail_url = "https://a.blazemeter.com/api/latest/sessions/{0}/reports/main/labels/{1}".format(test_session, transaction["id"])
+            print("     " + transaction["id"] + " --- " + transaction["name"])
+            transaction_detail_request = requests.get(transaction_detail_url, headers=api_headers)
+            print(transaction_detail_request.text)

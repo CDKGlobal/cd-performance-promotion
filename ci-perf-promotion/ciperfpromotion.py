@@ -13,7 +13,7 @@ class Main:
     # Print the introduction message
     print("\n######################################################\n"
           "Continuous Integration Performance Promotion Tool\n"
-          "CDK Global, Inc.\n"
+          "CDK Global, LLC\n"
           "######################################################\n")
 
     # Begin evaluating the build

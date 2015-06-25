@@ -9,7 +9,7 @@ class ComparisonEngine:
 
     def process_performance_data(self):
         """
-        Process the data retrieved from the APIs and determine if the code
+        Processes the data retrieved from the APIs and determine if the code
         passes the user's metrics
         """
         print("Processing performance data . . .")
@@ -20,7 +20,7 @@ class ComparisonEngine:
 
     def start(self):
         """
-        Begin retrieving the data and comparing it against the targets
+        Begins retrieving the data and comparing it against the targets
         """
         # Get the configuration file targets
         #TODO Make a class that reads the configuration information
@@ -29,7 +29,7 @@ class ComparisonEngine:
 
         # Get the load testing data from the BlazeMeter API
         self.blazemeter = BlazeMeter()
-        self.blazemeter.get_data()
+        self.blazemeter.get_data("09c873d5440a040ae1d2", "r-op-beta5589cdb371a9d")
 
         # Get the load testing data from the AppDynamics API
         self.appdynamics = AppDynamics()
