@@ -17,9 +17,11 @@ class ComparisonEngine:
 
         # Compare BlazeMeter metrics
         # Average Response Time
-        for session, time in self.blazemeter.response_time_avg.items():
-            if self.configengine.response_time_avg > time:
-                self.build_status_failed = True
+        if (self.configengine.response_time_avg > 0):
+            # User has a average response time promotion gate set
+            for session, time in self.blazemeter.response_time_avg.items():
+                if self.configengine.response_time_avg > time:
+                    self.build_status_failed = True
 
         #TODO Add other checks for metrics
 

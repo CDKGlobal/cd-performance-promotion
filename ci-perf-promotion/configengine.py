@@ -17,6 +17,10 @@ class ConfigEngine:
         # Performance Gate Criteria
         self.response_time_avg = 0
 
+    def required_config_error(self, required_item):
+        print("ERROR: Unable to find {0}".format(required_item))
+        sys.exit(1)
+
     def retrieve_config(self):
         """
         Finds the configuration file and processes it
@@ -25,15 +29,22 @@ class ConfigEngine:
             try:
                 # Load the JSON file
                 config_data = json.load(config_file)
-                # Get data out of the config
-                self.blazemeter_api_key = config_data["blazemeter"]["api"]
-                self.blazemeter_test_id = config_data["blazemeter"]["test_id"]
-                self.response_time_avg = config_data["promotion_gate"]["response_time_avg"]
-            except KeyError:
-                # Was not able to find all of the JSON keys
-                print("ERROR: Improperly named keys in configuration file")
-                sys.exit(1)
             except:
-                # Something else is very, very wrong with the configuration file
+                # Something is wrong with the JSON config file, abort the program
                 print("ERROR: Improperly formatted configuration file")
                 sys.exit(1)
+
+            # Get the mandatory configuration information (api keys, test IDs, etc.)
+            if "api" not in config_data["blazemeter"]:
+                self.required_config_error("BlazeMeter API key")
+            elif "test_id" not in config_data["blazemeter"]:
+                self.required_config_error("BlazeMeter test ID")
+            else:
+                self.blazemeter_api_key = config_data["blazemeter"]["api"]
+                self.blazemeter_test_id = config_data["blazemeter"]["test_id"]
+
+            # Begin evaluating the promotion gates
+            # All of these are allowed to be non-mandatory so that the user can select as many or as few
+            # criteria as they would like
+            if "response_time_avg" in config_data["promotion_gate"]:
+                self.response_time_avg = config_data["promotion_gate"]["response_time_avg"]
