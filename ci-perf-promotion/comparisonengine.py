@@ -28,8 +28,10 @@ class ComparisonEngine:
         # For now, just use variables to compare against
 
         # Get the load testing data from the BlazeMeter API
-        self.blazemeter = BlazeMeter()
-        self.blazemeter.get_data("09c873d5440a040ae1d2", "r-op-beta5589cdb371a9d")
+        self.blazemeter = BlazeMeter("09c873d5440a040ae1d2", "r-op-beta5589cdb371a9d")
+        self.blazemeter.get_data()
+        # Shows that you can access the data from here
+        #print(self.blazemeter.response_time_avg)
 
         # Get the load testing data from the AppDynamics API
         self.appdynamics = AppDynamics()
