@@ -1,3 +1,4 @@
+from configengine import ConfigEngine
 from blazemeter import BlazeMeter
 from appdynamics import AppDynamics
 
@@ -13,25 +14,36 @@ class ComparisonEngine:
         passes the user's metrics
         """
         print("Processing performance data . . .")
-        #TODO Process the data
-        #TODO Pass or fail the build
-        print("\nBuild Status: FAILED")
-        #TODO Signal Bamboo to move the build over if the build passes
 
-    def start(self):
+        # Compare BlazeMeter metrics
+        # Average Response Time
+        for session, time in self.blazemeter.response_time_avg.items():
+            if self.configengine.response_time_avg > time:
+                self.build_status_failed = True
+
+        #TODO Add other checks for metrics
+
+        # Final build status check
+        if self.build_status_failed:
+            print("\nBuild Status: FAILURE")
+        else:
+            print("\nBuild Status: SUCCESS")
+
+    def get_performance_data(self):
         """
         Begins retrieving the data and comparing it against the targets
         """
-        # Get the configuration file targets
-        #TODO Make a class that reads the configuration information
-        #TODO Create a sample configuration file
-        # For now, just use variables to compare against
+        #TODO Look into making this multithreaded, one thread for each api call and closing them all off with join()
+        # Get the configuration file information
+        self.configengine = ConfigEngine()
+        self.configengine.retrieve_config()
+
+        # Build Status
+        self.build_status_failed = False
 
         # Get the load testing data from the BlazeMeter API
-        self.blazemeter = BlazeMeter("09c873d5440a040ae1d2", "r-op-beta5589cdb371a9d")
+        self.blazemeter = BlazeMeter(self.configengine.blazemeter_api_key, self.configengine.blazemeter_test_id)
         self.blazemeter.get_data()
-        # Shows that you can access the data from here
-        #print(self.blazemeter.response_time_avg)
 
         # Get the load testing data from the AppDynamics API
         self.appdynamics = AppDynamics()

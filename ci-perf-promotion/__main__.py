@@ -18,7 +18,7 @@ class Main:
 
     # Begin evaluating the build
     comparison_engine = ComparisonEngine()
-    comparison_engine.start()
+    comparison_engine.get_performance_data()
 
   if __name__ == '__main__':
     main()

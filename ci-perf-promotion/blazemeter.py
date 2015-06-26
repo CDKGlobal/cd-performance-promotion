@@ -8,7 +8,7 @@ class BlazeMeter:
 
     def __init__(self, api_key, test_session):
         """
-        Blazemeter API querent/data-gatherer
+        Sets up all of the instance variables
         """
         # Universal API Headers
         self.api_headers = {"Content-Type": "application/json", "x-api-key": api_key}
