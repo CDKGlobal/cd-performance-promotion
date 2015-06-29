@@ -4,8 +4,10 @@
     "api": "09c873d5440a040ae1d2",
     "test_id": "r-op-beta5589cdb371a9d"
   },
-  "promotion_gate":
+  "promotion_gates":
   {
-    "response_time_avg": 464
+    "response_time_avg": 500,
+    "response_time_max": 500,
+    "response_time_stdev": 4
   }
 }
