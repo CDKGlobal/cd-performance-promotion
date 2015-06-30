@@ -10,23 +10,30 @@ class ComparisonEngine:
     the target requirements.
     """
 
-    def compare_data(self, tool, metric_title, real_data, target_data):
+    def compare_blazemeter(self, metric_title, target_data, metric_data, transaction_index):
         """
         Performs the comparison between configuration promotion gates and the
-        actual data
+        actual blazemeter test data
         """
-        # Loop over all of the transactions
-        for session, metric_data in real_data:
-            # Put the data into the JSON
-            self.output_json[tool][metric_title] = metric_data
+        if (target_data > 0):
+            # Metric is set in config, begin comparison
 
-            # Check if the stats are up to snuff
-            if metric_data < target_data:
-                # Pass
-                self.output_json["promotion_gates"][metric_title + "_passed"] = True
+            # Get the "passed" JSON key name ready
+            metric_title_passed = metric_title + "_passed"
+
+            if metric_data[metric_title] < target_data:
+                # Success
+                if metric_title_passed not in self.output_json["promotion_gates"]:
+                    # Not mentioned before, add it in
+                    # Not necessary to make the overall status True again if it's True
+                    # and if it was False for one transaction the overall status should still be False
+                    self.output_json["promotion_gates"][metric_title_passed] = True
+                # Regardless, add it into the transaction data
+                self.output_json["blazemeter"]["transactions"][transaction_index][metric_title_passed] = True
             else:
-                # Fail
-                self.output_json["promotion_gates"][metric_title + "_passed"] = False
+                # Failure
+                self.output_json["promotion_gates"][metric_title_passed] = False
+                self.output_json["blazemeter"]["transactions"][transaction_index][metric_title_passed] = False
                 self.build_status_passed = False
 
     def process_performance_data(self):
@@ -37,15 +44,17 @@ class ComparisonEngine:
         print("Processing performance data . . .")
 
         # Compare BlazeMeter metrics
-        # Average Response Time
-        if (self.configengine.response_time_avg > 0):
-            self.compare_data("blazemeter", "response_time_avg", self.blazemeter.response_time_avg.items(), self.configengine.response_time_avg)
-        # Max Response Time
-        if (self.configengine.response_time_max > 0):
-            self.compare_data("blazemeter", "response_time_max", self.blazemeter.response_time_max.items(), self.configengine.response_time_max)
-        # Response Time Standard Deviation
-        if (self.configengine.response_time_stdev > 0):
-            self.compare_data("blazemeter", "response_time_stdev", self.blazemeter.response_time_stdev.items(), self.configengine.response_time_stdev)
+        for index, metric_data in enumerate(self.blazemeter.transactions):
+
+            # Average Response Time
+            self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data, index)
+
+            # Max Response Time
+            self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data, index)
+
+            # Response Time Standard Deviation
+            self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data, index)
+
         #TODO Add other checks for metrics
 
         # Set the overall status in the JSON file
@@ -56,7 +65,7 @@ class ComparisonEngine:
 
         # Create and write all of the data to a JSON file for later examination
         with open(filename, "w") as jsonoutput:
-            json.dump(self.output_json, jsonoutput, sort_keys = True)
+            json.dump(self.output_json, jsonoutput, indent = 4, sort_keys = True)
 
         # Let the user know where they can get all of the information
         print("\nPlease see {0} for more information".format(filename))
@@ -79,9 +88,6 @@ class ComparisonEngine:
         # Build Status
         self.build_status_passed = True
 
-        # Output JSON report data - for use later
-        self.output_json = {"promotion_gates": {}, "blazemeter": {},"appdynamics": {}}
-
         # Get the load testing data from the BlazeMeter API
         self.blazemeter = BlazeMeter(self.configengine.blazemeter_api_key, self.configengine.blazemeter_test_id)
         self.blazemeter.get_data()
@@ -89,6 +95,9 @@ class ComparisonEngine:
         # Get the load testing data from the AppDynamics API
         self.appdynamics = AppDynamics()
         self.appdynamics.get_data()
+
+        # Output JSON report data - for use later
+        self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}, "appdynamics": {}}
 
         # Process the data
         self.process_performance_data()

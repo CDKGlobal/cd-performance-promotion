@@ -16,6 +16,7 @@ class BlazeMeter:
         self.api_key = api_key
         self.test_session = test_session
         # Test result information
+        self.transactions = []
         self.response_time_avg = {}
         self.response_time_max = {}
         self.response_time_stdev = {}
@@ -36,6 +37,13 @@ class BlazeMeter:
             transaction_id = transaction["id"]
             transaction_name = transaction["lb"]
 
-            self.response_time_avg[transaction_id] = transaction["avg"]
-            self.response_time_max[transaction_id] = transaction["max"]
-            self.response_time_stdev[transaction_id] = transaction["std"]
+            self.transactions.append({
+                    "transaction_id": transaction["id"],
+                    "transaction_name": transaction["lb"],
+                    "response_time_avg": transaction["avg"],
+                    "response_time_max": transaction["max"],
+                    "response_time_stdev": transaction["std"]
+                })
+            #self.response_time_avg[transaction_id] = transaction["avg"]
+            #self.response_time_max[transaction_id] = transaction["max"]
+            #self.response_time_stdev[transaction_id] = transaction["std"]

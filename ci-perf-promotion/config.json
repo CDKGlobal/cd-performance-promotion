@@ -2,12 +2,12 @@
   "blazemeter":
   {
     "api": "09c873d5440a040ae1d2",
-    "test_id": "r-op-beta5589cdb371a9d"
+    "test_id": "r-im-5589cc68db447"
   },
   "promotion_gates":
   {
-    "response_time_avg": 500,
-    "response_time_max": 500,
-    "response_time_stdev": 4
+    "response_time_avg": 230,
+    "response_time_max": 1000000,
+    "response_time_stdev": 10000000
   }
 }
