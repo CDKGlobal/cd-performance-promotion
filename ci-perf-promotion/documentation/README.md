@@ -17,19 +17,18 @@ of the keys does not matter. The only required JSON keys are ``api`` and
 ``test_id`` in the ``blazemeter`` object. All of the other fields may be removed
 as necessary.
 
-####Data Items
-| Data Item           | Type   | Parent          | Description                                                     |
-| :------------------ | :----- | :-------------- | :-------------------------------------------------------------- |
-| blazemeter          | Object | N/A             | Contains all of the BlazeMeter specific information             |
-| api                 | String | blazemeter      | Contains all of the promotion gate criteria                     |
-| test_id             | String | blazemeter      | Contains all of the promotion gate criteria                     |
-| promotion_gates     | Object | N/A             | Contains all of the promotion gate criteria                     |
-| response_time_avg   | Number | promotion_gates | Average response time                                           |
-| response_time_max   | Number | promotion_gates | Maximum response time                                           |
-| response_time_stdev | Number | promotion_gates | Response time standard deviation                                |
-| response_time_tp90  | Number | promotion_gates | 90% line -- 90% of requests were handled in this amount of time |
-| response_time_tp95  | Number | promotion_gates | 95% line -- 95% of requests were handled in this amount of time |
-| response_time_tp99  | Number | promotion_gates | 99% line -- 99% of requests were handled in this amount of time |
+| Data Item               | Type   | Parent          | Description                                                     | Required |
+| :---------------------- | :----- | :-------------- | :-------------------------------------------------------------- | :------: |
+| ``blazemeter``          | Object | N/A             | Contains all of the BlazeMeter specific information             | Yes      |
+| ``api``                 | String | blazemeter      | Contains all of the promotion gate criteria                     | Yes      |
+| ``test_id``             | String | blazemeter      | Contains all of the promotion gate criteria                     | Yes      |
+| ``promotion_gates``     | Object | N/A             | Contains all of the promotion gate criteria                     | Yes      |
+| ``response_time_avg``   | Number | promotion_gates | Average response time                                           | No       |
+| ``response_time_max``   | Number | promotion_gates | Maximum response time                                           | No       |
+| ``response_time_stdev`` | Number | promotion_gates | Response time standard deviation                                | No       |
+| ``response_time_tp90``  | Number | promotion_gates | 90% line -- 90% of requests were handled in this amount of time | No       |
+| ``response_time_tp95``  | Number | promotion_gates | 95% line -- 95% of requests were handled in this amount of time | No       |
+| ``response_time_tp99``  | Number | promotion_gates | 99% line -- 99% of requests were handled in this amount of time | No       |
 
 ##Starting the Program
 1. Navigate to the directory containing the ``__main__.py`` file
@@ -48,15 +47,15 @@ the ``response_time_avg`` promotion gate criteria is marked as failing in the
 ``blazemeter`` object to find out which one caused the build to fail.
 
 ##Program Structure
-| Item                   | Type   | Parent          | Description                                                                                                                              |
-| :--------------------- | :----- | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| documentation          | Folder | N/A             | Contains all of the documentation for the tool                                                                                           |
-| packages               | Folder | N/A             | Contains all of the libraries                                                                                                            |
-| requests               | Folder | packages        | Contains the requests library, which is used to query the various APIs                                                                   |
-| __init__.py            | File   | N/A             | Used to indicate the packages in the program                                                                                             |
-| __main__.py            | File   | N/A             | Used to run the program                                                                                                                  |
-| appdynamics.py         | File   | N/A             | AppDynamics module that gets all of the necessary metrics from the AppDynamics API                                                       |
-| blazemeter.py          | File   | N/A             | BlazeMeter module that gets all of the necessary metrics from the BlazeMeter API                                                         |
-| comparisonengine.py    | File   | N/A             | Retrieves the data from all of the performance tool modules and compares them against the promotion gate criteria defined in config.json |
-| config.json            | File   | N/A             | Configuration file that is used to define the promotion gate criteria and performance tool information (API keys, test IDs, etc.)        |
-| configengine.py        | File   | N/A             | Retrieves the data from the config.json configuration file                                                                               |
+| Item                       | Type   | Parent          | Description                                                                                                                              |
+| :------------------------- | :----- | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| ``documentation``          | Folder | N/A             | Contains all of the documentation for the tool                                                                                           |
+| ``packages``               | Folder | N/A             | Contains all of the libraries                                                                                                            |
+| ``requests``               | Folder | packages        | Contains the requests library, which is used to query the various APIs                                                                   |
+| ``__init__.py``            | File   | N/A             | Used to indicate the packages in the program                                                                                             |
+| ``__main__.py``            | File   | N/A             | Used to run the program                                                                                                                  |
+| ``appdynamics.py``         | File   | N/A             | AppDynamics module that gets all of the necessary metrics from the AppDynamics API                                                       |
+| ``blazemeter.py``          | File   | N/A             | BlazeMeter module that gets all of the necessary metrics from the BlazeMeter API                                                         |
+| ``comparisonengine.py``    | File   | N/A             | Retrieves the data from all of the performance tool modules and compares them against the promotion gate criteria defined in config.json |
+| ``config.json``            | File   | N/A             | Configuration file that is used to define the promotion gate criteria and performance tool information (API keys, test IDs, etc.)        |
+| ``configengine.py``        | File   | N/A             | Retrieves the data from the config.json configuration file                                                                               |
