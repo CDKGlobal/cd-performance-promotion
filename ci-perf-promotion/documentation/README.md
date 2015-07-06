@@ -1,21 +1,13 @@
 #Continuous Delivery Performance Promotion
 
 ##Overview
-This is a Python program that is used to retrieve data from load testing and
-server monitoring tools like BlazeMeter and AppDynamics, evaluate the metrics
-against predefined promotion gates, and promote builds if they meet the
-promotion gates.
+This is a Python program that is used to retrieve data from load testing and server monitoring tools like BlazeMeter and AppDynamics, evaluate the metrics against predefined promotion gates, and promote builds if they meet the promotion gates.
 
 ##Setting up Promotion Gates
 ####Configuration File
-You can set the promotion gates by altering the config.json file. A sample
-configuration file can be found at config.json.example. Please note that the
-.example file extension should be removed from the actual configuration file.
+You can set the promotion gates by altering the config.json file. A sample configuration file can be found at config.json.example. Please note that the .example file extension should be removed from the actual configuration file.
 
-You do not have to use all of the available promotion gate metrics and the order
-of the keys does not matter. The only required JSON keys are ``api`` and
-``test_id`` in the ``blazemeter`` object. All of the other fields may be removed
-as necessary.
+You do not have to use all of the available promotion gate metrics and the order of the keys does not matter. The only required JSON keys are ``api`` and ``test_id`` in the ``blazemeter`` object. All of the other fields may be removed as necessary.
 
 | Data Item               | Type   | Parent          | Description                                                     | Required |
 | :---------------------- | :----- | :-------------- | :-------------------------------------------------------------- | :------: |
@@ -36,15 +28,7 @@ as necessary.
 3. Open the output JSON file specified by the program for testing results.
 
 ##Evaluating the Results
-The ``promotion_gates`` JSON object in the output file contains all of the
-high-level data on whether or not the build can move on to the next stage (JSON
-key ``passed``) and the pass/fail status for each promotion gate that was
-previously defined in ``config.json`` file. All of the detailed information on
-a transaction basis can be found in the ``blazemeter`` JSON object, allowing
-users to identify which transactions are running into performance issues. If
-the ``response_time_avg`` promotion gate criteria is marked as failing in the
-``promotion_gate`` object, users can look at the transactions listed in
-``blazemeter`` object to find out which one caused the build to fail.
+The ``promotion_gates`` JSON object in the output file contains all of the high-level data on whether or not the build can move on to the next stage (JSON key ``passed``) and the pass/fail status for each promotion gate that was previously defined in ``config.json`` file. All of the detailed information on a transaction basis can be found in the ``blazemeter`` JSON object, allowing users to identify which transactions are running into performance issues. If the ``response_time_avg`` promotion gate criteria is marked as failing in the ``promotion_gate`` object, users can look at the transactions listed in ``blazemeter`` object to find out which one caused the build to fail.
 
 ##Program Structure
 | Item                       | Type   | Parent          | Description                                                                                                                              |
