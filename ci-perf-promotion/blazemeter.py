@@ -30,9 +30,6 @@ class BlazeMeter:
         test_summary_request = requests.get(test_summary_url, headers=self.api_headers)
 
         for transaction in test_summary_request.json()["result"]["summary"]:
-            transaction_id = transaction["id"]
-            transaction_name = transaction["lb"]
-
             self.transactions.append({
                     "transaction_id": transaction["id"],
                     "transaction_name": transaction["lb"],
@@ -41,5 +38,6 @@ class BlazeMeter:
                     "response_time_stdev": transaction["std"],
                     "response_time_tp90": transaction["tp90"],
                     "response_time_tp95": transaction["tp95"],
-                    "response_time_tp99": transaction["tp99"]
+                    "response_time_tp99": transaction["tp99"],
+                    "transaction_rate": transaction["hits"] / transaction["duration"]
                 })

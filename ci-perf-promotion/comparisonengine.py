@@ -3,6 +3,7 @@ from blazemeter import BlazeMeter
 from appdynamics import AppDynamics
 import time
 import json
+import operator
 
 class ComparisonEngine:
     """
@@ -10,7 +11,7 @@ class ComparisonEngine:
     the target requirements.
     """
 
-    def compare_blazemeter(self, metric_title, target_data, metric_data, transaction_index):
+    def compare_blazemeter(self, metric_title, target_data, metric_data, transaction_index, operator):
         """
         Performs the comparison between configuration promotion gates and the
         actual blazemeter test data
@@ -21,7 +22,10 @@ class ComparisonEngine:
             # Get the "passed" JSON key name ready
             metric_title_passed = metric_title + "_passed"
 
-            if metric_data[metric_title] < target_data:
+            # Determine if promotion gate was met
+            # Uses the operator module so that the process_performance_data function can determine
+            # what operator (<, >, <=, >=, etc.) should be used
+            if operator(metric_data, target_data):
                 # Success
                 if metric_title_passed not in self.output_json["promotion_gates"]:
                     # Not mentioned before, add it in
@@ -47,22 +51,25 @@ class ComparisonEngine:
         for index, metric_data in enumerate(self.blazemeter.transactions):
 
             # Average Response Time
-            self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data, index)
+            self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data["response_time_avg"], index, operator.lt)
 
             # Max Response Time
-            self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data, index)
+            self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data["response_time_max"], index, operator.lt)
 
             # Response Time Standard Deviation
-            self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data, index)
+            self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data["response_time_stdev"], index, operator.lt)
 
             # Response Time 90% Line
-            self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data, index)
+            self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data["response_time_tp90"], index, operator.lt)
 
             # Response Time 95% Line
-            self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data, index)
+            self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data["response_time_tp95"], index, operator.lt)
 
             # Response Time 99% Line
-            self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data, index)
+            self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data["response_time_tp99"], index, operator.lt)
+
+            # Transaction Rate
+            self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, metric_data["transaction_rate"], index, operator.gt)
 
         #TODO Add other checks for metrics
 

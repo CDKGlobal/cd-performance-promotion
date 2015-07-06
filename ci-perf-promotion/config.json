@@ -11,6 +11,7 @@
     "response_time_stdev": 10000000,
     "response_time_tp90": 590,
     "response_time_tp95": 590,
-    "response_time_tp99": 590
+    "response_time_tp99": 590,
+    "transaction_rate": 80
   }
 }

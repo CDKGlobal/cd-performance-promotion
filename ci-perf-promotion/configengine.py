@@ -21,6 +21,7 @@ class ConfigEngine:
         self.response_time_tp90 = 0
         self.response_time_tp95 = 0
         self.response_time_tp99 = 0
+        self.transaction_rate = 0
 
     def required_config_error(self, required_item):
         print("ERROR: Unable to find {0}".format(required_item))
@@ -34,10 +35,6 @@ class ConfigEngine:
             try:
                 # Load the JSON file
                 config_data = json.load(config_file)
-                # Just do a check to make sure that all of the sections are included in the config file
-                #config_data["blazemeter"]
-                #config_data["appdynamics"]
-                #config_data["promotion_gate"]
             except:
                 # Something is wrong with the JSON config file, abort the program
                 print("ERROR: Improperly formatted configuration file")
@@ -73,3 +70,5 @@ class ConfigEngine:
                 self.response_time_tp95 = config_data["promotion_gates"]["response_time_tp95"]
             if "response_time_tp99" in config_data["promotion_gates"]:
                 self.response_time_tp99 = config_data["promotion_gates"]["response_time_tp99"]
+            if "transaction_rate" in config_data["promotion_gates"]:
+                self.transaction_rate = config_data["promotion_gates"]["transaction_rate"]
