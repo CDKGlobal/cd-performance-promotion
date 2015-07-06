@@ -55,6 +55,15 @@ class ComparisonEngine:
             # Response Time Standard Deviation
             self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data, index)
 
+            # Response Time 90% Line
+            self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data, index)
+
+            # Response Time 95% Line
+            self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data, index)
+
+            # Response Time 99% Line
+            self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data, index)
+
         #TODO Add other checks for metrics
 
         # Set the overall status in the JSON file

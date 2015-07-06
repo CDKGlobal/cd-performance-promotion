@@ -18,6 +18,9 @@ class ConfigEngine:
         self.response_time_avg = 0
         self.response_time_max = 0
         self.response_time_stdev = 0
+        self.response_time_tp90 = 0
+        self.response_time_tp95 = 0
+        self.response_time_tp99 = 0
 
     def required_config_error(self, required_item):
         print("ERROR: Unable to find {0}".format(required_item))
@@ -64,3 +67,9 @@ class ConfigEngine:
                 self.response_time_max = config_data["promotion_gates"]["response_time_max"]
             if "response_time_stdev" in config_data["promotion_gates"]:
                 self.response_time_stdev = config_data["promotion_gates"]["response_time_stdev"]
+            if "response_time_tp90" in config_data["promotion_gates"]:
+                self.response_time_tp90 = config_data["promotion_gates"]["response_time_tp90"]
+            if "response_time_tp95" in config_data["promotion_gates"]:
+                self.response_time_tp95 = config_data["promotion_gates"]["response_time_tp95"]
+            if "response_time_tp99" in config_data["promotion_gates"]:
+                self.response_time_tp99 = config_data["promotion_gates"]["response_time_tp99"]

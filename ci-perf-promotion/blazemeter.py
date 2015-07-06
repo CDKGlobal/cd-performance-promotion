@@ -15,12 +15,8 @@ class BlazeMeter:
         # Test configuration information
         self.api_key = api_key
         self.test_session = test_session
-        # Test result information
+        # Test result information, broken down by transactions
         self.transactions = []
-        self.response_time_avg = {}
-        self.response_time_max = {}
-        self.response_time_stdev = {}
-
 
     def get_data(self):
         """
@@ -42,8 +38,8 @@ class BlazeMeter:
                     "transaction_name": transaction["lb"],
                     "response_time_avg": transaction["avg"],
                     "response_time_max": transaction["max"],
-                    "response_time_stdev": transaction["std"]
+                    "response_time_stdev": transaction["std"],
+                    "response_time_tp90": transaction["tp90"],
+                    "response_time_tp95": transaction["tp95"],
+                    "response_time_tp99": transaction["tp99"]
                 })
-            #self.response_time_avg[transaction_id] = transaction["avg"]
-            #self.response_time_max[transaction_id] = transaction["max"]
-            #self.response_time_stdev[transaction_id] = transaction["std"]
