@@ -45,6 +45,9 @@ class ComparisonEngine:
         if (target_data > 0):
             # Metric is set in config, begin comparison
 
+            # Add the data to the output file
+            self.output_json["blazemeter"]["transactions"][transaction_index][metric_title] = metric_data
+
             # Get the "passed" JSON key name ready
             metric_title_passed = metric_title + "_passed"
 
@@ -73,7 +76,7 @@ class ComparisonEngine:
         """
         print("Processing performance data . . .")
 
-        # Make sure that the AppDynamics module exists
+        # AppDynamics Module
         if (self.configengine.appdynamics_exists):
             # Check for AppDynamics Health Violations (only if the user cares)
             if (self.configengine.warning or self.configengine.critical):
@@ -85,26 +88,28 @@ class ComparisonEngine:
                     # No health violations, good to go!
                     self.output_json["promotion_gates"]["appdynamics_health"] = True
 
-        # Make sure that the BlazeMeter module exists
+        # BlazeMeter Module
         if (self.configengine.blazemeter_exists):
             # Compare BlazeMeter metrics
             # Add BlazeMeter into the output file
-            self.output_json["blazemeter"] = {"transactions": self.blazemeter.transactions}
-            for index, metric_data in enumerate(self.blazemeter.transactions):
+            self.output_json["blazemeter"] = {"transactions": []}
+            for index, transaction in enumerate(self.blazemeter.transactions):
+                # Add transaction information into the output
+                self.output_json["blazemeter"]["transactions"].append({"transaction_id": transaction["transaction_id"], "transaction_name": transaction["transaction_name"]})
                 # Average Response Time
-                self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data["response_time_avg"], index, operator.lt)
+                self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, transaction["response_time_avg"], index, operator.lt)
                 # Max Response Time
-                self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data["response_time_max"], index, operator.lt)
+                self.compare_blazemeter("response_time_max", self.configengine.response_time_max, transaction["response_time_max"], index, operator.lt)
                 # Response Time Standard Deviation
-                self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data["response_time_stdev"], index, operator.lt)
+                self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, transaction["response_time_stdev"], index, operator.lt)
                 # Response Time 90% Line
-                self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data["response_time_tp90"], index, operator.lt)
+                self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, transaction["response_time_tp90"], index, operator.lt)
                 # Response Time 95% Line
-                self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data["response_time_tp95"], index, operator.lt)
+                self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, transaction["response_time_tp95"], index, operator.lt)
                 # Response Time 99% Line
-                self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data["response_time_tp99"], index, operator.lt)
+                self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, transaction["response_time_tp99"], index, operator.lt)
                 # Transaction Rate
-                self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, metric_data["transaction_rate"], index, operator.gt)
+                self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, transaction["transaction_rate"], index, operator.gt)
 
         # Set the overall status in the JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed

@@ -91,17 +91,17 @@ class ConfigEngine:
                 self.blazemeter_test_id = config_data["blazemeter"]["test_id"]
 
             # BlazeMeter Promotion Gates -- Optional
-            if "response_time_avg" in config_data["promotion_gates"]:
+            if ("response_time_avg" in config_data["promotion_gates"]):
                 self.response_time_avg = config_data["promotion_gates"]["response_time_avg"]
-            if "response_time_max" in config_data["promotion_gates"]:
+            if ("response_time_max" in config_data["promotion_gates"]):
                 self.response_time_max = config_data["promotion_gates"]["response_time_max"]
-            if "response_time_stdev" in config_data["promotion_gates"]:
+            if ("response_time_stdev" in config_data["promotion_gates"]):
                 self.response_time_stdev = config_data["promotion_gates"]["response_time_stdev"]
-            if "response_time_tp90" in config_data["promotion_gates"]:
+            if ("response_time_tp90" in config_data["promotion_gates"]):
                 self.response_time_tp90 = config_data["promotion_gates"]["response_time_tp90"]
-            if "response_time_tp95" in config_data["promotion_gates"]:
+            if ("response_time_tp95" in config_data["promotion_gates"]):
                 self.response_time_tp95 = config_data["promotion_gates"]["response_time_tp95"]
-            if "response_time_tp99" in config_data["promotion_gates"]:
+            if ("response_time_tp99" in config_data["promotion_gates"]):
                 self.response_time_tp99 = config_data["promotion_gates"]["response_time_tp99"]
-            if "transaction_rate" in config_data["promotion_gates"]:
+            if ("transaction_rate" in config_data["promotion_gates"]):
                 self.transaction_rate = config_data["promotion_gates"]["transaction_rate"]
