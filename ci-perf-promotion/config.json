@@ -1,4 +1,11 @@
 {
+  "appdynamics":
+  {
+    "username": "cdkpeapi@adppe",
+    "password": "123cdkpeapi789",
+    "application_name": "cmp.perf",
+    "load_test_length_min": 60
+  },
   "blazemeter":
   {
     "api": "09c873d5440a040ae1d2",
@@ -12,6 +19,8 @@
     "response_time_tp90": 590,
     "response_time_tp95": 590,
     "response_time_tp99": 590,
-    "transaction_rate": 80
+    "transaction_rate": 80,
+    "warning": false,
+    "critical": true
   }
 }

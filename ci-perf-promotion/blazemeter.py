@@ -1,5 +1,4 @@
 from packages import requests
-#import json
 
 class BlazeMeter:
     """

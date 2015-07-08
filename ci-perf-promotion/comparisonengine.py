@@ -49,27 +49,30 @@ class ComparisonEngine:
 
         # Compare BlazeMeter metrics
         for index, metric_data in enumerate(self.blazemeter.transactions):
-
             # Average Response Time
             self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data["response_time_avg"], index, operator.lt)
-
             # Max Response Time
             self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data["response_time_max"], index, operator.lt)
-
             # Response Time Standard Deviation
             self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data["response_time_stdev"], index, operator.lt)
-
             # Response Time 90% Line
             self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data["response_time_tp90"], index, operator.lt)
-
             # Response Time 95% Line
             self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data["response_time_tp95"], index, operator.lt)
-
             # Response Time 99% Line
             self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data["response_time_tp99"], index, operator.lt)
-
             # Transaction Rate
             self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, metric_data["transaction_rate"], index, operator.gt)
+
+        # Check to see if AppDynamics has any health violations
+        if (self.appdynamics.healthrule_violations != []):
+            # Uh-oh, there's something wrong with the application. Mark it as failed
+            #TODO Perform checking on critical and warning health rule violations
+            self.output_json["promotion_gates"]["appdynamics_health"] = False
+            self.build_status_passed = False
+        else:
+            # Good to go! Passed all tests
+            self.output_json["promotion_gates"]["appdynamics_health"] = True
 
         #TODO Add other checks for metrics
 
@@ -109,11 +112,14 @@ class ComparisonEngine:
         self.blazemeter.get_data()
 
         # Get the load testing data from the AppDynamics API
-        self.appdynamics = AppDynamics()
+        self.appdynamics = AppDynamics(self.configengine.appdynamics_username,
+                                       self.configengine.appdynamics_password,
+                                       self.configengine.appdynamics_application_name,
+                                       self.configengine.appdynamics_load_test_length)
         self.appdynamics.get_data()
 
         # Output JSON report data - for use later
-        self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}, "appdynamics": {}}
+        self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}, "appdynamics": {"healthrule_violations": self.appdynamics.healthrule_violations}}
 
         # Process the data
         self.process_performance_data()

@@ -1,4 +1,11 @@
 {
+  "appdynamics":
+  {
+    "username": "usernamegoeshere@accountgoeshere",
+    "password": "passwordgoeshere",
+    "application_name": "applicationnamegoeshere",
+    "load_test_length_min": 60
+  },
   "blazemeter":
   {
     "api": "apikeygoeshere",

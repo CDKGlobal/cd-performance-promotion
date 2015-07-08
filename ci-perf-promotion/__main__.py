@@ -11,10 +11,10 @@ class Main:
     Prints and introduction statement and starts the comparison engine
     """
     # Print the introduction message
-    print("\n######################################################\n"
+    print("\n####################################################################\n"
           "Continuous Integration Performance Promotion Tool\n"
           "CDK Global, LLC\n"
-          "######################################################\n")
+          "####################################################################\n")
 
     # Begin evaluating the build
     comparison_engine = ComparisonEngine()
