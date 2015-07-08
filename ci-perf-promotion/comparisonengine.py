@@ -11,6 +11,33 @@ class ComparisonEngine:
     the target requirements.
     """
 
+    def check_health_severity(self, violation, severity):
+        """
+        Fails the build if the defined severity is found in the health rule
+        violations
+        """
+        if (violation["severity"] == severity):
+            # Add the violation to the output file
+            self.output_json["appdynamics"]["healthrule_violations"].append(violation)
+            # Fail the build
+            self.output_json["promotion_gates"]["appdynamics_health"] = False
+            self.build_status_passed = False
+
+    def compare_appdynamics(self):
+        """
+        Performs the comparison between the defined violation severity settings
+        and the violations that occurred
+        """
+        # Set the health to True by default and flip it if necessary
+        self.output_json["promotion_gates"]["appdynamics_health"] = True
+
+        for violation in self.appdynamics.healthrule_violations:
+            # Check if the severity settings that we care about exist in the health rule violations
+            if (self.configengine.warning == True):
+                self.check_health_severity(violation, "WARNING")
+            elif (self.configengine.critical == True):
+                self.check_health_severity(violation, "CRITICAL")
+
     def compare_blazemeter(self, metric_title, target_data, metric_data, transaction_index, operator):
         """
         Performs the comparison between configuration promotion gates and the
@@ -47,6 +74,18 @@ class ComparisonEngine:
         """
         print("Processing performance data . . .")
 
+        # Check for AppDynamics Health Violations (only if the user cares)
+        if (self.configengine.warning or self.configengine.critical):
+            if (self.appdynamics.healthrule_violations != []):
+                # Uh-oh, there's something wrong with the application
+
+                #self.output_json["appdynamics"] = {"healthrule_violations": self.appdynamics.healthrule_violations}
+                self.output_json["appdynamics"] = {"healthrule_violations": []}
+                self.compare_appdynamics()
+            else:
+                # No health violations, good to go!
+                self.output_json["promotion_gates"]["appdynamics_health"] = True
+
         # Compare BlazeMeter metrics
         for index, metric_data in enumerate(self.blazemeter.transactions):
             # Average Response Time
@@ -64,25 +103,11 @@ class ComparisonEngine:
             # Transaction Rate
             self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, metric_data["transaction_rate"], index, operator.gt)
 
-        # Check to see if AppDynamics has any health violations
-        if (self.appdynamics.healthrule_violations != []):
-            # Uh-oh, there's something wrong with the application. Mark it as failed
-            #TODO Perform checking on critical and warning health rule violations
-            self.output_json["promotion_gates"]["appdynamics_health"] = False
-            self.build_status_passed = False
-        else:
-            # Good to go! Passed all tests
-            self.output_json["promotion_gates"]["appdynamics_health"] = True
-
-        #TODO Add other checks for metrics
-
         # Set the overall status in the JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
 
-        # JSON output file name
-        filename = "ciperfpromodata_{0}.json".format(time.strftime("%m%d%y_%H%M%S"))
-
         # Create and write all of the data to a JSON file for later examination
+        filename = "ciperfpromodata_{0}.json".format(time.strftime("%m%d%y_%H%M%S"))
         with open(filename, "w") as jsonoutput:
             json.dump(self.output_json, jsonoutput, indent = 4, sort_keys = True)
 
@@ -119,7 +144,7 @@ class ComparisonEngine:
         self.appdynamics.get_data()
 
         # Output JSON report data - for use later
-        self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}, "appdynamics": {"healthrule_violations": self.appdynamics.healthrule_violations}}
+        self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}}
 
         # Process the data
         self.process_performance_data()

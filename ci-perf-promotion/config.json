@@ -3,7 +3,7 @@
   {
     "username": "cdkpeapi@adppe",
     "password": "123cdkpeapi789",
-    "application_name": "cmp.perf",
+    "application_name": "ord.leadservices",
     "load_test_length_min": 60
   },
   "blazemeter":
@@ -20,7 +20,7 @@
     "response_time_tp95": 590,
     "response_time_tp99": 590,
     "transaction_rate": 80,
-    "warning": false,
-    "critical": true
+    "warning": true,
+    "critical": false
   }
 }

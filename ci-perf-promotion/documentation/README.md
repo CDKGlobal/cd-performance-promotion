@@ -7,20 +7,24 @@ This is a Python program that is used to retrieve data from load testing and ser
 ####Configuration File
 You can set the promotion gates by altering the config.json file. A sample configuration file can be found at config.json.example. Please note that the .example file extension should be removed from the actual configuration file.
 
-You do not have to use all of the available promotion gate metrics and the order of the keys does not matter. The only required JSON keys are ``api`` and ``test_id`` in the ``blazemeter`` object. All of the other fields may be removed as necessary.
+You do not have to use all of the available promotion gate metrics and the order of the keys does not matter. The following table lists the available JSON configuation keys and whether or not they are required.
 
-| Data Item               | Type   | Parent          | Description                                                     | Required |
-| :---------------------- | :----- | :-------------- | :-------------------------------------------------------------- | :------: |
-| ``blazemeter``          | Object | N/A             | Contains all of the BlazeMeter specific information             | Yes      |
-| ``api``                 | String | blazemeter      | Contains all of the promotion gate criteria                     | Yes      |
-| ``test_id``             | String | blazemeter      | Contains all of the promotion gate criteria                     | Yes      |
-| ``promotion_gates``     | Object | N/A             | Contains all of the promotion gate criteria                     | Yes      |
-| ``response_time_avg``   | Number | promotion_gates | Average response time                                           | No       |
-| ``response_time_max``   | Number | promotion_gates | Maximum response time                                           | No       |
-| ``response_time_stdev`` | Number | promotion_gates | Response time standard deviation                                | No       |
-| ``response_time_tp90``  | Number | promotion_gates | 90% line -- 90% of requests were handled in this amount of time | No       |
-| ``response_time_tp95``  | Number | promotion_gates | 95% line -- 95% of requests were handled in this amount of time | No       |
-| ``response_time_tp99``  | Number | promotion_gates | 99% line -- 99% of requests were handled in this amount of time | No       |
+| Data Item               | Type   | Parent          | Description                                                              | Required |
+| :---------------------- | :----- | :-------------- | :----------------------------------------------------------------------- | :------: |
+| ``appdynamics``         | Object | N/A             | Contains all of the AppDynamics specific information                     | Yes      |
+| ``username``            | String | appdynamics     | Appdynamics username in the format of username@account                   | Yes      |
+| ``password``            | String | appdynamics     | Appdynamics password                                                     | Yes      |
+| ``load_test_length_min  | Number | appdynamics     | Length of the load test period (X number of minutes before current time) | Yes      |
+| ``blazemeter``          | Object | N/A             | Contains all of the BlazeMeter specific information                      | Yes      |
+| ``api``                 | String | blazemeter      | Contains all of the promotion gate criteria                              | Yes      |
+| ``test_id``             | String | blazemeter      | Contains all of the promotion gate criteria                              | Yes      |
+| ``promotion_gates``     | Object | N/A             | Contains all of the promotion gate criteria                              | Yes      |
+| ``response_time_avg``   | Number | promotion_gates | Average response time                                                    | No       |
+| ``response_time_max``   | Number | promotion_gates | Maximum response time                                                    | No       |
+| ``response_time_stdev`` | Number | promotion_gates | Response time standard deviation                                         | No       |
+| ``response_time_tp90``  | Number | promotion_gates | 90% line -- 90% of requests were handled in this amount of time          | No       |
+| ``response_time_tp95``  | Number | promotion_gates | 95% line -- 95% of requests were handled in this amount of time          | No       |
+| ``response_time_tp99``  | Number | promotion_gates | 99% line -- 99% of requests were handled in this amount of time          | No       |
 
 ##Starting the Program
 1. Navigate to the directory containing the ``__main__.py`` file
