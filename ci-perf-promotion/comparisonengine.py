@@ -66,42 +66,45 @@ class ComparisonEngine:
                 self.output_json["blazemeter"]["transactions"][transaction_index][metric_title_passed] = False
                 self.build_status_passed = False
 
-    def process_performance_data(self, appdynamics_exists):
+    def process_performance_data(self):
         """
         Processes the data retrieved from the APIs, determines if the code
         meets the promotion gate criteria, and outputs the data as a JSON file
         """
         print("Processing performance data . . .")
 
-        # Check for AppDynamics Health Violations (only if the user cares)
+        # Make sure that the AppDynamics module exists
         if (self.configengine.appdynamics_exists):
+            # Check for AppDynamics Health Violations (only if the user cares)
             if (self.configengine.warning or self.configengine.critical):
                 if (self.appdynamics.healthrule_violations != []):
-                    # Uh-oh, there's something wrong with the application
-
-                    #self.output_json["appdynamics"] = {"healthrule_violations": self.appdynamics.healthrule_violations}
+                    # Uh-oh, there's something wrong with the build
                     self.output_json["appdynamics"] = {"healthrule_violations": []}
                     self.compare_appdynamics()
                 else:
                     # No health violations, good to go!
                     self.output_json["promotion_gates"]["appdynamics_health"] = True
 
-        # Compare BlazeMeter metrics
-        for index, metric_data in enumerate(self.blazemeter.transactions):
-            # Average Response Time
-            self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data["response_time_avg"], index, operator.lt)
-            # Max Response Time
-            self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data["response_time_max"], index, operator.lt)
-            # Response Time Standard Deviation
-            self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data["response_time_stdev"], index, operator.lt)
-            # Response Time 90% Line
-            self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data["response_time_tp90"], index, operator.lt)
-            # Response Time 95% Line
-            self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data["response_time_tp95"], index, operator.lt)
-            # Response Time 99% Line
-            self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data["response_time_tp99"], index, operator.lt)
-            # Transaction Rate
-            self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, metric_data["transaction_rate"], index, operator.gt)
+        # Make sure that the BlazeMeter module exists
+        if (self.configengine.blazemeter_exists):
+            # Compare BlazeMeter metrics
+            # Add BlazeMeter into the output file
+            self.output_json["blazemeter"] = {"transactions": self.blazemeter.transactions}
+            for index, metric_data in enumerate(self.blazemeter.transactions):
+                # Average Response Time
+                self.compare_blazemeter("response_time_avg", self.configengine.response_time_avg, metric_data["response_time_avg"], index, operator.lt)
+                # Max Response Time
+                self.compare_blazemeter("response_time_max", self.configengine.response_time_max, metric_data["response_time_max"], index, operator.lt)
+                # Response Time Standard Deviation
+                self.compare_blazemeter("response_time_stdev", self.configengine.response_time_stdev, metric_data["response_time_stdev"], index, operator.lt)
+                # Response Time 90% Line
+                self.compare_blazemeter("response_time_tp90", self.configengine.response_time_tp90, metric_data["response_time_tp90"], index, operator.lt)
+                # Response Time 95% Line
+                self.compare_blazemeter("response_time_tp95", self.configengine.response_time_tp95, metric_data["response_time_tp95"], index, operator.lt)
+                # Response Time 99% Line
+                self.compare_blazemeter("response_time_tp99", self.configengine.response_time_tp99, metric_data["response_time_tp99"], index, operator.lt)
+                # Transaction Rate
+                self.compare_blazemeter("transaction_rate", self.configengine.transaction_rate, metric_data["transaction_rate"], index, operator.gt)
 
         # Set the overall status in the JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
@@ -132,10 +135,6 @@ class ComparisonEngine:
         # Build Status
         self.build_status_passed = True
 
-        # Get the load testing data from the BlazeMeter API
-        self.blazemeter = BlazeMeter(self.configengine.blazemeter_api_key, self.configengine.blazemeter_test_id)
-        self.blazemeter.get_data()
-
         # Check if the AppDynamics module was requested
         if (self.configengine.appdynamics_exists):
             self.appdynamics = AppDynamics(self.configengine.appdynamics_username,
@@ -144,8 +143,16 @@ class ComparisonEngine:
                                            self.configengine.appdynamics_load_test_length)
             self.appdynamics.get_data()
 
-        # Output JSON report data - for use later
-        self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}}
+        # Get the load testing data from the BlazeMeter API
+        # Check if the BlazeMeter module was requested
+        if (self.configengine.blazemeter_exists):
+            self.blazemeter = BlazeMeter(self.configengine.blazemeter_api_key, self.configengine.blazemeter_test_id)
+            self.blazemeter.get_data()
+
+        # Output JSON report data
+        # Later appended by the AppDynamics and BlazeMeter modules in
+        # process_performance_data()
+        self.output_json = {"promotion_gates": {}}
 
         # Process the data
-        self.process_performance_data(self.configengine.appdynamics_exists)
+        self.process_performance_data()

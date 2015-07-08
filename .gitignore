@@ -1,4 +1,3 @@
-# Ignore compiled files
+# Ignore compiled files and JSONs
 *.pyc
-# Ignore configuration file
 *.json

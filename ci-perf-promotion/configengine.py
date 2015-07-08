@@ -44,14 +44,17 @@ class ConfigEngine:
         # Variables used to note whether or not these objects exist
         # Default to False
         self.appdynamics_exists = False
+        self.blazemeter_exists = False
 
         # Make sure that all of the config sections are there
         if "appdynamics" in config_data:
             self.appdynamics_exists = True
-        elif "blazemeter" not in config_data:
-            self.required_config_error("BlazeMeter")
-        elif "promotion_gates" not in config_data:
+        if "blazemeter" in config_data:
+            self.blazemeter_exists = True
+        if "promotion_gates" not in config_data:
             self.required_config_error("promotion gates")
+        if (self.appdynamics_exists == False and self.blazemeter_exists == False):
+            self.required_config_error("AppDynamics or BlazeMeter")
 
         # AppDynamics Module
         if (self.appdynamics_exists):
@@ -76,28 +79,29 @@ class ConfigEngine:
             if "critical" in config_data["promotion_gates"]:
                 self.critical = config_data["promotion_gates"]["critical"]
 
-        if "api" not in config_data["blazemeter"]:
-            self.required_config_error("BlazeMeter API key")
-        elif "test_id" not in config_data["blazemeter"]:
-            self.required_config_error("BlazeMeter test ID")
-        else:
-            self.blazemeter_api_key = config_data["blazemeter"]["api"]
-            self.blazemeter_test_id = config_data["blazemeter"]["test_id"]
+        # BlazeMeter Module
+        if (self.blazemeter_exists):
+            # BlazeMeter Configuration Information -- Required
+            if "api" not in config_data["blazemeter"]:
+                self.required_config_error("BlazeMeter API key")
+            elif "test_id" not in config_data["blazemeter"]:
+                self.required_config_error("BlazeMeter test ID")
+            else:
+                self.blazemeter_api_key = config_data["blazemeter"]["api"]
+                self.blazemeter_test_id = config_data["blazemeter"]["test_id"]
 
-        # Begin evaluating the promotion gates
-        # All of these are allowed to be non-mandatory so that the user can
-        # select as many or as few criteria as they would like
-        if "response_time_avg" in config_data["promotion_gates"]:
-            self.response_time_avg = config_data["promotion_gates"]["response_time_avg"]
-        if "response_time_max" in config_data["promotion_gates"]:
-            self.response_time_max = config_data["promotion_gates"]["response_time_max"]
-        if "response_time_stdev" in config_data["promotion_gates"]:
-            self.response_time_stdev = config_data["promotion_gates"]["response_time_stdev"]
-        if "response_time_tp90" in config_data["promotion_gates"]:
-            self.response_time_tp90 = config_data["promotion_gates"]["response_time_tp90"]
-        if "response_time_tp95" in config_data["promotion_gates"]:
-            self.response_time_tp95 = config_data["promotion_gates"]["response_time_tp95"]
-        if "response_time_tp99" in config_data["promotion_gates"]:
-            self.response_time_tp99 = config_data["promotion_gates"]["response_time_tp99"]
-        if "transaction_rate" in config_data["promotion_gates"]:
-            self.transaction_rate = config_data["promotion_gates"]["transaction_rate"]
+            # BlazeMeter Promotion Gates -- Optional
+            if "response_time_avg" in config_data["promotion_gates"]:
+                self.response_time_avg = config_data["promotion_gates"]["response_time_avg"]
+            if "response_time_max" in config_data["promotion_gates"]:
+                self.response_time_max = config_data["promotion_gates"]["response_time_max"]
+            if "response_time_stdev" in config_data["promotion_gates"]:
+                self.response_time_stdev = config_data["promotion_gates"]["response_time_stdev"]
+            if "response_time_tp90" in config_data["promotion_gates"]:
+                self.response_time_tp90 = config_data["promotion_gates"]["response_time_tp90"]
+            if "response_time_tp95" in config_data["promotion_gates"]:
+                self.response_time_tp95 = config_data["promotion_gates"]["response_time_tp95"]
+            if "response_time_tp99" in config_data["promotion_gates"]:
+                self.response_time_tp99 = config_data["promotion_gates"]["response_time_tp99"]
+            if "transaction_rate" in config_data["promotion_gates"]:
+                self.transaction_rate = config_data["promotion_gates"]["transaction_rate"]
