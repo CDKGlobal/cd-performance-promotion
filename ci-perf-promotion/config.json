@@ -20,7 +20,7 @@
     "response_time_tp95": 590,
     "response_time_tp99": 590,
     "transaction_rate": 80,
-    "warning": true,
-    "critical": false
+    "warning": false,
+    "critical": true
   }
 }

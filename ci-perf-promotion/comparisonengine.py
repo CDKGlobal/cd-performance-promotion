@@ -11,17 +11,16 @@ class ComparisonEngine:
     the target requirements.
     """
 
-    def check_health_severity(self, violation, severity):
+    def check_health_severity(self, violation):
         """
         Fails the build if the defined severity is found in the health rule
         violations
         """
-        if (violation["severity"] == severity):
-            # Add the violation to the output file
-            self.output_json["appdynamics"]["healthrule_violations"].append(violation)
-            # Fail the build
-            self.output_json["promotion_gates"]["appdynamics_health"] = False
-            self.build_status_passed = False
+        # Add the violation to the output file after removing unecessary data
+        self.output_json["appdynamics"]["healthrule_violations"].append(violation)
+        # Fail the build
+        self.output_json["promotion_gates"]["appdynamics_health"] = False
+        self.build_status_passed = False
 
     def compare_appdynamics(self):
         """
@@ -33,10 +32,10 @@ class ComparisonEngine:
 
         for violation in self.appdynamics.healthrule_violations:
             # Check if the severity settings that we care about exist in the health rule violations
-            if (self.configengine.warning == True):
-                self.check_health_severity(violation, "WARNING")
-            elif (self.configengine.critical == True):
-                self.check_health_severity(violation, "CRITICAL")
+            if ((self.configengine.warning == True) and (violation["severity"] == "WARNING")):
+                self.check_health_severity(violation)
+            if ((self.configengine.critical == True) and (violation["severity"] == "CRITICAL")):
+                self.check_health_severity(violation)
 
     def compare_blazemeter(self, metric_title, target_data, metric_data, transaction_index, operator):
         """
@@ -67,7 +66,7 @@ class ComparisonEngine:
                 self.output_json["blazemeter"]["transactions"][transaction_index][metric_title_passed] = False
                 self.build_status_passed = False
 
-    def process_performance_data(self):
+    def process_performance_data(self, appdynamics_exists):
         """
         Processes the data retrieved from the APIs, determines if the code
         meets the promotion gate criteria, and outputs the data as a JSON file
@@ -75,16 +74,17 @@ class ComparisonEngine:
         print("Processing performance data . . .")
 
         # Check for AppDynamics Health Violations (only if the user cares)
-        if (self.configengine.warning or self.configengine.critical):
-            if (self.appdynamics.healthrule_violations != []):
-                # Uh-oh, there's something wrong with the application
+        if (self.configengine.appdynamics_exists):
+            if (self.configengine.warning or self.configengine.critical):
+                if (self.appdynamics.healthrule_violations != []):
+                    # Uh-oh, there's something wrong with the application
 
-                #self.output_json["appdynamics"] = {"healthrule_violations": self.appdynamics.healthrule_violations}
-                self.output_json["appdynamics"] = {"healthrule_violations": []}
-                self.compare_appdynamics()
-            else:
-                # No health violations, good to go!
-                self.output_json["promotion_gates"]["appdynamics_health"] = True
+                    #self.output_json["appdynamics"] = {"healthrule_violations": self.appdynamics.healthrule_violations}
+                    self.output_json["appdynamics"] = {"healthrule_violations": []}
+                    self.compare_appdynamics()
+                else:
+                    # No health violations, good to go!
+                    self.output_json["promotion_gates"]["appdynamics_health"] = True
 
         # Compare BlazeMeter metrics
         for index, metric_data in enumerate(self.blazemeter.transactions):
@@ -136,15 +136,16 @@ class ComparisonEngine:
         self.blazemeter = BlazeMeter(self.configengine.blazemeter_api_key, self.configengine.blazemeter_test_id)
         self.blazemeter.get_data()
 
-        # Get the load testing data from the AppDynamics API
-        self.appdynamics = AppDynamics(self.configengine.appdynamics_username,
-                                       self.configengine.appdynamics_password,
-                                       self.configengine.appdynamics_application_name,
-                                       self.configengine.appdynamics_load_test_length)
-        self.appdynamics.get_data()
+        # Check if the AppDynamics module was requested
+        if (self.configengine.appdynamics_exists):
+            self.appdynamics = AppDynamics(self.configengine.appdynamics_username,
+                                           self.configengine.appdynamics_password,
+                                           self.configengine.appdynamics_application_name,
+                                           self.configengine.appdynamics_load_test_length)
+            self.appdynamics.get_data()
 
         # Output JSON report data - for use later
         self.output_json = {"promotion_gates": {}, "blazemeter": {"transactions": self.blazemeter.transactions}}
 
         # Process the data
-        self.process_performance_data()
+        self.process_performance_data(self.configengine.appdynamics_exists)
