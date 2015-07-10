@@ -60,14 +60,14 @@ The ``promotion_gates`` JSON object in the output file contains all of the high-
 | ``config.json.sample``         | File   | N/A      | Sample/template configuration file                                                                                                       |
 
 ##Extending the Program
-####Tips for Adding a new Module (Tool)
-* Follow the examples of BlazeMeter and AppDynamics
-* ``config.json``         - Add a new JSON object for the new tool and the necessary data items in the ``promotion_gates`` JSON objects
-* ``config.json.sample``  - Make the same changes that you did in the ``config.json`` file
-* ``configengine.py``
-* ``dataengine.py``       - Only do data gathering and data preperation here
-* ``comparisonengine.py`` - Only do data comparison and output here
-* ``yourtoolnamehere.py``
+####Tips for Adding a new Data Item
+ * Follow the examples of BlazeMeter and AppDynamics
+ * ``config.json``         - Add a new JSON object for the new tool and the necessary data items in the ``promotion_gates`` JSON objects
+ * ``config.json.sample``  - Make the same changes that you did in the ``config.json`` file
+ * ``configengine.py``
+ * ``dataengine.py``       - Only do data gathering and data preperation here
+ * ``comparisonengine.py`` - Only do data comparison and output here
+ * ``yourtoolnamehere.py``
 
 ####Tips for Adding a new Data Item
  * Follow the examples of BlazeMeter and AppDynamics.

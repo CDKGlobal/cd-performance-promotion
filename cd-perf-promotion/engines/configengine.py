@@ -93,9 +93,10 @@ class ConfigEngine:
 
 
             # AppDynamics Promotion Gates -- Optional
-            if (("warning"  not in config_json["promotion_gates"]) and
-                ("critical" not in config_json["promotion_gates"])):
-                # AppDynamics configuration information exists, but none of the metrics do
+            if ((("warning" not in config_json["promotion_gates"]) and ("critical" not in config_json["promotion_gates"])) or
+                (("warning" in config_json["promotion_gates"]) and (config_json["promotion_gates"]["warning"] == False) and
+                 ("critical" in config_json["promotion_gates"]) and (config_json["promotion_gates"]["critical"] == False))):
+                # AppDynamics configuration information exists, but none of the metrics do (or we were told to ignore those that do exist)
                 # Pretend AppDynamics configuration information doesn't exist either so
                 # that we don't waste our time querying the AppDynamics API
                 appdynamics_exists = False
