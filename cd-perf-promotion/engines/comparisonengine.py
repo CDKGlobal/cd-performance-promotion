@@ -97,7 +97,8 @@ class ComparisonEngine:
         Output the results to a JSON file
         """
         filename = "cdperfpromodata_{0}.json".format(time.strftime("%m%d%y_%H%M%S"))
-        with open(filename, "w") as jsonoutput:
+        filepath = "output/" + filename
+        with open(filepath, "w") as jsonoutput:
             json.dump(self.output_json, jsonoutput, indent = 4, sort_keys = True)
 
         # Let the user know where they can get all of the results

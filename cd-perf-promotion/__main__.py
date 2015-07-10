@@ -1,6 +1,6 @@
-from configengine     import ConfigEngine
-from dataengine       import DataEngine
-from comparisonengine import ComparisonEngine
+from engines.configengine     import ConfigEngine
+from engines.dataengine       import DataEngine
+from engines.comparisonengine import ComparisonEngine
 
 class Main:
   """

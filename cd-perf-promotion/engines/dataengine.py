@@ -1,5 +1,5 @@
-from appdynamics import AppDynamics
-from blazemeter import BlazeMeter
+from modules.appdynamics import AppDynamics
+from modules.blazemeter import BlazeMeter
 from datetime import datetime
 from datetime import timedelta
 
