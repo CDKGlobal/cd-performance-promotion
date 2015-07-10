@@ -45,7 +45,7 @@ class DataEngine:
 
         # Output dictionary that has all of the data
         perf_data = {}
-
+        
         # Check if the AppDynamics module was requested by the config
         if (config_data["appdynamics"]["exists"] == True):
             # Get the time stuff setup if the user hasn't specified a start and end time

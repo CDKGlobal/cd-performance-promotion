@@ -46,8 +46,6 @@ class AppDynamics:
             del violation["affectedEntityDefinition"]
             del violation["deepLinkUrl"]
             del violation["detectedTimeInMillis"]
-            del violation["endTimeInMillis"]
-            del violation["startTimeInMillis"]
             del violation["triggeredEntityDefinition"]
 
         return healthrule_violations

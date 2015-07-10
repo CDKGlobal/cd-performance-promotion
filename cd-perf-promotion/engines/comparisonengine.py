@@ -131,9 +131,10 @@ class ComparisonEngine:
         if (config_data["appdynamics"]["exists"] == True):
             # Check for AppDynamics Health Violations (only if the user cares)
             if ((config_data["promotion_gates"]["warning"] == True) or (config_data["promotion_gates"]["critical"] == True)):
+                # Output something so that the user isn't confused, regardless of whether health violations were found
+                self.output_json["appdynamics"] = {"healthrule_violations": []}
                 if (perf_data["appdynamics"]["healthrule_violations"] != []):
                     # Uh-oh, there's something wrong with the build
-                    self.output_json["appdynamics"] = {"healthrule_violations": []}
                     self.compare_appdynamics(perf_data["appdynamics"]["healthrule_violations"], config_data["promotion_gates"]["warning"], config_data["promotion_gates"]["critical"])
                 else:
                     # No health violations, good to go!
