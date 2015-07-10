@@ -1,4 +1,4 @@
-from ciperfpromotion import Main
+from cdperfpromotion import Main
 from comparisonengine import ComparisonEngine
 from blazemeter import BlazeMeter
 from appdynamics import AppDynamics

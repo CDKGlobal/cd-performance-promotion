@@ -1,6 +1,5 @@
 from appdynamics import AppDynamics
 from blazemeter import BlazeMeter
-import json
 from datetime import datetime
 from datetime import timedelta
 

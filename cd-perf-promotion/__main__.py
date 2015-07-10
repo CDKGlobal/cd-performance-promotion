@@ -4,7 +4,7 @@ from comparisonengine import ComparisonEngine
 
 class Main:
   """
-  Continuous Integration main class
+  Continuous Delivery Main class
   """
 
   def main():
@@ -14,7 +14,7 @@ class Main:
     """
     # Print the introduction message
     print("\n####################################################################\n"
-          "Continuous Integration Performance Promotion Tool\n"
+          "Continuous Delivery Performance Promotion Tool\n"
           "CDK Global, LLC\n"
           "####################################################################\n")
 
