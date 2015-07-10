@@ -17,8 +17,6 @@ class AppDynamics:
         self.password = password
         self.application_name = application_name
         self.test_length = test_length
-        # Health rule violations that exist
-        self.healthrule_violations = []
 
     def get_data(self):
         """
@@ -41,10 +39,10 @@ class AppDynamics:
         health_url = "https://cdkpe.saas.appdynamics.com/controller/rest/applications/{0}/problems/healthrule-violations?output=JSON&time-range-type=BETWEEN_TIMES&start-time={1}&end-time={2}".format(self.application_name, start_time, end_time)
         health_request = requests.get(health_url, auth=HTTPBasicAuth(self.username, self.password))
 
-        self.healthrule_violations = health_request.json()
+        healthrule_violations = health_request.json()
 
         # Reformat the data to only provide useful information
-        for violation in self.healthrule_violations:
+        for violation in healthrule_violations:
             # Remove uneccessary keys
             del violation["affectedEntityDefinition"]
             del violation["deepLinkUrl"]
@@ -52,3 +50,5 @@ class AppDynamics:
             del violation["endTimeInMillis"]
             del violation["startTimeInMillis"]
             del violation["triggeredEntityDefinition"]
+
+        return healthrule_violations
