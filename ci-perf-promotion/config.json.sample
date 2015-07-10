@@ -3,8 +3,7 @@
   {
     "username": "usernamegoeshere@accountgoeshere",
     "password": "passwordgoeshere",
-    "application_name": "applicationnamegoeshere",
-    "load_test_length_min": 60,
+    "application_name": "applicationnamegoeshere"
     "load_test_start_ms": 1436454422,
     "load_test_end_ms": 1436540822
   },
