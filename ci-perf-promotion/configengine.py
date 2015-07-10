@@ -63,20 +63,34 @@ class ConfigEngine:
         # AppDynamics Module
         if (appdynamics_exists):
             # AppDynamics Configuration Information -- Required
-            if "username" not in config_json["appdynamics"]:
+            if ("username" not in config_json["appdynamics"]):
                 self.required_config_error("AppDynamics username")
-            elif "password" not in config_json["appdynamics"]:
+            elif ("password" not in config_json["appdynamics"]):
                 self.required_config_error("AppDynamics password")
-            elif "application_name" not in config_json["appdynamics"]:
+            elif ("application_name" not in config_json["appdynamics"]):
                 self.required_config_error("AppDynamics application name")
-            elif "load_test_length_min" not in config_json["appdynamics"]:
+            # Two ways to set length (load_test_length_min or load_test_start_ms and load_test_end_ms)
+            # Check for:
+            # - load_test_length_min is not set and at least one of the start/end times are not set
+            # - load_test_length_min and load_test_start_ms or load_test_end_ms are set (both of the options are set)
+            elif ((("load_test_length_min" not in config_json["appdynamics"]) and ("load_test_start_ms" not in config_json["appdynamics"]) and ("load_test_end_ms" not in config_json["appdynamics"])) or
+                  (("load_test_length_min" in config_json["appdynamics"]) and (("load_test_start_ms" in config_json["appdynamics"]) or ("load_test_end_ms" in config_json["appdynamics"])))):
                 self.required_config_error("AppDynamics load test length")
             else:
                 config_output["appdynamics"] = {}
                 config_output["appdynamics"]["username"] = config_json["appdynamics"]["username"]
                 config_output["appdynamics"]["password"] = config_json["appdynamics"]["password"]
                 config_output["appdynamics"]["application_name"] = config_json["appdynamics"]["application_name"]
-                config_output["appdynamics"]["load_test_length"] = config_json["appdynamics"]["load_test_length_min"]
+                # The complicated load test length stuff
+                if ("load_test_length_min" in config_json["appdynamics"]):
+                    config_output["appdynamics"]["load_test_length"] = config_json["appdynamics"]["load_test_length_min"]
+                elif (("load_test_length_start_ms" in config_json) and ("load_test_length_start_ms" in config_json)):
+                    config_output["appdynamics"]["load_test_length_start"] = config_json["appdynamics"]["load_test_start_ms"]
+                    config_output["appdynamics"]["load_test_length_end"] = config_json["appdynamics"]["load_test_end_ms"]
+                else:
+                    # Something slipped through the cracks somehow, error out
+                    self.required_config_error("AppDynamics load test length")
+
 
             # AppDynamics Promotion Gates -- Optional
             if (("warning"  not in config_json["promotion_gates"]) and
