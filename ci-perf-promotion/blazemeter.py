@@ -8,6 +8,10 @@ class BlazeMeter:
     def __init__(self, api_key, test_session):
         """
         Sets up all of the instance variables
+
+        Keyword arguments:
+        api_key      - The BlazeMeter API key (string)
+        test_session - The BlazeMeter Test ID (string)
         """
         # Test configuration information
         self.api_key = api_key

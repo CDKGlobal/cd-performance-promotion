@@ -11,6 +11,17 @@ class AppDynamics:
     def __init__(self, username, password, application_name, test_length):
         """
         Sets up all of the instance variables
+
+        Keyword arguments:
+        username         - AppDynamics username as a string, used for API
+                           authentication
+        password         - AppDynamics password as a string, used for API
+                           authentication
+        application_name - The name of the AppDynamics application (string)
+        test_length      - The length of the test in minutes. (e.g. When a user
+                           specifies 60 minutes in the config, the monitoring
+                           timeframe is from the time this program is run to
+                           60 minutes before)
         """
         # API Credentials
         self.username = username

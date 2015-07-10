@@ -12,6 +12,10 @@ class ComparisonEngine:
         """
         Fails the build if the defined severity is found in the health rule
         violations
+
+        Keyword arguments:
+        violation - dictionary that contains all of the information for a single
+                    violation (as determined by AppDynamics)
         """
         # Add the violation to the output file after removing unecessary data
         self.output_json["appdynamics"]["healthrule_violations"].append(violation)
@@ -23,6 +27,16 @@ class ComparisonEngine:
         """
         Performs the comparison between the defined violation severity settings
         and the violations that occurred
+
+        Keyword arguments:
+        healthrule_violations  - Dictionary that contains all of the AppDynamics
+                                 health violations
+        warning                - Boolean that indicates whether the user thinks
+                                 that health rule violations with a status of
+                                 "WARNING" are important enough to evaluate
+        critical               - Boolean that indicates whether the user thinks
+                                 that health rule violations with a status of
+                                 "CRITICAL" are important enough to evaluate
         """
         # Set the health to True by default and flip it if necessary
         self.output_json["promotion_gates"]["appdynamics_health"] = True
@@ -38,6 +52,18 @@ class ComparisonEngine:
         """
         Performs the comparison between configuration promotion gates and the
         actual blazemeter test data
+
+        Keyword arguments:
+        metric_title      - String title that indicates the data item that is being
+                            evaluated
+        target_data       - Number that indicates the cutoff point for the specific
+                            metric as determined by the user in the config
+        metric_data       - The actual performance data number that is compared
+                            against
+        transaction_index - The index of the transaction in the list of
+                            transactions
+        operator          - <, >, <=, >, == which is used to compare the real
+                            data against the config
         """
         if (target_data > 0):
             # Metric is set in config, begin comparison
@@ -97,6 +123,9 @@ class ComparisonEngine:
         """
         print("Processing performance data . . .")
 
+        # Prepare the output file promotion gates section
+        self.output_json["promotion_gates"] = {}
+
         # AppDynamics Module
         if (config_data["appdynamics"]["exists"] == True):
             # Check for AppDynamics Health Violations (only if the user cares)
@@ -143,6 +172,5 @@ class ComparisonEngine:
         self.build_status_passed = True
 
         # Output JSON report data
-        # Later appended by the AppDynamics and BlazeMeter modules in
-        # process_data()
-        self.output_json = {"promotion_gates": {}}
+        # Later appended by the AppDynamics and BlazeMeter processing functions
+        self.output_json = {}
