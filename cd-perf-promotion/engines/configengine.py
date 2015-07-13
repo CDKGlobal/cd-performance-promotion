@@ -214,13 +214,10 @@ class ConfigEngine:
         config_output["webpagetest"] = {}
         if (webpagetest_exists):
             # WebPageTest Configuration Information -- Required
-            if "api" not in config_json["webpagetest"]:
-                self.required_config_error("WebPageTest API key")
-            elif "test_id" not in config_json["webpagetest"]:
+            if "test_id" not in config_json["webpagetest"]:
                 self.required_config_error("WebPageTest test ID")
             else:
                 config_output["webpagetest"] = {}
-                config_output["webpagetest"]["api_key"] = config_json["webpagetest"]["api"]
                 config_output["webpagetest"]["test_id"] = config_json["webpagetest"]["test_id"]
 
             # WebPageTest Promotion Gates -- Optional

@@ -7,7 +7,7 @@ class WebPageTest:
     Handles all of the WebPageTest API querying/data gathering
     """
 
-    def __init__(self, api_key, test_session):
+    def __init__(self, test_session):
         """
         Sets up all of the instance variables
 
@@ -16,7 +16,6 @@ class WebPageTest:
         test_session - The WebPageTest Test ID (string)
         """
         # Test configuration information
-        self.api_key = api_key
         self.test_session = test_session
 
     def get_data(self):
