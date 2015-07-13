@@ -3,10 +3,21 @@
         "healthrule_violations": [
             {
                 "description": "Memory utilization is too high",
+                "endTimeInMillis": 1436171973405,
+                "id": 1249848,
+                "incidentStatus": "CANCELLED",
+                "name": "Memory utilization is too high",
+                "severity": "CRITICAL",
+                "startTimeInMillis": 1435102263468
+            },
+            {
+                "description": "Memory utilization is too high",
+                "endTimeInMillis": 0,
                 "id": 1268831,
                 "incidentStatus": "OPEN",
                 "name": "Memory utilization is too high",
-                "severity": "CRITICAL"
+                "severity": "CRITICAL",
+                "startTimeInMillis": 1436172004093
             }
         ]
     },
@@ -293,6 +304,17 @@
         "response_time_tp90_passed": true,
         "response_time_tp95_passed": true,
         "response_time_tp99_passed": true,
+        "speed_index_passed": false,
         "transaction_rate_passed": false
+    },
+    "webpagetest": {
+        "first_view": {
+            "speed_index": 1502,
+            "speed_index_passed": true
+        },
+        "repeat_view": {
+            "speed_index": 200,
+            "speed_index_passed": false
+        }
     }
 }

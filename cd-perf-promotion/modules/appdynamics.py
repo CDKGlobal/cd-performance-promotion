@@ -32,7 +32,7 @@ class AppDynamics:
         """
         Get the data from the API
         """
-        print("Retrieving the AppDynamics data . . .")
+        print("Retrieving AppDynamics data . . .")
 
         # Get all of the health violations (HTTP GET request)
         health_url = "https://cdkpe.saas.appdynamics.com/controller/rest/applications/{0}/problems/healthrule-violations?output=JSON&time-range-type=BETWEEN_TIMES&start-time={1}&end-time={2}".format(self.application_name, self.start_time, self.end_time)

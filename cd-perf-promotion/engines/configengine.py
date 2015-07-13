@@ -46,20 +46,24 @@ class ConfigEngine:
         # the configuration file. Default to False
         appdynamics_exists = False
         blazemeter_exists = False
+        webpagetest_exists = False
 
         # Make sure that all of the config sections are there
         if "appdynamics" in config_json:
             appdynamics_exists = True
         if "blazemeter" in config_json:
             blazemeter_exists = True
+        if "webpagetest" in config_json:
+            webpagetest_exists = True
         if "promotion_gates" not in config_json:
-            # If the promotion gates aren't in there, there's no use running
-            # the program
+            # If the promotion gates aren't in there, there's no use running the program
             self.required_config_error("promotion gates")
-        if (appdynamics_exists == False and blazemeter_exists == False):
+        if (appdynamics_exists == False and blazemeter_exists == False and webpagetest_exists == False):
             # If all of the modules don't exist, there's no way to get any data
-            self.required_config_error("AppDynamics or BlazeMeter")
+            self.required_config_error("AppDynamics, BlazeMeter or WebPageTest")
+
         # AppDynamics Module
+        config_output["appdynamics"] = {}
         if (appdynamics_exists):
             # AppDynamics Configuration Information -- Required
             if ("username" not in config_json["appdynamics"]):
@@ -76,7 +80,6 @@ class ConfigEngine:
                   (("load_test_length_min" in config_json["appdynamics"]) and (("load_test_start_ms" in config_json["appdynamics"]) or ("load_test_end_ms" in config_json["appdynamics"])))):
                 self.required_config_error("AppDynamics load test length")
             else:
-                config_output["appdynamics"] = {}
                 config_output["appdynamics"]["username"] = config_json["appdynamics"]["username"]
                 config_output["appdynamics"]["password"] = config_json["appdynamics"]["password"]
                 config_output["appdynamics"]["application_name"] = config_json["appdynamics"]["application_name"]
@@ -90,7 +93,6 @@ class ConfigEngine:
                 else:
                     # Something slipped through the cracks somehow, error out
                     self.required_config_error("AppDynamics load test length")
-
 
             # AppDynamics Promotion Gates -- Optional
             if ((("warning" not in config_json["promotion_gates"]) and ("critical" not in config_json["promotion_gates"])) or
@@ -124,8 +126,12 @@ class ConfigEngine:
                     # Critical = False means that the user doesn't care about
                     # health violations with a status of CRITICAL
                     config_output["promotion_gates"]["critical"] = False
+        else:
+            config_output["appdynamics"]["exists"] = False
+
 
         # BlazeMeter Module
+        config_output["blazemeter"] = {}
         if (blazemeter_exists):
             # BlazeMeter Configuration Information -- Required
             if "api" not in config_json["blazemeter"]:
@@ -133,7 +139,6 @@ class ConfigEngine:
             elif "test_id" not in config_json["blazemeter"]:
                 self.required_config_error("BlazeMeter test ID")
             else:
-                config_output["blazemeter"] = {}
                 config_output["blazemeter"]["api_key"] = config_json["blazemeter"]["api"]
                 config_output["blazemeter"]["test_id"] = config_json["blazemeter"]["test_id"]
 
@@ -151,7 +156,7 @@ class ConfigEngine:
                 blazemeter_exists = False
                 config_output["blazemeter"] = {"exists": False}
             else:
-                # BlazeMeter still exists
+                # BlazeMeter still exists, put it in the config
                 config_output["blazemeter"]["exists"] = True
 
                 # Make sure that we can put in promotion gates
@@ -202,6 +207,57 @@ class ConfigEngine:
                     config_output["promotion_gates"]["transaction_rate"] = config_json["promotion_gates"]["transaction_rate"]
                 else:
                     config_output["promotion_gates"]["transaction_rate"] = 0
+        else:
+            config_output["blazemeter"]["exists"] = False
+
+        # WebPageTest Module
+        config_output["webpagetest"] = {}
+        if (webpagetest_exists):
+            # WebPageTest Configuration Information -- Required
+            if "api" not in config_json["webpagetest"]:
+                self.required_config_error("WebPageTest API key")
+            elif "test_id" not in config_json["webpagetest"]:
+                self.required_config_error("WebPageTest test ID")
+            else:
+                config_output["webpagetest"] = {}
+                config_output["webpagetest"]["api_key"] = config_json["webpagetest"]["api"]
+                config_output["webpagetest"]["test_id"] = config_json["webpagetest"]["test_id"]
+
+            # WebPageTest Promotion Gates -- Optional
+            if ("first_view" not in config_json["promotion_gates"] and
+                "repeat_view" not in config_json["promotion_gates"]):
+                # WebPageTest configuration inforamtion exists, but none of the metrics do
+                # Pretend WebPageTest configuration information doesn't exist either so
+                # that we don't waste our time querying the WebPageTest API
+                webpagetest_exists = False
+                config_output["webpagetest"] = {"exists": False}
+            else:
+                # At least one of them exists
+                config_output["webpagetest"]["exists"] = True
+
+                # Make sure that we can put in promotion gates
+                if ("promotion_gates" not in config_output):
+                    config_output["promotion_gates"] = {}
+
+                # Set up first_view and repeat_view in the config_output
+                config_output["promotion_gates"]["first_view"] = {}
+                config_output["promotion_gates"]["repeat_view"] = {}
+
+                # Set every metric to not caring first and modify it if the config determines that we do care
+                config_output["promotion_gates"]["first_view"]["speed_index"] = 0
+                config_output["promotion_gates"]["repeat_view"]["speed_index"] = 0
+
+                if ("first_view" in config_json["promotion_gates"]):
+                    # First view is a go, get metrics
+                    if ("speed_index" in config_json["promotion_gates"]["first_view"]):
+                        config_output["promotion_gates"]["first_view"]["speed_index"] = config_json["promotion_gates"]["first_view"]["speed_index"]
+
+                if ("repeat_view" in config_json["promotion_gates"]):
+                    # Repeat view is a go, get metrics
+                    if ("speed_index" in config_json["promotion_gates"]["repeat_view"]):
+                        config_output["promotion_gates"]["repeat_view"]["speed_index"] = config_json["promotion_gates"]["repeat_view"]["speed_index"]
+        else:
+            config_output["webpagetest"]["exists"] = False
 
         # Return all of the now properly formatted config data
         return config_output

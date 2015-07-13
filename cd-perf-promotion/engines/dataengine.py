@@ -1,5 +1,6 @@
 from modules.appdynamics import AppDynamics
 from modules.blazemeter import BlazeMeter
+from modules.webpagetest import WebPageTest
 from datetime import datetime
 from datetime import timedelta
 
@@ -45,7 +46,7 @@ class DataEngine:
 
         # Output dictionary that has all of the data
         perf_data = {}
-        
+
         # Check if the AppDynamics module was requested by the config
         if (config_data["appdynamics"]["exists"] == True):
             # Get the time stuff setup if the user hasn't specified a start and end time
@@ -74,5 +75,16 @@ class DataEngine:
             transactions = blazemeter.get_data()
             perf_data["blazemeter"] = {}
             perf_data["blazemeter"]["transactions"] = transactions
+
+        # Check if the WebPageTest module was requested by the config
+        if (config_data["webpagetest"]["exists"] == True):
+            # Start up AppDynamics
+            webpagetest = WebPageTest(config_data["webpagetest"]["api_key"],
+                                      config_data["webpagetest"]["test_id"])
+            alldata = webpagetest.get_data()
+            perf_data["webpagetest"] = {}
+            perf_data["webpagetest"]["first_view"] = alldata["response"]["data"]["average"]["firstView"]
+            perf_data["webpagetest"]["repeat_view"] = alldata["response"]["data"]["average"]["repeatView"]
+            #print(perf_data["webpagetest"]["front_end_data"])
 
         return perf_data

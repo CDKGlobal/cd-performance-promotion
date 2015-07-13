@@ -92,6 +92,57 @@ class ComparisonEngine:
                 self.output_json["blazemeter"]["transactions"][transaction_index][metric_title_passed] = False
                 self.build_status_passed = False
 
+    def compare_webpagetest(self, metric_title, target_data, metric_data, view, operator):
+        """
+        Performs the comparison between configuration promotion gates and the
+        actual WebPageTest test data
+
+        Keyword arguments:
+        metric_title      - String title that indicates the data item that is being
+                            evaluated
+        target_data       - Number that indicates the cutoff point for the specific
+                            metric as determined by the user in the config
+        metric_data       - The actual performance data number that is compared
+                            against
+        view              - Either first_view or repeat_view
+        operator          - <, >, <=, >, == which is used to compare the real
+                            data against the config
+        """
+        if (target_data > 0):
+            # Metric is set in config, begin comparison
+
+            # Convert the metric data to an int (WebPageTest's XML output makes everything a string)
+            metric_data = int(metric_data)
+
+            # Make sure to add the necessary view to the output
+            if (view not in self.output_json["webpagetest"]):
+                self.output_json["webpagetest"][view] = {}
+
+            # Add the data to the output file
+            self.output_json["webpagetest"][view][metric_title] = metric_data
+
+            # Get the "passed" JSON key name ready
+            metric_title_passed = metric_title + "_passed"
+
+            # Determine if promotion gate was met
+            # Uses the operator module so that the process_performance_data function can determine
+            # what operator (<, >, <=, >=, etc.) should be used
+            if operator(metric_data, target_data):
+                # Success
+                if metric_title_passed not in self.output_json["promotion_gates"]:
+                    # Not mentioned before, add it in
+                    # Not necessary to make the overall status True again if it's True
+                    # and if it was False for one transaction the overall status should still be False
+                    if ((metric_title_passed in self.output_json["promotion_gates"] and self.output_json["promotion_gates"][metric_title_passed] != False) or (metric_title_passed not in self.output_json["promotion_gates"])):
+                        self.output_json["promotion_gates"][metric_title_passed] = True
+                # Regardless, add it into the transaction data
+                self.output_json["webpagetest"][view][metric_title_passed] = True
+            else:
+                # Failure
+                self.output_json["promotion_gates"][metric_title_passed] = False
+                self.output_json["webpagetest"][view][metric_title_passed] = False
+                self.build_status_passed = False
+
     def output_results(self):
         """
         Output the results to a JSON file
@@ -162,6 +213,19 @@ class ComparisonEngine:
                 self.compare_blazemeter("response_time_tp99", config_data["promotion_gates"]["response_time_tp99"], transaction["response_time_tp99"], index, operator.lt)
                 # Transaction Rate
                 self.compare_blazemeter("transaction_rate", config_data["promotion_gates"]["transaction_rate"], transaction["transaction_rate"], index, operator.gt)
+
+        # WebPageTest Module
+        if (config_data["webpagetest"]["exists"] == True):
+            # Compare WebPageTest metrics
+            # Add WebPageTest into the output file
+            self.output_json["webpagetest"] = {}
+            if ("first_view" in config_data["promotion_gates"]):
+                # Speed Index (First View)
+                self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["first_view"]["SpeedIndex"], "first_view", operator.gt)
+            if ("repeat_view" in config_data["promotion_gates"]):
+                # Speed Index (Repeat View)
+                self.compare_webpagetest("speed_index", config_data["promotion_gates"]["repeat_view"]["speed_index"], perf_data["webpagetest"]["repeat_view"]["SpeedIndex"], "repeat_view", operator.gt)
+
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed

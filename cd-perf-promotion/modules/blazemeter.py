@@ -22,7 +22,7 @@ class BlazeMeter:
         Gets the load test data from the API
         """
         # Notify the user that the BlazeMeter data is being grabbed
-        print("Retrieving the BlazeMeter data . . .")
+        print("Retrieving BlazeMeter  data . . .")
 
         api_headers = {"Content-Type": "application/json", "x-api-key": self.api_key}
 
