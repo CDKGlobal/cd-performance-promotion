@@ -1,0 +1,43 @@
+{
+  "appdynamics":
+  {
+    "username": "cdkpeapi@adppe",
+    "password": "123cdkpeapi789",
+    "application_name": "perf.crm",
+    "load_test_start_ms": 1436166000000,
+    "load_test_end_ms": 1436425200000
+  },
+  "blazemeter":
+  {
+    "api": "09c873d5440a040ae1d2",
+    "test_id": "r-im-5589cc68db447"
+  },
+  "webpagetest":
+  {
+    "test_id": "150713_EV_TH4"
+  },
+  "promotion_gates":
+  {
+    "response_time_avg": 800,
+    "response_time_max": 1000000,
+    "response_time_stdev": 10000000,
+    "response_time_tp90": 590,
+    "response_time_tp95": 590,
+    "response_time_tp99": 590,
+    "transaction_rate": 1,
+    "warning": true,
+    "critical": true,
+    "first_view":
+    {
+      "speed_index": 1400,
+      "first_paint": 1200,
+      "time_to_first_byte": 100
+    },
+    "repeat_view":
+    {
+      "speed_index": 300,
+      "first_paint": 1200,
+      "time_to_first_byte": 100
+    }
+  }
+}

@@ -10,7 +10,6 @@ setup(
       packages = ["cd_perf_promotion",
                   "cd_perf_promotion.engines",
                   "cd_perf_promotion.modules"],
-      package_data={'': ['license.txt']},
       install_requires = ["requests",
                            "xmltodict"],
       entry_points={

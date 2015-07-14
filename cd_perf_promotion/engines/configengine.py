@@ -1,5 +1,7 @@
 import json
 import sys
+import requests
+from requests.auth import HTTPBasicAuth
 
 class ConfigEngine:
     """
@@ -21,6 +23,20 @@ class ConfigEngine:
         """
         Finds the configuration file and grabs the JSON data out of it
         """
+        # Look for arguments telling us where the config file is located
+        if ((len(sys.argv) >= 2) and (sys.argv[1] == "-lr")):
+            # Config is located remotely
+            if (isinstance(sys.argv[2], str)):
+                try:
+                    config_file = requests.get(sys.argv[2], auth=HTTPBasicAuth("petersja", "CDKcdk123"))
+                    print(config_file.json())
+                    return config_file.json()
+                except:
+                    # Not able to find a configuration file at the specified location
+                    print("ERROR: Unable to find properly formatted remote configuration file")
+                    sys.exit(1)
+
+        # Config is stored locally
         try:
             with open("config.json") as config_file:
                 try:
