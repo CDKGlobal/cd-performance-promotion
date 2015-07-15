@@ -46,7 +46,7 @@ You do not have to use all of the available promotion gate metrics and the order
 ##Starting the Program
 1. Copy and paste the ``config.json.sample`` file that ships with the program into your desired directory.
 2. Rename it ``config.json`` and modify its contents to fit your continuous delivery needs.
-3. Open the CLI and run ``cdperfpromotion`` in the same directory as your ``config.json`` file.
+3. Open the CLI and run ``cdperfpromotion`` in the same directory as your ``config.json`` file. You also have the option of running ``cdperfpromotion -lr www.URLGOESHERE.com`` to have the program look for a config file at the inputted address. For example, to get your configuration file from Atlassian Stash, use something like ``cdperfpromotion -lr http://username:password@stash.ds.adp.com/projects/PROJECTKEYHERE/repos/REPOSLUGHERE/browse/CONFIGFILEHERE?raw``.
 4. A JSON output file will be created in the same directory. The name of the file is specified by the program at the end of its operation. Open it to learn more about how your build performed.
 
 ##Evaluating the Results

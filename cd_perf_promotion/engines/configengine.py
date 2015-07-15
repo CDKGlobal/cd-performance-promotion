@@ -31,7 +31,7 @@ class ConfigEngine:
                 config_file = requests.get(sys.argv[2])
                 return config_file.json()
             except:
-                # Not able to find a configuration file at the specified location
+                # Not able to find a configuration file at the specified location, quit out
                 print("ERROR: Unable to find properly formatted remote configuration file")
                 sys.exit(1)
 
