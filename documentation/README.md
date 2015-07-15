@@ -5,7 +5,7 @@ This is a Python program that is used to retrieve data from load testing and ser
 
 ##Setting up Promotion Gates
 ####Configuration File
-You can set the promotion gates by altering the config.json file. A sample configuration file can be found at config.json.example. Please note that the .example file extension should be removed from the actual configuration file.
+You can set the promotion gates by altering the ``config.json`` file. A sample configuration file can be found at ``config.json.sample``. Please note that the .sample file extension should be removed from the actual configuration file in order to actually use it.
 
 You do not have to use all of the available promotion gate metrics and the order of the keys does not matter. The following table lists the available JSON configuation keys and whether or not they are required.
 

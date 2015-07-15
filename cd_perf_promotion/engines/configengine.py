@@ -37,7 +37,7 @@ class ConfigEngine:
 
         # Config is stored locally
         try:
-            with open("config.json") as config_file:
+            with open(self.filename) as config_file:
                 try:
                     # Load the JSON file
                     return json.load(config_file)
@@ -277,3 +277,10 @@ class ConfigEngine:
 
         # Return all of the now properly formatted config data
         return config_output
+
+    def __init__(self, filename):
+        """
+        Class starting point
+        """
+        # Configuration file name
+        self.filename = filename

@@ -1,3 +1,6 @@
-# Ignore compiled files and JSONs
+# Ignore compiled files, JSON, and build files
 *.pyc
 #*.json
+build/*
+dist/*
+cd_perf_promotion.egg-info

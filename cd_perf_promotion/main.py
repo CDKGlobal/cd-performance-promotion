@@ -14,7 +14,7 @@ def main():
           "####################################################################\n")
 
     # Grab the configuration information
-    configengine = ConfigEngine()
+    configengine = ConfigEngine("config.json")
     config_data = configengine.process_config()
 
     # Grab the performance data
