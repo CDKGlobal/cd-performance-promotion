@@ -26,15 +26,14 @@ class ConfigEngine:
         # Look for arguments telling us where the config file is located
         if ((len(sys.argv) >= 2) and (sys.argv[1] == "-lr")):
             # Config is located remotely
-            if (isinstance(sys.argv[2], str)):
-                try:
-                    config_file = requests.get(sys.argv[2], auth=HTTPBasicAuth("petersja", "CDKcdk123"))
-                    print(config_file.json())
-                    return config_file.json()
-                except:
-                    # Not able to find a configuration file at the specified location
-                    print("ERROR: Unable to find properly formatted remote configuration file")
-                    sys.exit(1)
+            try:
+                #config_file = requests.get(sys.argv[2], auth=HTTPBasicAuth("petersja", "CDKcdk123"))
+                config_file = requests.get(sys.argv[2])
+                return config_file.json()
+            except:
+                # Not able to find a configuration file at the specified location
+                print("ERROR: Unable to find properly formatted remote configuration file")
+                sys.exit(1)
 
         # Config is stored locally
         try:
