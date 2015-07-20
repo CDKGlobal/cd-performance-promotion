@@ -44,6 +44,7 @@ class BlazeMeter:
                     "transaction_name": transaction["lb"],
                     "response_time_avg": transaction["avg"],
                     "response_time_max": transaction["max"],
+                    "response_time_geomean": transaction["geoMean"],
                     "response_time_stdev": transaction["std"],
                     "response_time_tp90": transaction["tp90"],
                     "response_time_tp95": transaction["tp95"],

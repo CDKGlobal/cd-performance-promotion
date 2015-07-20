@@ -162,13 +162,14 @@ class ConfigEngine:
                 config_output["blazemeter"]["test_id"] = config_json["blazemeter"]["test_id"]
 
             # BlazeMeter Promotion Gates -- Optional
-            if (("response_time_avg"   not in config_json["promotion_gates"]) and
-                ("response_time_max"   not in config_json["promotion_gates"]) and
-                ("response_time_stdev" not in config_json["promotion_gates"]) and
-                ("response_time_tp90"  not in config_json["promotion_gates"]) and
-                ("response_time_tp95"  not in config_json["promotion_gates"]) and
-                ("response_time_tp99"  not in config_json["promotion_gates"]) and
-                ("transaction_rate"    not in config_json["promotion_gates"])):
+            if (("response_time_avg"     not in config_json["promotion_gates"]) and
+                ("response_time_max"     not in config_json["promotion_gates"]) and
+                ("response_time_geomean" not in config_json["promotion_gates"]) and
+                ("response_time_stdev"   not in config_json["promotion_gates"]) and
+                ("response_time_tp90"    not in config_json["promotion_gates"]) and
+                ("response_time_tp95"    not in config_json["promotion_gates"]) and
+                ("response_time_tp99"    not in config_json["promotion_gates"]) and
+                ("transaction_rate"      not in config_json["promotion_gates"])):
                 # Blazemeter configuration inforamtion exists, but none of the metrics do
                 # Pretend BlazeMeter configuration information doesn't exist either so
                 # that we don't waste our time querying the BlazeMeter API
@@ -194,6 +195,12 @@ class ConfigEngine:
                     config_output["promotion_gates"]["response_time_max"] = config_json["promotion_gates"]["response_time_max"]
                 else:
                     config_output["promotion_gates"]["response_time_max"] = 0
+
+                # Response time geometric mean
+                if ("response_time_geomean" in config_json["promotion_gates"]):
+                    config_output["promotion_gates"]["response_time_geomean"] = config_json["promotion_gates"]["response_time_geomean"]
+                else:
+                    config_output["promotion_gates"]["response_time_geomean"] = 0
 
                 # Response time standard deviation
                 if ("response_time_stdev" in config_json["promotion_gates"]):

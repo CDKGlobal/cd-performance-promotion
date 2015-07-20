@@ -207,6 +207,8 @@ class ComparisonEngine:
                 self.compare_blazemeter("response_time_avg", config_data["promotion_gates"]["response_time_avg"], transaction["response_time_avg"], index, operator.lt)
                 # Max Response Time
                 self.compare_blazemeter("response_time_max", config_data["promotion_gates"]["response_time_max"], transaction["response_time_max"], index, operator.lt)
+                # Response Time Geometrci Mean
+                self.compare_blazemeter("response_time_geomean", config_data["promotion_gates"]["response_time_geomean"], transaction["response_time_geomean"], index, operator.lt)
                 # Response Time Standard Deviation
                 self.compare_blazemeter("response_time_stdev", config_data["promotion_gates"]["response_time_stdev"], transaction["response_time_stdev"], index, operator.lt)
                 # Response Time 90% Line
