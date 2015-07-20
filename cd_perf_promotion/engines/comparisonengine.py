@@ -217,6 +217,12 @@ class ComparisonEngine:
                 self.compare_blazemeter("response_time_tp95", config_data["promotion_gates"]["response_time_tp95"], transaction["response_time_tp95"], index, operator.lt)
                 # Response Time 99% Line
                 self.compare_blazemeter("response_time_tp99", config_data["promotion_gates"]["response_time_tp99"], transaction["response_time_tp99"], index, operator.lt)
+                # Maximum Latency
+                self.compare_blazemeter("latency_max", config_data["promotion_gates"]["latency_max"], transaction["latency_max"], index, operator.lt)
+                # Average Latency
+                self.compare_blazemeter("latency_avg", config_data["promotion_gates"]["latency_avg"], transaction["latency_avg"], index, operator.lt)
+                # Latency Standard Deviation
+                self.compare_blazemeter("latency_stdev", config_data["promotion_gates"]["latency_stdev"], transaction["latency_stdev"], index, operator.lt)
                 # Transaction Rate
                 self.compare_blazemeter("transaction_rate", config_data["promotion_gates"]["transaction_rate"], transaction["transaction_rate"], index, operator.gt)
 

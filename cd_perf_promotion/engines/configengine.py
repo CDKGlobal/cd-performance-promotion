@@ -169,6 +169,9 @@ class ConfigEngine:
                 ("response_time_tp90"    not in config_json["promotion_gates"]) and
                 ("response_time_tp95"    not in config_json["promotion_gates"]) and
                 ("response_time_tp99"    not in config_json["promotion_gates"]) and
+                ("latency_max"           not in config_json["promotion_gates"]) and
+                ("latency_avg"           not in config_json["promotion_gates"]) and
+                ("latency_stdev"         not in config_json["promotion_gates"]) and
                 ("transaction_rate"      not in config_json["promotion_gates"])):
                 # Blazemeter configuration inforamtion exists, but none of the metrics do
                 # Pretend BlazeMeter configuration information doesn't exist either so
@@ -227,6 +230,24 @@ class ConfigEngine:
                     config_output["promotion_gates"]["response_time_tp99"] = config_json["promotion_gates"]["response_time_tp99"]
                 else:
                     config_output["promotion_gates"]["response_time_tp99"] = 0
+
+                # Maximum latency
+                if ("latency_max" in config_json["promotion_gates"]):
+                    config_output["promotion_gates"]["latency_max"] = config_json["promotion_gates"]["latency_max"]
+                else:
+                    config_output["promotion_gates"]["latency_max"] = 0
+
+                # Average latency
+                if ("latency_avg" in config_json["promotion_gates"]):
+                    config_output["promotion_gates"]["latency_avg"] = config_json["promotion_gates"]["latency_avg"]
+                else:
+                    config_output["promotion_gates"]["latency_avg"] = 0
+
+                # Latency Standard Deviation
+                if ("latency_stdev" in config_json["promotion_gates"]):
+                    config_output["promotion_gates"]["latency_stdev"] = config_json["promotion_gates"]["latency_stdev"]
+                else:
+                    config_output["promotion_gates"]["latency_stdev"] = 0
 
                 # Transaction Rate (AKA hits/second)
                 if ("transaction_rate" in config_json["promotion_gates"]):

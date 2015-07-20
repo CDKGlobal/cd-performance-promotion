@@ -49,6 +49,9 @@ class BlazeMeter:
                     "response_time_tp90": transaction["tp90"],
                     "response_time_tp95": transaction["tp95"],
                     "response_time_tp99": transaction["tp99"],
+                    "latency_max": transaction["latencyMax"],
+                    "latency_avg": transaction["latencyAvg"],
+                    "latency_stdev": transaction["latencySTD"],
                     "transaction_rate": transaction["hits"] / transaction["duration"]
                 })
 
