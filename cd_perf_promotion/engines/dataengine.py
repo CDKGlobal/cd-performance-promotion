@@ -42,8 +42,6 @@ class DataEngine:
         config_data - dictionary that contains all of the information retrieved
                       by the configuration engine
         """
-        #TODO Look into making this multithreaded, one thread for each api call and closing them all off with join()
-
         # Output dictionary that has all of the data
         perf_data = {}
 

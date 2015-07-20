@@ -213,7 +213,7 @@ class ConfigEngine:
                 if ("response_time_tp95" in config_json["promotion_gates"]):
                     config_output["promotion_gates"]["response_time_tp95"] = config_json["promotion_gates"]["response_time_tp95"]
                 else:
-                    config_output["promotion_gates"]["response_time_tp90"] = 0
+                    config_output["promotion_gates"]["response_time_tp95"] = 0
 
                 # Response time #99% line
                 if ("response_time_tp99" in config_json["promotion_gates"]):
