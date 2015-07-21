@@ -38,16 +38,9 @@ class ConfigEngine:
         # Config is stored locally
         try:
             with open(self.filename) as config_file:
-                try:
-                    # Load the JSON file
-                    return json.load(config_file)
-                except:
-                    # Something is wrong with the JSON config file, abort the
-                    # program
-                    print("ERROR: Improperly formatted configuration file")
-                    sys.exit(1)
+                return json.load(config_file)
         except:
-            print("ERROR: Unable to find config.json file")
+            print("ERROR: Unable to find properly formatted config.json file")
             sys.exit(1)
 
     def process_config(self):
