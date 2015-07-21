@@ -177,8 +177,6 @@ class ComparisonEngine:
         perf_data   - dictionary that contains all of the information retrieved
                       by the data engine
         """
-        print("Processing performance data . . .")
-
         # Prepare the output file promotion gates section
         self.output_json["promotion_gates"] = {}
 
@@ -223,6 +221,8 @@ class ComparisonEngine:
                 self.compare_blazemeter("latency_avg", config_data["promotion_gates"]["latency_avg"], transaction["latency_avg"], index, operator.lt)
                 # Latency Standard Deviation
                 self.compare_blazemeter("latency_stdev", config_data["promotion_gates"]["latency_stdev"], transaction["latency_stdev"], index, operator.lt)
+                # Average Bandwidth
+                self.compare_blazemeter("bandwidth_avg", config_data["promotion_gates"]["bandwidth_avg"], transaction["bandwidth_avg"], index, operator.lt)
                 # Transaction Rate
                 self.compare_blazemeter("transaction_rate", config_data["promotion_gates"]["transaction_rate"], transaction["transaction_rate"], index, operator.gt)
 
@@ -241,6 +241,9 @@ class ComparisonEngine:
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
+
+        # We're done!
+        print("Processed performance data")
 
     def __init__(self):
         """

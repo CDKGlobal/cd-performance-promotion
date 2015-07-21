@@ -22,9 +22,6 @@ class BlazeMeter:
         """
         Gets the load test data from the API
         """
-        # Notify the user that the BlazeMeter data is being grabbed
-        print("Retrieving BlazeMeter  data . . .")
-
         api_headers = {"Content-Type": "application/json", "x-api-key": self.api_key}
 
         # Get all of the aggregate (HTTP GET request)
@@ -52,7 +49,11 @@ class BlazeMeter:
                     "latency_max": transaction["latencyMax"],
                     "latency_avg": transaction["latencyAvg"],
                     "latency_stdev": transaction["latencySTD"],
+                    "bandwidth_avg": transaction["bytes"] / transaction["duration"],
                     "transaction_rate": transaction["hits"] / transaction["duration"]
                 })
+
+        # Notify the user that the BlazeMeter data has grabbed
+        print("Retrieved BlazeMeter  data")
 
         return alltransactions

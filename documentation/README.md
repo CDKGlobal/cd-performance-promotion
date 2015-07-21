@@ -31,6 +31,8 @@ You do not have to use all of the available promotion gate metrics and the order
 | ``latency_avg``               | Number  | promotion_gates        | Average latency (under BlazeMeter load)                                                                     | No       |
 | ``latency_max``               | Number  | promotion_gates        | Maximum latency (under BlazeMeter load)                                                                     | No       |
 | ``latency_stdev``             | Number  | promotion_gates        | Latency standard deviation (under BlazeMeter load)                                                          | No       |
+| ``bandwidth_avg``             | Number  | promotion_gates        | Average Bandwidth -- Bytes/Second (under BlazeMeter load)                                                   | No       |
+| ``transaction_rate``          | Number  | promotion_gates        | Average Throughput (AKA Transaction Rate) -- Hits/Second (under BlazeMeter load)                            | No       |
 | ``warning``                   | Boolean | promotion_gates        | Indicates if AppDynamics health rule violations with a status of ``WARNING`` matter                         | No       |
 | ``critical``                  | Boolean | promotion_gates        | Indicates if AppDynamics health rule violations with a status of ``CRITICAL`` matter                        | No       |
 | ``first_view``                | Object  | promotion_gates        | Container for WebPageTest metrics for the first time a page is loaded                                       | Yes***   |
@@ -85,7 +87,7 @@ The ``promotion_gates`` JSON object in the output file contains all of the high-
  * ``config.json.sample``  - Make the same changes that you did in the ``config.json`` file
  * ``configengine.py``     - Add checks and save the data item to the ``config_output`` file
  * ``yourtoolnamehere.py`` - Implement the actual API querying here
- * ``dataengine.py``       - Only do data gathering and data preperation here
+ * ``dataengine.py``       - Only do data gathering and data preparation here
  * ``comparisonengine.py`` - Only do data comparison and output here
 
 ####Tips for Adding a new Data Item

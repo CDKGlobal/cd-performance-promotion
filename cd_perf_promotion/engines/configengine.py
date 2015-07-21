@@ -165,6 +165,7 @@ class ConfigEngine:
                 ("latency_max"           not in config_json["promotion_gates"]) and
                 ("latency_avg"           not in config_json["promotion_gates"]) and
                 ("latency_stdev"         not in config_json["promotion_gates"]) and
+                ("bandwidth_avg"         not in config_json["promotion_gates"]) and
                 ("transaction_rate"      not in config_json["promotion_gates"])):
                 # Blazemeter configuration inforamtion exists, but none of the metrics do
                 # Pretend BlazeMeter configuration information doesn't exist either so
@@ -241,6 +242,12 @@ class ConfigEngine:
                     config_output["promotion_gates"]["latency_stdev"] = config_json["promotion_gates"]["latency_stdev"]
                 else:
                     config_output["promotion_gates"]["latency_stdev"] = 0
+
+                # Average Bandwidth (AKA average bytes/second)
+                if ("bandwidth_avg" in config_json["promotion_gates"]):
+                    config_output["promotion_gates"]["bandwidth_avg"] = config_json["promotion_gates"]["bandwidth_avg"]
+                else:
+                    config_output["promotion_gates"]["bandwidth_avg"] = 0
 
                 # Transaction Rate (AKA hits/second)
                 if ("transaction_rate" in config_json["promotion_gates"]):

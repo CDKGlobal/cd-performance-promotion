@@ -82,6 +82,5 @@ class DataEngine:
             perf_data["webpagetest"] = {}
             perf_data["webpagetest"]["first_view"] = alldata["response"]["data"]["average"]["firstView"]
             perf_data["webpagetest"]["repeat_view"] = alldata["response"]["data"]["average"]["repeatView"]
-            #print(perf_data["webpagetest"]["front_end_data"])
 
         return perf_data

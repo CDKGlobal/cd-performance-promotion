@@ -23,9 +23,6 @@ class WebPageTest:
         """
         Gets the load test data from the API
         """
-        # Notify the user that the WebPageTest data is being grabbed
-        print("Retrieving WebPageTest data . . .")
-
         # Get all of the aggregate (HTTP GET request)
         test_summary_url = "http://www.webpagetest.org/xmlResult/{0}/".format(self.test_session)
         try:
@@ -34,6 +31,11 @@ class WebPageTest:
             # User likely lost their internet connection
             print("ERROR: Unable to query WebPageTest API")
             sys.exit(1)
+
         # Convert all of the WebPageTest data from XML to JSON and return it
         test_results = json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))
+
+        # Notify the user that the WebPageTest data is being grabbed
+        print("Retrieved WebPageTest data")
+
         return test_results
