@@ -28,6 +28,9 @@ You do not have to use all of the available promotion gate metrics and the order
 | ``response_time_tp90``        | Number  | promotion_gates        | 90% line -- 90% of requests were handled in this amount of time (under BlazeMeter load)                     | No       |
 | ``response_time_tp95``        | Number  | promotion_gates        | 95% line -- 95% of requests were handled in this amount of time (under BlazeMeter load)                     | No       |
 | ``response_time_tp99``        | Number  | promotion_gates        | 99% line -- 99% of requests were handled in this amount of time (under BlazeMeter load)                     | No       |
+| ``latency_avg``               | Number  | promotion_gates        | Average latency (under BlazeMeter load)                                                                     | No       |
+| ``latency_max``               | Number  | promotion_gates        | Maximum latency (under BlazeMeter load)                                                                     | No       |
+| ``latency_stdev``             | Number  | promotion_gates        | Latency standard deviation (under BlazeMeter load)                                                          | No       |
 | ``warning``                   | Boolean | promotion_gates        | Indicates if AppDynamics health rule violations with a status of ``WARNING`` matter                         | No       |
 | ``critical``                  | Boolean | promotion_gates        | Indicates if AppDynamics health rule violations with a status of ``CRITICAL`` matter                        | No       |
 | ``first_view``                | Object  | promotion_gates        | Container for WebPageTest metrics for the first time a page is loaded                                       | Yes***   |
