@@ -76,11 +76,11 @@ class DataEngine:
 
         # Check if the WebPageTest module was requested by the config
         if (config_data["webpagetest"]["exists"] == True):
-            # Start up AppDynamics
+            # Start up WebPageTest
             webpagetest = WebPageTest(config_data["webpagetest"]["test_id"])
             alldata = webpagetest.get_data()
-            perf_data["webpagetest"] = {}
-            perf_data["webpagetest"]["first_view"] = alldata["response"]["data"]["average"]["firstView"]
-            perf_data["webpagetest"]["repeat_view"] = alldata["response"]["data"]["average"]["repeatView"]
+            perf_data["webpagetest"] = { "runs": [] }
+            for run in alldata["response"]["data"]["run"]:
+                perf_data["webpagetest"]["runs"].append({"run_id": run["id"], "first_view": run["firstView"], "repeat_view": run["repeatView"]})
 
         return perf_data

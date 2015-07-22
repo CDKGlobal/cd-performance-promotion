@@ -283,23 +283,26 @@ class ConfigEngine:
                 if ("promotion_gates" not in config_output):
                     config_output["promotion_gates"] = {}
 
-                # Set up first_view and repeat_view in the config_output
-                config_output["promotion_gates"]["first_view"] = {}
-                config_output["promotion_gates"]["repeat_view"] = {}
-
-                # Set every metric to not caring first and modify it if the config determines that we do care
-                config_output["promotion_gates"]["first_view"]["speed_index"] = 0
-                config_output["promotion_gates"]["repeat_view"]["speed_index"] = 0
-
                 if ("first_view" in config_json["promotion_gates"]):
+                    # Set up first_view
+                    config_output["promotion_gates"]["first_view"] = {}
+
                     # First view is a go, get metrics
                     if ("speed_index" in config_json["promotion_gates"]["first_view"]):
                         config_output["promotion_gates"]["first_view"]["speed_index"] = config_json["promotion_gates"]["first_view"]["speed_index"]
+                    else:
+                        config_output["promotion_gates"]["first_view"]["speed_index"] = 0
 
                 if ("repeat_view" in config_json["promotion_gates"]):
+                    # Set up repeat_view
+                    config_output["promotion_gates"]["repeat_view"] = {}
+
                     # Repeat view is a go, get metrics
                     if ("speed_index" in config_json["promotion_gates"]["repeat_view"]):
                         config_output["promotion_gates"]["repeat_view"]["speed_index"] = config_json["promotion_gates"]["repeat_view"]["speed_index"]
+                    else:
+                        config_output["promotion_gates"]["repeat_view"]["speed_index"] = 0
+
         else:
             config_output["webpagetest"]["exists"] = False
 
