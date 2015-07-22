@@ -79,7 +79,7 @@ class DataEngine:
             # Start up WebPageTest
             webpagetest = WebPageTest(config_data["webpagetest"]["test_id"])
             alldata = webpagetest.get_data()
-            perf_data["webpagetest"] = { "runs": [] }
+            perf_data["webpagetest"] = { "average": { "first_view": alldata["response"]["data"]["average"]["firstView"], "repeat_view": alldata["response"]["data"]["average"]["repeatView"] }, "runs": [] }
             for run in alldata["response"]["data"]["run"]:
                 perf_data["webpagetest"]["runs"].append({"run_id": run["id"], "first_view": run["firstView"], "repeat_view": run["repeatView"]})
 

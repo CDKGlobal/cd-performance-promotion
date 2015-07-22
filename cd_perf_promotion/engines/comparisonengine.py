@@ -115,11 +115,13 @@ class ComparisonEngine:
             # Convert the metric data to an int (WebPageTest's XML output makes everything a string)
             metric_data = int(metric_data)
 
-            # Make sure to add the necessary view to the output
-            self.output_json["webpagetest"]["runs"][run_index][view][metric_title] = metric_data
-
             # Add the data to the output file
-            self.output_json["webpagetest"]["runs"][run_index][view][metric_title] = metric_data
+            if (run_index == None):
+                # Data from the averages section
+                self.output_json["webpagetest"]["average"][view][metric_title] = metric_data
+            else:
+                # Data from the runs section
+                self.output_json["webpagetest"]["runs"][run_index][view][metric_title] = metric_data
 
             # Get the "passed" JSON key name ready
             metric_title_passed = metric_title + "_passed"
@@ -136,11 +138,18 @@ class ComparisonEngine:
                     if ((metric_title_passed in self.output_json["promotion_gates"] and self.output_json["promotion_gates"][metric_title_passed] != False) or (metric_title_passed not in self.output_json["promotion_gates"])):
                         self.output_json["promotion_gates"][metric_title_passed] = True
                 # Regardless, add it into the transaction data
-                self.output_json["webpagetest"]["runs"][run_index][view][metric_title_passed] = True
+                if (run_index == None):
+                    self.output_json["webpagetest"]["average"][view][metric_title_passed] = True
+                else:
+                    self.output_json["webpagetest"]["runs"][run_index][view][metric_title_passed] = True
+
             else:
                 # Failure
                 self.output_json["promotion_gates"][metric_title_passed] = False
-                self.output_json["webpagetest"]["runs"][run_index][view][metric_title_passed] = False
+                if (run_index == None):
+                    self.output_json["webpagetest"]["average"][view][metric_title_passed] = False
+                else:
+                    self.output_json["webpagetest"]["runs"][run_index][view][metric_title_passed] = False
                 self.build_status_passed = False
 
     def output_results(self):
@@ -229,10 +238,26 @@ class ComparisonEngine:
         if (config_data["webpagetest"]["exists"] == True):
             # Compare WebPageTest metrics
             # Add WebPageTest into the output file
-            self.output_json["webpagetest"] = {"runs": []}
+            self.output_json["webpagetest"] = {"average": {}, "runs": []}
 
             # Make sure that we care about the data before processing it
             if (("first_view" in config_data["promotion_gates"]) or ("repeat_view" in config_data["promotion_gates"])):
+                # Check out the averages for the runs
+                # This is less for failing the build and more for adding the data into the output file
+                if ("first_view" in config_data["promotion_gates"]):
+                    # Set up average first_view
+                    self.output_json["webpagetest"]["average"]["first_view"] = {}
+
+                    # Speed Index (First View)
+                    self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["average"]["first_view"]["SpeedIndex"], None, "first_view", operator.gt)
+
+                if ("repeat_view" in config_data["promotion_gates"]):
+                    # Set up average repeat_view
+                    self.output_json["webpagetest"]["average"]["repeat_view"] = {}
+
+                    # Speed Index (Repeat View)
+                    self.compare_webpagetest("speed_index", config_data["promotion_gates"]["repeat_view"]["speed_index"], perf_data["webpagetest"]["average"]["repeat_view"]["SpeedIndex"], None, "repeat_view", operator.gt)
+
                 # Loop over all of the runs
                 # Most of the time there will likely be only one
                 for run_id, run in enumerate(perf_data["webpagetest"]["runs"]):
@@ -240,13 +265,14 @@ class ComparisonEngine:
                     self.output_json["webpagetest"]["runs"].append({"run_id": run["run_id"]})
 
                     if ("first_view" in config_data["promotion_gates"]):
+                        # Set up first_view for the run
                         self.output_json["webpagetest"]["runs"][run_id]["first_view"] = {}
 
                         # Speed Index (First View)
                         self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["SpeedIndex"], run_id, "first_view", operator.gt)
 
                     if ("repeat_view" in config_data["promotion_gates"]):
-
+                        # Set up repeat_view for the run
                         self.output_json["webpagetest"]["runs"][run_id]["repeat_view"] = {}
 
                         # Speed Index (Repeat View)
