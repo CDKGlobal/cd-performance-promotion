@@ -37,7 +37,11 @@ You do not have to use all of the available promotion gate metrics and the order
 | ``critical``                  | Boolean | promotion_gates        | Indicates if AppDynamics health rule violations with a status of ``CRITICAL`` matter                        | No       |
 | ``first_view``                | Object  | promotion_gates        | Container for WebPageTest metrics for the first time a page is loaded                                       | Yes***   |
 | ``repeat_view``               | Object  | promotion_gates        | Container for WebPageTest metrics for the second time a page is loaded                                      | Yes***   |
-| ``speed_index``               | Number  | first_view/repeat_view | Google Speed Index score (as determined by WebPageTest). A higher score is better.                          | No       |
+| ``speed_index``               | Number  | first_view/repeat_view | WebPageTest Speed Index, the average time (ms) at which the visible parts of the page are displayed         | No       |
+| ``first_paint``               | Number  | first_view/repeat_view | Time to first paint (ms)                                                                                    | No       |
+| ``first_byte``                | Number  | first_view/repeat_view | Time to first byte (ms)                                                                                     | No       |
+| ``fully_loaded``              | Number  | first_view/repeat_view | Time to page fully loaded (ms)                                                                              | No       |
+| ``visual_complete``           | Number  | first_view/repeat_view | Time to when the page looks like it has fully loaded (ms)                                                   | No       |
 
 \*Required if you would like to gather data from the tool, otherwise not required
 \*\*Either ``load_test_length_min`` or both ``load_test_length_start_ms`` and ``load_test_length_end_ms`` must be declared

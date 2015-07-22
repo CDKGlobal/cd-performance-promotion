@@ -306,6 +306,18 @@ class ConfigEngine:
                     else:
                         config_output["promotion_gates"]["first_view"]["first_byte"] = 0
 
+                    # Time to Fully Loaded
+                    if ("fully_loaded" in config_json["promotion_gates"]["first_view"]):
+                        config_output["promotion_gates"]["first_view"]["fully_loaded"] = config_json["promotion_gates"]["first_view"]["fully_loaded"]
+                    else:
+                        config_output["promotion_gates"]["first_view"]["fully_loaded"] = 0
+
+                    # Time to Visual Complete
+                    if ("visual_complete" in config_json["promotion_gates"]["first_view"]):
+                        config_output["promotion_gates"]["first_view"]["visual_complete"] = config_json["promotion_gates"]["first_view"]["visual_complete"]
+                    else:
+                        config_output["promotion_gates"]["first_view"]["visual_complete"] = 0
+
                 if ("repeat_view" in config_json["promotion_gates"]):
                     # Set up repeat_view
                     config_output["promotion_gates"]["repeat_view"] = {}
@@ -328,6 +340,18 @@ class ConfigEngine:
                         config_output["promotion_gates"]["repeat_view"]["first_byte"] = config_json["promotion_gates"]["repeat_view"]["first_byte"]
                     else:
                         config_output["promotion_gates"]["repeat_view"]["first_byte"] = 0
+
+                    # Time to Fully Loaded
+                    if ("fully_loaded" in config_json["promotion_gates"]["repeat_view"]):
+                        config_output["promotion_gates"]["repeat_view"]["fully_loaded"] = config_json["promotion_gates"]["repeat_view"]["fully_loaded"]
+                    else:
+                        config_output["promotion_gates"]["repeat_view"]["fully_loaded"] = 0
+
+                    # Time to Visual Complete
+                    if ("visual_complete" in config_json["promotion_gates"]["repeat_view"]):
+                        config_output["promotion_gates"]["repeat_view"]["visual_complete"] = config_json["promotion_gates"]["repeat_view"]["visual_complete"]
+                    else:
+                        config_output["promotion_gates"]["repeat_view"]["visual_complete"] = 0
 
         else:
             config_output["webpagetest"]["exists"] = False
