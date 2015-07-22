@@ -253,6 +253,9 @@ class ComparisonEngine:
                     # Time to First Paint (First View)(Average)
                     self.compare_webpagetest("first_paint", config_data["promotion_gates"]["first_view"]["first_paint"], perf_data["webpagetest"]["average"]["first_view"]["firstPaint"], None, "first_view", operator.lt)
 
+                    # Time to First Byte (First View)(Average)
+                    self.compare_webpagetest("first_byte", config_data["promotion_gates"]["first_view"]["first_byte"], perf_data["webpagetest"]["average"]["first_view"]["TTFB"], None, "first_view", operator.lt)
+
                 if ("repeat_view" in config_data["promotion_gates"]):
                     # Set up average repeat_view
                     self.output_json["webpagetest"]["average"]["repeat_view"] = {}
@@ -262,6 +265,9 @@ class ComparisonEngine:
 
                     # Time to First Paint (Repeat View)(Average)
                     self.compare_webpagetest("first_paint", config_data["promotion_gates"]["repeat_view"]["first_paint"], perf_data["webpagetest"]["average"]["repeat_view"]["firstPaint"], None, "repeat_view", operator.lt)
+
+                    # Time to First Byte (Repeat View)(Average)
+                    self.compare_webpagetest("first_byte", config_data["promotion_gates"]["repeat_view"]["first_byte"], perf_data["webpagetest"]["average"]["repeat_view"]["TTFB"], None, "repeat_view", operator.lt)
 
                 # Loop over all of the runs
                 # Most of the time there will likely be only one
@@ -279,6 +285,9 @@ class ComparisonEngine:
                         # Time to First Paint (First View)
                         self.compare_webpagetest("first_paint", config_data["promotion_gates"]["first_view"]["first_paint"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["firstPaint"], run_id, "first_view", operator.lt)
 
+                        # Time to First Byte (First View)
+                        self.compare_webpagetest("first_byte", config_data["promotion_gates"]["first_view"]["first_byte"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["TTFB"], run_id, "first_view", operator.lt)
+
                     if ("repeat_view" in config_data["promotion_gates"]):
                         # Set up repeat_view for the run
                         self.output_json["webpagetest"]["runs"][run_id]["repeat_view"] = {}
@@ -288,6 +297,9 @@ class ComparisonEngine:
 
                         # Time to First Paint (Repeat View)
                         self.compare_webpagetest("first_paint", config_data["promotion_gates"]["repeat_view"]["first_paint"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["firstPaint"], run_id, "repeat_view", operator.lt)
+
+                        # Time to First Byte (Repeat View)
+                        self.compare_webpagetest("first_byte", config_data["promotion_gates"]["repeat_view"]["first_byte"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["TTFB"], run_id, "repeat_view", operator.lt)
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed

@@ -295,10 +295,16 @@ class ConfigEngine:
                         config_output["promotion_gates"]["first_view"]["speed_index"] = 0
 
                     # Time to First Paint
-                    if ("speed_index" in config_json["promotion_gates"]["first_view"]):
+                    if ("first_paint" in config_json["promotion_gates"]["first_view"]):
                         config_output["promotion_gates"]["first_view"]["first_paint"] = config_json["promotion_gates"]["first_view"]["first_paint"]
                     else:
                         config_output["promotion_gates"]["first_view"]["first_paint"] = 0
+
+                    # Time to First Byte
+                    if ("first_byte" in config_json["promotion_gates"]["first_view"]):
+                        config_output["promotion_gates"]["first_view"]["first_byte"] = config_json["promotion_gates"]["first_view"]["first_byte"]
+                    else:
+                        config_output["promotion_gates"]["first_view"]["first_byte"] = 0
 
                 if ("repeat_view" in config_json["promotion_gates"]):
                     # Set up repeat_view
@@ -316,6 +322,12 @@ class ConfigEngine:
                         config_output["promotion_gates"]["repeat_view"]["first_paint"] = config_json["promotion_gates"]["repeat_view"]["first_paint"]
                     else:
                         config_output["promotion_gates"]["repeat_view"]["first_paint"] = 0
+
+                    # Time to First Byte
+                    if ("first_byte" in config_json["promotion_gates"]["repeat_view"]):
+                        config_output["promotion_gates"]["repeat_view"]["first_byte"] = config_json["promotion_gates"]["repeat_view"]["first_byte"]
+                    else:
+                        config_output["promotion_gates"]["repeat_view"]["first_byte"] = 0
 
         else:
             config_output["webpagetest"]["exists"] = False
