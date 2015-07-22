@@ -114,7 +114,6 @@ class ComparisonEngine:
 
             # Convert the metric data to an int (WebPageTest's XML output makes everything a string)
             metric_data = int(metric_data)
-
             # Add the data to the output file
             if (run_index == None):
                 # Data from the averages section
@@ -248,8 +247,11 @@ class ComparisonEngine:
                     # Set up average first_view
                     self.output_json["webpagetest"]["average"]["first_view"] = {}
 
-                    # Speed Index (First View)
+                    # Speed Index (First View)(Average)
                     self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["average"]["first_view"]["SpeedIndex"], None, "first_view", operator.gt)
+
+                    # Time to First Paint (First View)(Average)
+                    self.compare_webpagetest("first_paint", config_data["promotion_gates"]["first_view"]["first_paint"], perf_data["webpagetest"]["average"]["first_view"]["firstPaint"], None, "first_view", operator.lt)
 
                 if ("repeat_view" in config_data["promotion_gates"]):
                     # Set up average repeat_view
@@ -257,6 +259,9 @@ class ComparisonEngine:
 
                     # Speed Index (Repeat View)
                     self.compare_webpagetest("speed_index", config_data["promotion_gates"]["repeat_view"]["speed_index"], perf_data["webpagetest"]["average"]["repeat_view"]["SpeedIndex"], None, "repeat_view", operator.gt)
+
+                    # Time to First Paint (Repeat View)(Average)
+                    self.compare_webpagetest("first_paint", config_data["promotion_gates"]["repeat_view"]["first_paint"], perf_data["webpagetest"]["average"]["repeat_view"]["firstPaint"], None, "repeat_view", operator.lt)
 
                 # Loop over all of the runs
                 # Most of the time there will likely be only one
@@ -271,12 +276,18 @@ class ComparisonEngine:
                         # Speed Index (First View)
                         self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["SpeedIndex"], run_id, "first_view", operator.gt)
 
+                        # Time to First Paint (First View)
+                        self.compare_webpagetest("first_paint", config_data["promotion_gates"]["first_view"]["first_paint"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["firstPaint"], run_id, "first_view", operator.lt)
+
                     if ("repeat_view" in config_data["promotion_gates"]):
                         # Set up repeat_view for the run
                         self.output_json["webpagetest"]["runs"][run_id]["repeat_view"] = {}
 
                         # Speed Index (Repeat View)
                         self.compare_webpagetest("speed_index", config_data["promotion_gates"]["repeat_view"]["speed_index"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["SpeedIndex"], run_id, "repeat_view", operator.gt)
+
+                        # Time to First Paint (Repeat View)
+                        self.compare_webpagetest("first_paint", config_data["promotion_gates"]["repeat_view"]["first_paint"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["firstPaint"], run_id, "repeat_view", operator.lt)
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
