@@ -238,54 +238,29 @@ class ComparisonEngine:
             # Compare WebPageTest metrics
             # Add WebPageTest into the output file
             self.output_json["webpagetest"] = {"average": {}, "runs": []}
+            # Keep track of the views for looping purposes
+            views = ["first_view", "repeat_view"]
 
             # Make sure that we care about the data before processing it
             if (("first_view" in config_data["promotion_gates"]) or ("repeat_view" in config_data["promotion_gates"])):
                 # Check out the averages for the runs
                 # This is less for failing the build and more for adding the data into the output file
-                if ("first_view" in config_data["promotion_gates"]):
-                    # Set up average first_view
-                    self.output_json["webpagetest"]["average"]["first_view"] = {}
-
-                    # Speed Index (First View)(Average)
-                    self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["average"]["first_view"]["SpeedIndex"], None, "first_view", operator.gt)
-
-                    # Time to First Paint (First View)(Average)
-                    self.compare_webpagetest("first_paint", config_data["promotion_gates"]["first_view"]["first_paint"], perf_data["webpagetest"]["average"]["first_view"]["firstPaint"], None, "first_view", operator.lt)
-
-                    # Time to First Byte (First View)(Average)
-                    self.compare_webpagetest("first_byte", config_data["promotion_gates"]["first_view"]["first_byte"], perf_data["webpagetest"]["average"]["first_view"]["TTFB"], None, "first_view", operator.lt)
-
-                    # Time to Fully Loaded (First View)(Average)
-                    self.compare_webpagetest("fully_loaded", config_data["promotion_gates"]["first_view"]["fully_loaded"], perf_data["webpagetest"]["average"]["first_view"]["fullyLoaded"], None, "first_view", operator.lt)
-
-                    # Time to Visual Complete (First View)(Average)
-                    self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["first_view"]["visual_complete"], perf_data["webpagetest"]["average"]["first_view"]["visualComplete"], None, "first_view", operator.lt)
-
-                    # Time to Start Render (First View)(Average)
-                    self.compare_webpagetest("start_render", config_data["promotion_gates"]["first_view"]["start_render"], perf_data["webpagetest"]["average"]["first_view"]["render"], None, "first_view", operator.lt)
-
-                if ("repeat_view" in config_data["promotion_gates"]):
-                    # Set up average repeat_view
-                    self.output_json["webpagetest"]["average"]["repeat_view"] = {}
-
-                    # Speed Index (Repeat View)
-                    self.compare_webpagetest("speed_index", config_data["promotion_gates"]["repeat_view"]["speed_index"], perf_data["webpagetest"]["average"]["repeat_view"]["SpeedIndex"], None, "repeat_view", operator.gt)
-
-                    # Time to First Paint (Repeat View)(Average)
-                    self.compare_webpagetest("first_paint", config_data["promotion_gates"]["repeat_view"]["first_paint"], perf_data["webpagetest"]["average"]["repeat_view"]["firstPaint"], None, "repeat_view", operator.lt)
-
-                    # Time to First Byte (Repeat View)(Average)
-                    self.compare_webpagetest("first_byte", config_data["promotion_gates"]["repeat_view"]["first_byte"], perf_data["webpagetest"]["average"]["repeat_view"]["TTFB"], None, "repeat_view", operator.lt)
-
-                    # Time to Fully Loaded (Repeat View)(Average)
-                    self.compare_webpagetest("fully_loaded", config_data["promotion_gates"]["repeat_view"]["fully_loaded"], perf_data["webpagetest"]["average"]["repeat_view"]["fullyLoaded"], None, "repeat_view", operator.lt)
-
-                    # Time to Visual Complete (Repeat View)(Average)
-                    self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["repeat_view"]["visual_complete"], perf_data["webpagetest"]["average"]["repeat_view"]["visualComplete"], None, "repeat_view", operator.lt)
-
-                    # Time to Start Render (Repeat View)(Average)
-                    self.compare_webpagetest("start_render", config_data["promotion_gates"]["repeat_view"]["start_render"], perf_data["webpagetest"]["average"]["repeat_view"]["render"], None, "repeat_view", operator.lt)
+                for view in views:
+                    if (view in config_data["promotion_gates"]):
+                        # Set up average first_view
+                        self.output_json["webpagetest"]["average"][view] = {}
+                        # Speed Index (Average)
+                        self.compare_webpagetest("speed_index", config_data["promotion_gates"][view]["speed_index"], perf_data["webpagetest"]["average"][view]["SpeedIndex"], None, view, operator.gt)
+                        # Time to First Paint (Average)
+                        self.compare_webpagetest("first_paint", config_data["promotion_gates"][view]["first_paint"], perf_data["webpagetest"]["average"][view]["firstPaint"], None, view, operator.lt)
+                        # Time to First Byte (Average)
+                        self.compare_webpagetest("first_byte", config_data["promotion_gates"][view]["first_byte"], perf_data["webpagetest"]["average"][view]["TTFB"], None, view, operator.lt)
+                        # Time to Fully Loaded (Average)
+                        self.compare_webpagetest("fully_loaded", config_data["promotion_gates"][view]["fully_loaded"], perf_data["webpagetest"]["average"][view]["fullyLoaded"], None, view, operator.lt)
+                        # Time to Visual Complete (Average)
+                        self.compare_webpagetest("visual_complete", config_data["promotion_gates"][view]["visual_complete"], perf_data["webpagetest"]["average"][view]["visualComplete"], None, view, operator.lt)
+                        # Time to Start Render (Average)
+                        self.compare_webpagetest("start_render", config_data["promotion_gates"][view]["start_render"], perf_data["webpagetest"]["average"][view]["render"], None, view, operator.lt)
 
                 # Loop over all of the runs
                 # Most of the time there will likely be only one
@@ -293,49 +268,23 @@ class ComparisonEngine:
                     # Add transaction information into the output
                     self.output_json["webpagetest"]["runs"].append({"run_id": run["run_id"]})
 
-                    if ("first_view" in config_data["promotion_gates"]):
-                        # Set up first_view for the run
-                        self.output_json["webpagetest"]["runs"][run_id]["first_view"] = {}
-
-                        # Speed Index (First View)
-                        self.compare_webpagetest("speed_index", config_data["promotion_gates"]["first_view"]["speed_index"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["SpeedIndex"], run_id, "first_view", operator.gt)
-
-                        # Time to First Paint (First View)
-                        self.compare_webpagetest("first_paint", config_data["promotion_gates"]["first_view"]["first_paint"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["firstPaint"], run_id, "first_view", operator.lt)
-
-                        # Time to First Byte (First View)
-                        self.compare_webpagetest("first_byte", config_data["promotion_gates"]["first_view"]["first_byte"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["TTFB"], run_id, "first_view", operator.lt)
-
-                        # Time to Fully Loaded (First View)
-                        self.compare_webpagetest("fully_loaded", config_data["promotion_gates"]["first_view"]["fully_loaded"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["fullyLoaded"], run_id, "first_view", operator.lt)
-
-                        # Time to Visual Complete (First View)
-                        self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["first_view"]["visual_complete"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["visualComplete"], run_id, "first_view", operator.lt)
-
-                        # Time to Start Render (First View)
-                        self.compare_webpagetest("start_render", config_data["promotion_gates"]["first_view"]["start_render"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["render"], run_id, "first_view", operator.lt)
-
-                    if ("repeat_view" in config_data["promotion_gates"]):
-                        # Set up repeat_view for the run
-                        self.output_json["webpagetest"]["runs"][run_id]["repeat_view"] = {}
-
-                        # Speed Index (Repeat View)
-                        self.compare_webpagetest("speed_index", config_data["promotion_gates"]["repeat_view"]["speed_index"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["SpeedIndex"], run_id, "repeat_view", operator.gt)
-
-                        # Time to First Paint (Repeat View)
-                        self.compare_webpagetest("first_paint", config_data["promotion_gates"]["repeat_view"]["first_paint"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["firstPaint"], run_id, "repeat_view", operator.lt)
-
-                        # Time to First Byte (Repeat View)
-                        self.compare_webpagetest("first_byte", config_data["promotion_gates"]["repeat_view"]["first_byte"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["TTFB"], run_id, "repeat_view", operator.lt)
-
-                        # Time to Fully Loaded (Repeat View)
-                        self.compare_webpagetest("fully_loaded", config_data["promotion_gates"]["repeat_view"]["fully_loaded"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["fullyLoaded"], run_id, "repeat_view", operator.lt)
-
-                        # Time to Visual Complete (Repeat View)
-                        self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["repeat_view"]["visual_complete"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["visualComplete"], run_id, "repeat_view", operator.lt)
-
-                        # Time to Visual Complete (Repeat View)
-                        self.compare_webpagetest("start_render", config_data["promotion_gates"]["repeat_view"]["start_render"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["render"], run_id, "repeat_view", operator.lt)
+                    # Loop over all of the views for each run
+                    for view in views:
+                        if (view in config_data["promotion_gates"]):
+                            # Set up first_view for the run
+                            self.output_json["webpagetest"]["runs"][run_id][view] = {}
+                            # Speed Index
+                            self.compare_webpagetest("speed_index", config_data["promotion_gates"][view]["speed_index"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["SpeedIndex"], run_id, view, operator.gt)
+                            # Time to First Paint
+                            self.compare_webpagetest("first_paint", config_data["promotion_gates"][view]["first_paint"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["firstPaint"], run_id, view, operator.lt)
+                            # Time to First Byte
+                            self.compare_webpagetest("first_byte", config_data["promotion_gates"][view]["first_byte"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["TTFB"], run_id, view, operator.lt)
+                            # Time to Fully Loaded
+                            self.compare_webpagetest("fully_loaded", config_data["promotion_gates"][view]["fully_loaded"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["fullyLoaded"], run_id, view, operator.lt)
+                            # Time to Visual Complete
+                            self.compare_webpagetest("visual_complete", config_data["promotion_gates"][view]["visual_complete"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["visualComplete"], run_id, view, operator.lt)
+                            # Time to Start Render
+                            self.compare_webpagetest("start_render", config_data["promotion_gates"][view]["start_render"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["render"], run_id, view, operator.lt)
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
