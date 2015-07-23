@@ -283,88 +283,48 @@ class ConfigEngine:
                 if ("promotion_gates" not in config_output):
                     config_output["promotion_gates"] = {}
 
-                if ("first_view" in config_json["promotion_gates"]):
-                    # Set up first_view
-                    config_output["promotion_gates"]["first_view"] = {}
+                # All of the views that we have to loop over
+                views = ["first_view", "repeat_view"]
 
-                    # First view is a go, get metrics
-                    # Speed Index
-                    if ("speed_index" in config_json["promotion_gates"]["first_view"]):
-                        config_output["promotion_gates"]["first_view"]["speed_index"] = config_json["promotion_gates"]["first_view"]["speed_index"]
-                    else:
-                        config_output["promotion_gates"]["first_view"]["speed_index"] = 0
+                for view in views:
+                    if (view in config_json["promotion_gates"]):
+                        # Set up the view
+                        config_output["promotion_gates"][view] = {}
+                        # Speed Index
+                        if ("speed_index" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["speed_index"] = config_json["promotion_gates"][view]["speed_index"]
+                        else:
+                            config_output["promotion_gates"][view]["speed_index"] = 0
 
-                    # Time to First Paint
-                    if ("first_paint" in config_json["promotion_gates"]["first_view"]):
-                        config_output["promotion_gates"]["first_view"]["first_paint"] = config_json["promotion_gates"]["first_view"]["first_paint"]
-                    else:
-                        config_output["promotion_gates"]["first_view"]["first_paint"] = 0
+                        # Time to First Paint
+                        if ("first_paint" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["first_paint"] = config_json["promotion_gates"][view]["first_paint"]
+                        else:
+                            config_output["promotion_gates"][view]["first_paint"] = 0
 
-                    # Time to First Byte
-                    if ("first_byte" in config_json["promotion_gates"]["first_view"]):
-                        config_output["promotion_gates"]["first_view"]["first_byte"] = config_json["promotion_gates"]["first_view"]["first_byte"]
-                    else:
-                        config_output["promotion_gates"]["first_view"]["first_byte"] = 0
+                        # Time to First Byte
+                        if ("first_byte" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["first_byte"] = config_json["promotion_gates"][view]["first_byte"]
+                        else:
+                            config_output["promotion_gates"][view]["first_byte"] = 0
 
-                    # Time to Fully Loaded
-                    if ("fully_loaded" in config_json["promotion_gates"]["first_view"]):
-                        config_output["promotion_gates"]["first_view"]["fully_loaded"] = config_json["promotion_gates"]["first_view"]["fully_loaded"]
-                    else:
-                        config_output["promotion_gates"]["first_view"]["fully_loaded"] = 0
+                        # Time to Fully Loaded
+                        if ("fully_loaded" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["fully_loaded"] = config_json["promotion_gates"][view]["fully_loaded"]
+                        else:
+                            config_output["promotion_gates"][view]["fully_loaded"] = 0
 
-                    # Time to Visual Complete
-                    if ("visual_complete" in config_json["promotion_gates"]["first_view"]):
-                        config_output["promotion_gates"]["first_view"]["visual_complete"] = config_json["promotion_gates"]["first_view"]["visual_complete"]
-                    else:
-                        config_output["promotion_gates"]["first_view"]["visual_complete"] = 0
+                        # Time to Visual Complete
+                        if ("visual_complete" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["visual_complete"] = config_json["promotion_gates"][view]["visual_complete"]
+                        else:
+                            config_output["promotion_gates"][view]["visual_complete"] = 0
 
-                    # Time to Start Render
-                    if ("visual_complete" in config_json["promotion_gates"]["first_view"]):
-                        config_output["promotion_gates"]["first_view"]["start_render"] = config_json["promotion_gates"]["first_view"]["start_render"]
-                    else:
-                        config_output["promotion_gates"]["first_view"]["start_render"] = 0
-
-                if ("repeat_view" in config_json["promotion_gates"]):
-                    # Set up repeat_view
-                    config_output["promotion_gates"]["repeat_view"] = {}
-
-                    # Repeat view is a go, get metrics
-                    # Speed Index
-                    if ("speed_index" in config_json["promotion_gates"]["repeat_view"]):
-                        config_output["promotion_gates"]["repeat_view"]["speed_index"] = config_json["promotion_gates"]["repeat_view"]["speed_index"]
-                    else:
-                        config_output["promotion_gates"]["repeat_view"]["speed_index"] = 0
-
-                    # Time to First Paint
-                    if ("speed_index" in config_json["promotion_gates"]["repeat_view"]):
-                        config_output["promotion_gates"]["repeat_view"]["first_paint"] = config_json["promotion_gates"]["repeat_view"]["first_paint"]
-                    else:
-                        config_output["promotion_gates"]["repeat_view"]["first_paint"] = 0
-
-                    # Time to First Byte
-                    if ("first_byte" in config_json["promotion_gates"]["repeat_view"]):
-                        config_output["promotion_gates"]["repeat_view"]["first_byte"] = config_json["promotion_gates"]["repeat_view"]["first_byte"]
-                    else:
-                        config_output["promotion_gates"]["repeat_view"]["first_byte"] = 0
-
-                    # Time to Fully Loaded
-                    if ("fully_loaded" in config_json["promotion_gates"]["repeat_view"]):
-                        config_output["promotion_gates"]["repeat_view"]["fully_loaded"] = config_json["promotion_gates"]["repeat_view"]["fully_loaded"]
-                    else:
-                        config_output["promotion_gates"]["repeat_view"]["fully_loaded"] = 0
-
-                    # Time to Visual Complete
-                    if ("visual_complete" in config_json["promotion_gates"]["repeat_view"]):
-                        config_output["promotion_gates"]["repeat_view"]["visual_complete"] = config_json["promotion_gates"]["repeat_view"]["visual_complete"]
-                    else:
-                        config_output["promotion_gates"]["repeat_view"]["visual_complete"] = 0
-
-                    # Time to Start Render
-                    if ("start_render" in config_json["promotion_gates"]["repeat_view"]):
-                        config_output["promotion_gates"]["repeat_view"]["start_render"] = config_json["promotion_gates"]["repeat_view"]["start_render"]
-                    else:
-                        config_output["promotion_gates"]["repeat_view"]["start_render"] = 0
-
+                        # Time to Start Render
+                        if ("visual_complete" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["start_render"] = config_json["promotion_gates"][view]["start_render"]
+                        else:
+                            config_output["promotion_gates"][view]["start_render"] = 0
         else:
             config_output["webpagetest"]["exists"] = False
 
