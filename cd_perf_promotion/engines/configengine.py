@@ -325,6 +325,24 @@ class ConfigEngine:
                             config_output["promotion_gates"][view]["start_render"] = config_json["promotion_gates"][view]["start_render"]
                         else:
                             config_output["promotion_gates"][view]["start_render"] = 0
+
+                        # Time to Last Visual Change
+                        if ("last_visual_change" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["last_visual_change"] = config_json["promotion_gates"][view]["last_visual_change"]
+                        else:
+                            config_output["promotion_gates"][view]["last_visual_change"] = 0
+
+                        # Time to <title></title> Tags Loaded
+                        if ("title_time" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["title_time"] = config_json["promotion_gates"][view]["title_time"]
+                        else:
+                            config_output["promotion_gates"][view]["title_time"] = 0
+
+                        # Page Size (Bytes In)
+                        if ("page_size" in config_json["promotion_gates"][view]):
+                            config_output["promotion_gates"][view]["page_size"] = config_json["promotion_gates"][view]["page_size"]
+                        else:
+                            config_output["promotion_gates"][view]["page_size"] = 0
         else:
             config_output["webpagetest"]["exists"] = False
 

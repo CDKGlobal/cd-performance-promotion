@@ -9,19 +9,19 @@ You can set the promotion gates by altering the ``config.json`` file. A sample c
 
 You do not have to use all of the available promotion gate metrics and the order of the keys does not matter. The following table lists the available JSON configuation keys and whether or not they are required.
 
-| Data Item                     | Type    | Parent                 | Description                                                                                                 | Required |
+| Data Item                     | Type    | Parent Object          | Description                                                                                                 | Required |
 | :---------------------------- | :-----  | :--------------------- | :---------------------------------------------------------------------------------------------------------- | :------: |
-| ``appdynamics``               | Object  | N/A                    | Contains all of the AppDynamics specific information                                                        | Yes*     |
+| ``appdynamics``               | Object  | None                   | Contains all of the AppDynamics specific information                                                        | Yes*     |
 | ``username``                  | String  | appdynamics            | Appdynamics username in the format of username@account                                                      | Yes      |
 | ``password``                  | String  | appdynamics            | Appdynamics password                                                                                        | Yes      |
 | ``load_test_length_min``      | Number  | appdynamics            | Length of the load test period (X number of minutes before current time)                                    | Yes**    |
 | ``load_test_length_start_ms`` | Number  | appdynamics            | Time that you want to begin monitoring at. Format is milliseconds after Unix epoch time (January 1st, 1970) | Yes**    |
 | ``load_test_length_end_ms``   | Number  | appdynamics            | Time that you want to monitoring to stop. Format is milliseconds after Unix epoch time (January 1st, 1970)  | Yes**    |
-| ``blazemeter``                | Object  | N/A                    | Contains all of the BlazeMeter specific information                                                         | Yes*     |
+| ``blazemeter``                | Object  | None                   | Contains all of the BlazeMeter specific information                                                         | Yes*     |
 | ``api``                       | String  | blazemeter             | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``test_id``                   | String  | blazemeter             | Contains all of the promotion gate criteria                                                                 | Yes      |
-| ``webpagetest``               | Object  | N/A                    | Contains all of the WebPageTest specific information                                                        | Yes*     |
-| ``promotion_gates``           | Object  | N/A                    | Contains all of the promotion gate criteria                                                                 | Yes      |
+| ``webpagetest``               | Object  | None                   | Contains all of the WebPageTest specific information                                                        | Yes*     |
+| ``promotion_gates``           | Object  | None                   | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``response_time_avg``         | Number  | promotion_gates        | Average response time (under BlazeMeter load)                                                               | No       |
 | ``response_time_max``         | Number  | promotion_gates        | Maximum response time (under BlazeMeter load)                                                               | No       |
 | ``response_time_stdev``       | Number  | promotion_gates        | Response time standard deviation (under BlazeMeter load)                                                    | No       |
@@ -43,6 +43,9 @@ You do not have to use all of the available promotion gate metrics and the order
 | ``first_byte``                | Number  | first_view/repeat_view | Time to first byte (ms)                                                                                     | No       |
 | ``fully_loaded``              | Number  | first_view/repeat_view | Time to page fully loaded (ms)                                                                              | No       |
 | ``visual_complete``           | Number  | first_view/repeat_view | Time to when the page looks like it has fully loaded (ms)                                                   | No       |
+| ``last_visual_change          | Number  | first_view/repeat_view | Time to when the last visual change to the page is made (ms)                                                | No       |
+| ``title_time``                | Number  | first_view/repeat_view | Time to when the HTML <Title></Title> tags are loaded (ms)                                                  | No       |
+| ``page_size``                 | Number  | first_view/repeat_view | The amount of data that the browser has to download in order to load the page (bytes)                       | No       |
 
 \*Required if you would like to gather data from the tool, otherwise not required
 \*\*Either ``load_test_length_min`` or both ``load_test_length_start_ms`` and ``load_test_length_end_ms`` must be declared
@@ -87,7 +90,7 @@ The ``promotion_gates`` JSON object in the output file contains all of the high-
 
 ##Extending the Program
 ####Tips for Adding a new Data Source
- * Follow the examples of BlazeMeter and AppDynamics
+ * Follow the examples of BlazeMeter, AppDynamics, and WebPageTest
  * ``config.json``         - Add a new JSON object for the new tool and the necessary data items in the ``promotion_gates`` JSON objects
  * ``config.json.sample``  - Make the same changes that you did in the ``config.json`` file
  * ``configengine.py``     - Add checks and save the data item to the ``config_output`` file
@@ -96,6 +99,6 @@ The ``promotion_gates`` JSON object in the output file contains all of the high-
  * ``comparisonengine.py`` - Only do data comparison and output here
 
 ####Tips for Adding a new Data Item
- * Follow the examples of BlazeMeter and AppDynamics
+ * Follow the examples of BlazeMeter, AppDynamics, and WebPageTest
  * Basically go through the same steps as adding a new data source, but just add additional checks and other statements instead of creating whole new files
  * AppDynamics has an interesting example of a data item that cannot be used when another data item is in use that may be worth checking out (``load_test_length_min`` and ``load_test_start_ms``/``load_test_end_ms``)
