@@ -38,7 +38,8 @@ You do not have to use all of the available promotion gate metrics and the order
 | ``first_view``                | Object  | promotion_gates        | Container for WebPageTest metrics for the first time a page is loaded                                       | Yes***   |
 | ``repeat_view``               | Object  | promotion_gates        | Container for WebPageTest metrics for the second time a page is loaded                                      | Yes***   |
 | ``speed_index``               | Number  | first_view/repeat_view | WebPageTest Speed Index, the average time (ms) at which the visible parts of the page are displayed         | No       |
-| ``first_paint``               | Number  | first_view/repeat_view | Time to first paint (ms)                                                                                    | No       |
+| ``first_paint``               | Number  | first_view/repeat_view | Time to when the page displays something on the screen (ms) (browser reported)                              | No       |
+| ``start_render``              | Number  | first_view/repeat_view | Time to when the page displays something on the screen (ms) (WebPageTest determined)                        | No       |
 | ``first_byte``                | Number  | first_view/repeat_view | Time to first byte (ms)                                                                                     | No       |
 | ``fully_loaded``              | Number  | first_view/repeat_view | Time to page fully loaded (ms)                                                                              | No       |
 | ``visual_complete``           | Number  | first_view/repeat_view | Time to when the page looks like it has fully loaded (ms)                                                   | No       |

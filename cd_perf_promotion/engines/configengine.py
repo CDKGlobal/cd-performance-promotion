@@ -318,6 +318,12 @@ class ConfigEngine:
                     else:
                         config_output["promotion_gates"]["first_view"]["visual_complete"] = 0
 
+                    # Time to Start Render
+                    if ("visual_complete" in config_json["promotion_gates"]["first_view"]):
+                        config_output["promotion_gates"]["first_view"]["start_render"] = config_json["promotion_gates"]["first_view"]["start_render"]
+                    else:
+                        config_output["promotion_gates"]["first_view"]["start_render"] = 0
+
                 if ("repeat_view" in config_json["promotion_gates"]):
                     # Set up repeat_view
                     config_output["promotion_gates"]["repeat_view"] = {}
@@ -352,6 +358,12 @@ class ConfigEngine:
                         config_output["promotion_gates"]["repeat_view"]["visual_complete"] = config_json["promotion_gates"]["repeat_view"]["visual_complete"]
                     else:
                         config_output["promotion_gates"]["repeat_view"]["visual_complete"] = 0
+
+                    # Time to Start Render
+                    if ("start_render" in config_json["promotion_gates"]["repeat_view"]):
+                        config_output["promotion_gates"]["repeat_view"]["start_render"] = config_json["promotion_gates"]["repeat_view"]["start_render"]
+                    else:
+                        config_output["promotion_gates"]["repeat_view"]["start_render"] = 0
 
         else:
             config_output["webpagetest"]["exists"] = False

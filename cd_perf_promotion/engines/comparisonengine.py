@@ -262,6 +262,9 @@ class ComparisonEngine:
                     # Time to Visual Complete (First View)(Average)
                     self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["first_view"]["visual_complete"], perf_data["webpagetest"]["average"]["first_view"]["visualComplete"], None, "first_view", operator.lt)
 
+                    # Time to Start Render (First View)(Average)
+                    self.compare_webpagetest("start_render", config_data["promotion_gates"]["first_view"]["start_render"], perf_data["webpagetest"]["average"]["first_view"]["render"], None, "first_view", operator.lt)
+
                 if ("repeat_view" in config_data["promotion_gates"]):
                     # Set up average repeat_view
                     self.output_json["webpagetest"]["average"]["repeat_view"] = {}
@@ -280,6 +283,9 @@ class ComparisonEngine:
 
                     # Time to Visual Complete (Repeat View)(Average)
                     self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["repeat_view"]["visual_complete"], perf_data["webpagetest"]["average"]["repeat_view"]["visualComplete"], None, "repeat_view", operator.lt)
+
+                    # Time to Start Render (Repeat View)(Average)
+                    self.compare_webpagetest("start_render", config_data["promotion_gates"]["repeat_view"]["start_render"], perf_data["webpagetest"]["average"]["repeat_view"]["render"], None, "repeat_view", operator.lt)
 
                 # Loop over all of the runs
                 # Most of the time there will likely be only one
@@ -306,6 +312,9 @@ class ComparisonEngine:
                         # Time to Visual Complete (First View)
                         self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["first_view"]["visual_complete"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["visualComplete"], run_id, "first_view", operator.lt)
 
+                        # Time to Start Render (First View)
+                        self.compare_webpagetest("start_render", config_data["promotion_gates"]["first_view"]["start_render"], perf_data["webpagetest"]["runs"][run_id]["first_view"]["results"]["render"], run_id, "first_view", operator.lt)
+
                     if ("repeat_view" in config_data["promotion_gates"]):
                         # Set up repeat_view for the run
                         self.output_json["webpagetest"]["runs"][run_id]["repeat_view"] = {}
@@ -324,6 +333,9 @@ class ComparisonEngine:
 
                         # Time to Visual Complete (Repeat View)
                         self.compare_webpagetest("visual_complete", config_data["promotion_gates"]["repeat_view"]["visual_complete"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["visualComplete"], run_id, "repeat_view", operator.lt)
+
+                        # Time to Visual Complete (Repeat View)
+                        self.compare_webpagetest("start_render", config_data["promotion_gates"]["repeat_view"]["start_render"], perf_data["webpagetest"]["runs"][run_id]["repeat_view"]["results"]["render"], run_id, "repeat_view", operator.lt)
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
