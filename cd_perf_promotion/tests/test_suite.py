@@ -1,4 +1,5 @@
 import unittest
+import xmlrunner
 import time
 import os
 import glob
@@ -49,4 +50,4 @@ class TestSuite(unittest.TestCase):
 
 if __name__ == '__main__':
     sys.stdout = open(os.devnull, 'w')
-    unittest.main()
+    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'), failfast=False, buffer=False, catchbreak=False)
