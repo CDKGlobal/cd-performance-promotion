@@ -1,33 +1,10 @@
 {
-  "appdynamics":
-  {
-    "username": "cdkpeapi@adppe",
-    "password": "123cdkpeapi789",
-    "application_name": "ord.leadservices",
-    "load_test_length_min": 60
-  },
-  "blazemeter":
-  {
-    "api": "09c873d5440a040ae1d2",
-    "test_id": "r-op-beta5589cdb371a9d"
-  },
   "webpagetest":
   {
-    "test_id": "150721_H1_1466"
+    "test_id": "faketestid"
   },
   "promotion_gates":
   {
-    "response_time_avg": 500,
-    "response_time_max": 2000,
-    "response_time_stdev": 100,
-    "response_time_tp99": 700,
-    "transaction_rate": 1,
-    "latency_max": 40,
-    "latency_avg": 40,
-    "latency_stdev": 40,
-    "bandwidth_avg": 800000,
-    "critical": true,
-    "warning": true,
     "first_view":
     {
       "speed_index": 1400,

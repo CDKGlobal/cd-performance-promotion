@@ -1,0 +1,14 @@
+{
+  "blazemeter":
+  {
+    "api": "apikeygoeshere",
+    "test_id": "faketestid"
+  },
+  "promotion_gates":
+  {
+    "response_time_avg": 500,
+    "response_time_max": 2000,
+    "response_time_stdev": 100,
+    "response_time_tp99": 700
+  }
+}

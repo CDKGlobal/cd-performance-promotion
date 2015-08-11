@@ -1,51 +1,47 @@
 import unittest
 import xmlrunner
-import time
-import os
-import glob
 import sys
-from cd_perf_promotion.engines.configengine     import ConfigEngine
-from cd_perf_promotion.engines.dataengine       import DataEngine
-from cd_perf_promotion.engines.comparisonengine import ComparisonEngine
+import os
+from cd_perf_promotion.engines.configengine import ConfigEngine
+from cd_perf_promotion.engines.dataengine   import DataEngine
 
 class TestSuite(unittest.TestCase):
 
-    def test_overall_running_time(self):
-        start = time.clock()
-
-        ##################################################################################
-        # main.py file -- (start)
-        ##################################################################################
-        print("\n####################################################################\n"
-              "Continuous Delivery Performance Promotion Tool\n"
-              "CDK Global, LLC\n"
-              "####################################################################\n")
-
+    def test_no_appdynamics_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("config_test_perf.json")
+        configengine = ConfigEngine("test_configs/config_test1.json")
         config_data = configengine.process_config()
-
         # Grab the performance data
         dataengine = DataEngine()
-        perf_data = dataengine.get_data(config_data)
+        # Check for a system exit call
+        with self.assertRaises(SystemExit) as cm:
+            dataengine.get_data(config_data)
+        # Make sure that
+        self.assertEqual(cm.exception.code, 1)
 
-        # Begin evaluating the build
-        comparison_engine = ComparisonEngine()
-        comparison_engine.process_data(config_data, perf_data)
-        comparison_engine.output_results()
-        ##################################################################################
-        # main.py file -- (end)
-        ##################################################################################
+    def test_no_blazemeter_connection(self):
+        # Grab the configuration information
+        configengine = ConfigEngine("test_configs/config_test2.json")
+        config_data = configengine.process_config()
+        # Grab the performance data
+        dataengine = DataEngine()
+        # Check for a system exit call
+        with self.assertRaises(SystemExit) as cm:
+            dataengine.get_data(config_data)
+        # Make sure that
+        self.assertEqual(cm.exception.code, 1)
 
-        end = time.clock()
-        elapsed = end - start
-
-        # Remove the output file -- we wanted it earlier for a more realistic running time
-        for filename in glob.glob("cdperfpromodata_*.json"):
-            os.remove(filename)
-
-        # Make sure the program doesn't take more than 10 seconds to run
-        assert elapsed <= 10
+    def test_no_webpagetest_connection(self):
+        # Grab the configuration information
+        configengine = ConfigEngine("test_configs/config_test3.json")
+        config_data = configengine.process_config()
+        # Grab the performance data
+        dataengine = DataEngine()
+        # Check for a system exit call
+        with self.assertRaises(SystemExit) as cm:
+            dataengine.get_data(config_data)
+        # Make sure that
+        self.assertEqual(cm.exception.code, 1)
 
 
 if __name__ == '__main__':

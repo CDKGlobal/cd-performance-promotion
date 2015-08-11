@@ -1,0 +1,14 @@
+{
+  "appdynamics":
+  {
+    "username": "usernamegoeshere",
+    "password": "passwordgoeshere",
+    "application_name": "fakeapplication",
+    "load_test_length_min": 60
+  },
+  "promotion_gates":
+  {
+    "critical": true,
+    "warning": true
+  }
+}

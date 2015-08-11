@@ -20,7 +20,7 @@
 | ``webpagetest.py``                            | File   | modules           | Grabs data from WebPageTest                                                       |
 | ``test_suite.py``                             | File   | tests             | Holds all of the tests for the application                                        |
 | ``test_configs``                              | Folder | tests             | Contains all of the configuration files used in tests                             |
-| ``config_test_perf.json``                     | File   | test_configs      | Configuration file for the tests                                                  |
+| ``config_test#.json``                         | File   | test_configs      | Configuration file for the tests                                                  |
 | ``sample_configs``                            | Folder | documentation     | Contains all of the sample configuration files and respective sample output files |
 | ``screenshots``                               | Folder | documentation     | Contains all of the screenshots for the documentation                             |
 | ``dictionary.md``                             | File   | documentation     | Information on all of the data items that can be used                             |

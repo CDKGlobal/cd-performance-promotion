@@ -19,6 +19,11 @@ class WebPageTest:
         # Test configuration information
         self.test_session = test_session
 
+    def connection_error(self):
+        # User likely lost their internet connection or used incorrect credentials
+        print("ERROR: Unable to query WebPageTest API")
+        sys.exit(1)
+
     def get_data(self):
         """
         Gets the load test data from the API
@@ -28,12 +33,15 @@ class WebPageTest:
         try:
             test_summary_request = requests.get(test_summary_url)
         except:
-            # User likely lost their internet connection
-            print("ERROR: Unable to query WebPageTest API")
-            sys.exit(1)
+            self.connection_error()
 
         # Convert all of the WebPageTest data from XML to JSON and return it
         test_results = json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))
+
+        # Make sure that the module actually got something back
+        # WebPageTest doesn't really offer a REST API, so we have to do some dumb hacks to get it working
+        if test_results['response']['statusCode'] != '200':
+            self.connection_error()
 
         # Notify the user that the WebPageTest data is being grabbed
         print("Retrieved WebPageTest data")

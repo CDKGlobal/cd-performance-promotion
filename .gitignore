@@ -1,6 +1,7 @@
-# Ignore compiled files, JSON, and build files
+# Ignore compiled files, tests, and build files
 *.pyc
-#*.json
+test-reports/*
+*.xml
 build/*
 dist/*
 cd_perf_promotion.egg-info

@@ -18,6 +18,11 @@ class BlazeMeter:
         self.api_key = api_key
         self.test_session = test_session
 
+    def connection_error(self):
+        # User likely lost their internet connection or used incorrect credentials
+        print("ERROR: Unable to query BlazeMeter API")
+        sys.exit(1)
+
     def get_data(self):
         """
         Gets the load test data from the API
@@ -29,11 +34,13 @@ class BlazeMeter:
         try:
             test_summary_request = requests.get(test_summary_url, headers=api_headers)
         except:
-            # User likely lost their internet connection
-            print("ERROR: Unable to query BlazeMeter API")
-            sys.exit(1)
+            connection_error()
 
         alltransactions = []
+
+        # Make sure that the module actually got something back
+        if test_summary_request.status_code != 200:
+            self.connection_error()
 
         for transaction in test_summary_request.json()["result"]["summary"]:
             alltransactions.append({

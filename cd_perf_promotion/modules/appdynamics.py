@@ -29,6 +29,11 @@ class AppDynamics:
         self.start_time = start_time
         self.end_time = end_time
 
+    def connection_error(self):
+        # User likely lost their internet connection or used incorrect credentials
+        print("ERROR: Unable to query AppDynamics API")
+        sys.exit(1)
+
     def get_data(self):
         """
         Get the data from the API
@@ -38,9 +43,11 @@ class AppDynamics:
         try:
             health_request = requests.get(health_url, auth=HTTPBasicAuth(self.username, self.password))
         except:
-            # User likely lost their internet connection
-            print("ERROR: Unable to query AppDynamics API")
-            sys.exit(1)
+            self.connection_error()
+
+        # Make sure that the module actually got something back
+        if health_request.status_code != 200:
+            self.connection_error()
 
         healthrule_violations = health_request.json()
 
