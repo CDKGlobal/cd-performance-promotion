@@ -16,7 +16,7 @@ class TestSuite(unittest.TestCase):
         # Check for a system exit call
         with self.assertRaises(SystemExit) as cm:
             dataengine.get_data(config_data)
-        # Make sure that
+        # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
     def test_no_blazemeter_connection(self):
@@ -28,7 +28,7 @@ class TestSuite(unittest.TestCase):
         # Check for a system exit call
         with self.assertRaises(SystemExit) as cm:
             dataengine.get_data(config_data)
-        # Make sure that
+        # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
     def test_no_webpagetest_connection(self):
@@ -40,7 +40,7 @@ class TestSuite(unittest.TestCase):
         # Check for a system exit call
         with self.assertRaises(SystemExit) as cm:
             dataengine.get_data(config_data)
-        # Make sure that
+        # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
 
