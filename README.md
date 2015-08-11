@@ -1,7 +1,7 @@
 # Continuous Delivery Performance Promotion Tool
 The Continuous Delivery Performance Promotion Tool is a Python program that is used to evaluate whether applications are performing well enough to be moved on to the next stage in the continuous delivery system. This tool allows users to define how their application should be performing via a simple JSON configuration file and then evaluates the application's actual performance against those criteria. Currently, the program supports AppDynamics, BlazeMeter, and WebPageTest but aims to support other load testing tools like SilkPerformer and Visual Studio Test Suite as well in the future.
 
-![Running Program](/documentation/screenshots/running.png?raw=true)
+![Running Program](documentation/screenshots/running.png)
 
 # Getting Started
 
@@ -23,6 +23,8 @@ We've put a lot of work into making sure that the program is modular and customi
 4. The program will output a JSON file in the same directory that it is run with a filename in the format of ``cdperfpromotion_MMDDYY_HHmmss.json`` (the latter half of the filename being a timestamp).
 
 ## Evaluating the Results
-The ``promotion_gates`` JSON object in the output file contains all of the high-level information about whether each data metric met the configuration file target. If any of the transactions/runs has a data item that does not meet the predefined performance target, the whole data item is marked as failed in the ``promotion_gates`` section. If a data item is failed, you can go up to that respective data item's parent tool and figure out where it failed and what the actual result was. For example, the sample configuration file ``config_all.json.sample`` defines that there must not be any AppDynamics health rule violations with a severity of warning (``"warning": true``) or critical (``"critical": true``). Unfortunately, the output file, ``cdperfpromodata_timestamp_all.json.sample``, states in the ``promotion_gates`` section that this data item has failed (``"appdynamics_health": false``). Knowing that, we can go up and look at the ``appdynamics`` section which reveals that the application we're evaluating has a health rule violation with a severity of warning that is notifying us that the application is using too much memory.
+The ``promotion_gates`` JSON object in the output file contains all of the high-level information about whether each data metric met the configuration file target. If any of the transactions/runs has a data item that does not meet the predefined performance target, the whole data item is marked as failed in the ``promotion_gates`` section. If a data item is failed, you can go up to that respective data item's parent tool and figure out where it failed and what the actual result was.
+
+For example, the sample configuration file ``config_all.json.sample`` defines that there must not be any AppDynamics health rule violations with a severity of warning (``"warning": true``) or critical (``"critical": true``). Unfortunately, the output file, ``cdperfpromodata_timestamp_all.json.sample``, states in the ``promotion_gates`` section that this data item has failed (``"appdynamics_health": false``). Knowing that, we can go up and look at the ``appdynamics`` section which reveals that the application we're evaluating has a health rule violation with a severity of warning that is notifying us that the application is using too much memory.
 
 It's important to note that if any of the data items specified in the configuration file fails, the entire application will fail and will not be promoted to the next stage.
