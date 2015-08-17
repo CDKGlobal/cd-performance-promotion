@@ -1,19 +1,20 @@
 # Dictionary
 ##### All of the possible data items that can be used in the configuration file
+All fields marked as required are only required if you want to use the tool associated with it
 
 | Data Item                     | Type    | Parent Object          | Associated Tool | Description                                                                                                 | Required |
 | :---------------------------- | :-----  | :--------------------- | :-------------- | :---------------------------------------------------------------------------------------------------------- | :------- |
-| ``appdynamics``               | Object  | None                   | AppDynamics     | Contains all of the AppDynamics specific information                                                        | Yes*     |
+| ``appdynamics``               | Object  | None                   | AppDynamics     | Contains all of the AppDynamics specific information                                                        | Yes      |
 | ``username``                  | String  | appdynamics            | AppDynamics     | Appdynamics username in the format of username@account                                                      | Yes      |
 | ``password``                  | String  | appdynamics            | AppDynamics     | Appdynamics password                                                                                        | Yes      |
-| ``load_test_length_min``      | Number  | appdynamics            | AppDynamics     | Length of the load test period (X number of minutes before current time)                                    | Yes**    |
-| ``load_test_length_start_ms`` | Number  | appdynamics            | AppDynamics     | Time that you want to begin monitoring at. Format is milliseconds after Unix epoch time (January 1st, 1970) | Yes**    |
-| ``load_test_length_end_ms``   | Number  | appdynamics            | AppDynamics     | Time that you want to monitoring to stop. Format is milliseconds after Unix epoch time (January 1st, 1970)  | Yes**    |
-| ``blazemeter``                | Object  | None                   | BlazeMeter      | Contains all of the BlazeMeter specific information                                                         | Yes*     |
+| ``load_test_length_min``      | Number  | appdynamics            | AppDynamics     | Length of the load test period (X number of minutes before current time)                                    | Yes*     |
+| ``load_test_length_start_ms`` | Number  | appdynamics            | AppDynamics     | Time that you want to begin monitoring at. Format is milliseconds after Unix epoch time (January 1st, 1970) | Yes*     |
+| ``load_test_length_end_ms``   | Number  | appdynamics            | AppDynamics     | Time that you want to monitoring to stop. Format is milliseconds after Unix epoch time (January 1st, 1970)  | Yes*     |
+| ``blazemeter``                | Object  | None                   | BlazeMeter      | Contains all of the BlazeMeter specific information                                                         | Yes      |
 | ``api``                       | String  | blazemeter             | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
-| ``test_id``                   | String  | blazemeter             | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
+| ``test_id``                   | String  | blazemeter             | BlazeMeter      | Unique BlazeMeter test ID -- used to run the BlazeMeter load test and gather data                           | Yes      |
 | ``test_length_sec``           | String  | blazemeter             | BlazeMeter      | How long the load test runs for -- used to initiate the BlazeMeter load test                                | Yes      |
-| ``webpagetest``               | Object  | None                   | BlazeMeter      | Contains all of the WebPageTest specific information                                                        | Yes*     |
+| ``webpagetest``               | Object  | None                   | BlazeMeter      | Contains all of the WebPageTest specific information                                                        | Yes      |
 | ``promotion_gates``           | Object  | None                   | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``response_time_avg``         | Number  | promotion_gates        | BlazeMeter      | Average response time (under BlazeMeter load)                                                               | No       |
 | ``response_time_max``         | Number  | promotion_gates        | BlazeMeter      | Maximum response time (under BlazeMeter load)                                                               | No       |
@@ -28,8 +29,8 @@
 | ``transaction_rate``          | Number  | promotion_gates        | BlazeMeter      | Average Throughput (AKA Transaction Rate) -- Hits/Second (under BlazeMeter load)                            | No       |
 | ``warning``                   | Boolean | promotion_gates        | AppDynamics     | Indicates if AppDynamics health rule violations with a status of ``WARNING`` matter                         | No       |
 | ``critical``                  | Boolean | promotion_gates        | AppDynamics     | Indicates if AppDynamics health rule violations with a status of ``CRITICAL`` matter                        | No       |
-| ``first_view``                | Object  | promotion_gates        | WebPageTest     | Container for WebPageTest metrics for the first time a page is loaded                                       | Yes***   |
-| ``repeat_view``               | Object  | promotion_gates        | WebPageTest     | Container for WebPageTest metrics for the second time a page is loaded                                      | Yes***   |
+| ``first_view``                | Object  | promotion_gates        | WebPageTest     | Container for WebPageTest metrics for the first time a page is loaded                                       | Yes**    |
+| ``repeat_view``               | Object  | promotion_gates        | WebPageTest     | Container for WebPageTest metrics for the second time a page is loaded                                      | Yes**    |
 | ``speed_index``               | Number  | first_view/repeat_view | WebPageTest     | WebPageTest Speed Index, the average time (ms) at which the visible parts of the page are displayed         | No       |
 | ``first_paint``               | Number  | first_view/repeat_view | WebPageTest     | Time to when the page displays something on the screen (ms) (browser reported)                              | No       |
 | ``start_render``              | Number  | first_view/repeat_view | WebPageTest     | Time to when the page displays something on the screen (ms) (WebPageTest determined)                        | No       |
@@ -40,8 +41,6 @@
 | ``title_time``                | Number  | first_view/repeat_view | WebPageTest     | Time to when the HTML <Title></Title> tags are loaded (ms)                                                  | No       |
 | ``page_size``                 | Number  | first_view/repeat_view | WebPageTest     | The amount of data that the browser has to download in order to load the page (bytes)                       | No       |
 
-\*Required if you would like to gather data from the tool, otherwise not required
+\*Either ``load_test_length_min`` or both ``load_test_length_start_ms`` and ``load_test_length_end_ms`` must be declared
 
-\*\*Either ``load_test_length_min`` or both ``load_test_length_start_ms`` and ``load_test_length_end_ms`` must be declared
-
-\*\*\*Required if you want to use any WebPageTest data
+\*\*Required if you want to use any WebPageTest data

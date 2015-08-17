@@ -14,6 +14,7 @@ class BlazeMeter:
         Keyword arguments:
         api_key - The BlazeMeter API key (string)
         test_id - The BlazeMeter Test ID (string)
+        test_length_sec - How long the BlazeMeter load test will take
         """
         # Test configuration information
         self.api_key = api_key
@@ -45,7 +46,8 @@ class BlazeMeter:
         session_id = run_test_request.json()["result"]["sessionsId"][0]
 
         # Notify the user that the BlazeMeter test has run successfully
-        print("Started BlazeMeter load test - standby for data")
+        print("Started BlazeMeter load test")
+        print("Waiting for BlazeMeter load test to finish")
 
         return session_id
 
