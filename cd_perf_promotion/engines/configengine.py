@@ -150,9 +150,12 @@ class ConfigEngine:
                 self.required_config_error("BlazeMeter API key")
             elif "test_id" not in config_json["blazemeter"]:
                 self.required_config_error("BlazeMeter test ID")
+            elif "test_length_sec" not in config_json["blazemeter"]:
+                self.required_config_error("BlazeMeter test length (seconds)")
             else:
                 config_output["blazemeter"]["api_key"] = config_json["blazemeter"]["api"]
                 config_output["blazemeter"]["test_id"] = config_json["blazemeter"]["test_id"]
+                config_output["blazemeter"]["test_length_sec"] = config_json["blazemeter"]["test_length_sec"]
 
             # BlazeMeter Promotion Gates -- Optional
             if (("response_time_avg"     not in config_json["promotion_gates"]) and

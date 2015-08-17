@@ -68,7 +68,8 @@ class DataEngine:
         if (config_data["blazemeter"]["exists"] == True):
             # Start up BlazeMeter
             blazemeter = BlazeMeter(config_data["blazemeter"]["api_key"],
-                                    config_data["blazemeter"]["test_id"])
+                                    config_data["blazemeter"]["test_id"],
+                                    config_data["blazemeter"]["test_length_sec"])
             # BlazeMeter data
             transactions = blazemeter.get_data()
             perf_data["blazemeter"] = {}

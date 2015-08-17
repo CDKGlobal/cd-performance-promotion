@@ -12,6 +12,7 @@
 | ``blazemeter``                | Object  | None                   | BlazeMeter      | Contains all of the BlazeMeter specific information                                                         | Yes*     |
 | ``api``                       | String  | blazemeter             | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``test_id``                   | String  | blazemeter             | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
+| ``test_length_sec``           | String  | blazemeter             | BlazeMeter      | How long the load test runs for -- used to initiate the BlazeMeter load test                                | Yes      |
 | ``webpagetest``               | Object  | None                   | BlazeMeter      | Contains all of the WebPageTest specific information                                                        | Yes*     |
 | ``promotion_gates``           | Object  | None                   | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``response_time_avg``         | Number  | promotion_gates        | BlazeMeter      | Average response time (under BlazeMeter load)                                                               | No       |
