@@ -9,7 +9,7 @@ class TestSuite(unittest.TestCase):
 
     def test_no_appdynamics_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("test_configs/config_test1.json")
+        configengine = ConfigEngine("./test_configs/config_test1.json")
         config_data = configengine.process_config()
         # Grab the performance data
         dataengine = DataEngine()
@@ -21,7 +21,7 @@ class TestSuite(unittest.TestCase):
 
     def test_no_blazemeter_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("test_configs/config_test2.json")
+        configengine = ConfigEngine("./test_configs/config_test2.json")
         config_data = configengine.process_config()
         # Grab the performance data
         dataengine = DataEngine()
@@ -33,7 +33,7 @@ class TestSuite(unittest.TestCase):
 
     def test_no_webpagetest_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("test_configs/config_test3.json")
+        configengine = ConfigEngine("./test_configs/config_test3.json")
         config_data = configengine.process_config()
         # Grab the performance data
         dataengine = DataEngine()
