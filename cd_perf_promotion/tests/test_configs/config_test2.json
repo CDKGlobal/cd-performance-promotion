@@ -2,7 +2,8 @@
   "blazemeter":
   {
     "api": "apikeygoeshere",
-    "test_id": "faketestid"
+    "test_id": "faketestid",
+    "test_length_sec": 300
   },
   "promotion_gates":
   {
