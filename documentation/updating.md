@@ -4,8 +4,8 @@
 #### Config Engine
 1. Go into the ```cd_perf_promotion/engines/configengine.py``` and navigate to the tool section your new data item belongs to.
 2. If your data item is a required data item used to perform the API calls, add another ```else if``` statement to the required section (usually titled, ```<TOOL NAME HERE> Configuration Information -- Required```).
-3. If your data item is an promotion gate (which are always optional), follow the steps below:
-  1. Add another ```and``` line specific to your data item to the ``if`` statement directly below the optional section (usually titled, ```# <TOOL NAME HERE> Promotion Gates -- Optional```). This new line should look something like this:
+3. If your data item is a promotion gate (which are always optional), follow the steps below:
+  1. Add another line to the ``if`` statement directly below the optional section (usually titled, ```# <TOOL NAME HERE> Promotion Gates -- Optional```) for your specific data item. This new line should look something like this:
 
     ```
     # <TOOL NAME HERE> Promotion Gates -- Optional
@@ -27,7 +27,7 @@
 4. Save the file. Your configuration engine is now able to pull the new data from your ```config.json``` file.
 
 #### Data Engine
-1. If your data item is required to perform the API calls, navigate to the ```get_data``` function in ```cd_perf_promotion/engine/dataengine.py```. Otherwise, move on to the next section!
+1. If your data item is required to gather data from the performance tools (API-based information), navigate to the ```get_data``` function in ```cd_perf_promotion/engine/dataengine.py```. Otherwise, move on to the next section!
 2. Navigate to your tool's section (usually titled ```# Check if the <TOOL NAME HERE> module was requested by the config``` ) and add another parameter to the call to instantiate your tool's module so that the call looks something like this:
 
   ```
@@ -56,6 +56,26 @@
 4. Save the file. Your tool's module is now able to request the proper data.
 
 #### Comparison Engine
+1. If your new data item is a promotion gate, navigate to the ```process_data``` function within ```cd_perf_promotion/engines/comparisonengine.py``. If not, skip down to the next section.
+2. Navigate down to the tool section that your data item belongs to and add a single function call to the ```self.compare_yourtoolnamehere()``` function so that it looks something like this:
+
+   ```
+   # ToolNameHere Module
+        if (config_data["toolnamehere"]["exists"] == True):
+            # Compare ToolNameHere metrics
+            for index, transaction in enumerate(perf_data["toolnamehere"]["transactions"]):
+                # Data 1
+                self.compare_toolnamehere("data_1", config_data["promotion_gates"]["data_1"], transaction["data_1"], index, operator.gt)
+                # Data 2
+                self.compare_toolnamehere("data_2", config_data["promotion_gates"]["data_2"], transaction["data_2"], index, operator.gt)
+                # Your Data Item
+                self.compare_toolnamehere("your_data_item", config_data["promotion_gates"]["your_data_item"], transaction["your_data_item"], index, operator.lt)
+    ```
+3. Save the file. The application is now able to evaluate your data item against the configuration file.
+
+#### Documentation
+1. Add an entry for your data item in the``dictionary.md`` file and save your changes.
+2. Success! You're done!
 
 ## Adding New Performance Testing Tools
 Coming soon!
