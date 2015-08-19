@@ -78,4 +78,73 @@
 2. Success! You're done!
 
 ## Adding New Performance Testing Tools
-Coming soon!
+#### Add a New Module
+Navigate to the ```cd_perf_promotion/modules``` directory and create a new Python module with the same name as the performance testing tool you are planning to add. The template is as follows:
+
+  ```
+  class NewToolNameHere:
+      """
+      Handles all of the ToolNameHere API querying/data gathering
+      """
+
+      def __init__(self, api_param_1, api_param_2):
+          """
+          Documentation Header Goes Here
+
+          Keyword arguments:
+          api_param_1 - Explanation Goes Here
+          api_param_2 - Explanation Goes Here
+          """
+          # Test configuration information
+          self.api_param_1 = api_param_1
+          self.api_param_2 = api_param_2
+
+      def connection_error(self):
+          # User likely lost their internet connection or used incorrect credentials
+          print("ERROR: Unable to query TooolNameHere API")
+          sys.exit(1)
+
+      def get_data(self):
+            """
+            Gets the load test data from the API
+            """
+            # Describe the API query here
+            test_summary_url = "urlgoeshere"
+            try:
+                test_summary_request = requests.get(test_summary_url)
+            except:
+                self.connection_error()
+
+            jsondata = []
+
+            # Make sure that the module actually got something back
+            if test_summary_request.status_code != 200:
+                self.connection_error()
+
+            # Side Note -- This is looping over all of the "transactions" the data is retrieving,
+            # but if you don't need that, just return all of the JSON data that you would ever
+            # want to evaluate. Grabbing data is cheap in terms of performance, so this module
+            # just grabs all of the data that the program supports in terms of data evaluation
+            # and lets the configuration engine grab what it needs to evaluate
+            for transaction in test_summary_request.json()["jsonkeyhere"]["anotherjsonkey"]:
+                jsondata.append({
+                        "newkeyname_1": transaction["keyname_1"],
+                        "newkeyname_2": transaction["keyname_2"],
+                        "newkeyname_3": transaction["keyname_3"],
+                        "newkeyname_4": transaction["keyname_4"]
+                    })
+
+            # Notify the user that the ToolNameHere data has grabbed
+            print("Retrieved ToolNameHere data")
+
+            return jsondata
+    ```
+
+#### Config Engine
+Coming Soon!
+
+#### Data Engine
+Coming Soon!
+
+#### Comparison Engine
+Coming Soon!
