@@ -1,8 +1,8 @@
 import requests
-import sys
 import time
+from cd_perf_promotion.modules.perftools import PerfTools
 
-class BlazeMeter:
+class BlazeMeter(PerfTools):
     """
     Handles all of the BlazeMeter API querying/data gathering
     """
@@ -20,11 +20,8 @@ class BlazeMeter:
         self.api_key = api_key
         self.test_id = test_id
         self.test_length = test_length_sec
-
-    def connection_error(self):
-        # User likely lost their internet connection or used incorrect credentials
-        print("ERROR: Unable to query BlazeMeter API")
-        sys.exit(1)
+        # Inherit methods from parent class "PerfTools"
+        PerfTools.__init__(self, "BlazeMeter")
 
     def run_test(self, api_key, test_id):
         """
@@ -37,11 +34,11 @@ class BlazeMeter:
         try:
             run_test_request = requests.get(run_test_url, headers=api_headers)
         except:
-            self.connection_error()
+            self.connection_error() # Inherited from the parent class
 
         # Make sure that the module actually got something back
         if run_test_request.status_code != 200:
-            self.connection_error()
+            self.connection_error() # Inherited from the parent class
 
         session_id = run_test_request.json()["result"]["sessionsId"][0]
 

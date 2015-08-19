@@ -1,8 +1,8 @@
 import requests
 from requests.auth import HTTPBasicAuth
-import sys
+from cd_perf_promotion.modules.perftools import PerfTools
 
-class AppDynamics:
+class AppDynamics(PerfTools):
     """
     Handles all of the AppDynamics API querying/data gathering
     """
@@ -28,11 +28,8 @@ class AppDynamics:
         self.application_name = application_name
         self.start_time = start_time
         self.end_time = end_time
-
-    def connection_error(self):
-        # User likely lost their internet connection or used incorrect credentials
-        print("ERROR: Unable to query AppDynamics API")
-        sys.exit(1)
+        # Inherit methods from parent class "PerfTools"
+        PerfTools.__init__(self, "AppDynamics")
 
     def get_data(self):
         """
@@ -43,11 +40,11 @@ class AppDynamics:
         try:
             health_request = requests.get(health_url, auth=HTTPBasicAuth(self.username, self.password))
         except:
-            self.connection_error()
+            self.connection_error() # Inherited from the parent class
 
         # Make sure that the module actually got something back
         if health_request.status_code != 200:
-            self.connection_error()
+            self.connection_error() # Inherited from the parent class
 
         healthrule_violations = health_request.json()
 
