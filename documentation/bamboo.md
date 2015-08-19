@@ -19,8 +19,8 @@ CDK uses Atlassian Bamboo as its continuous integration/delivery/deployment plat
   ${bamboo.build.working.directory}/py3env/bin/cdperfpromotion
   [[ ! $(grep '"passed": false' cdperfpromodata*.json) ]]
   ```
-  The ```sed``` commands replace part of the downloaded configuration file so that critical credentials (usernames/password, API keys, etc.) are not stored in source control. The ```sed``` commands in the above script are only replacing the BlazeMeter API key and and test ID since the configuration file only includes data from BlazeMeter.
+  * The ```sed``` commands replace part of the downloaded configuration file so that critical credentials (usernames/password, API keys, etc.) are not stored in source control. The ```sed``` commands in the above script are only replacing the BlazeMeter API key and and test ID since the configuration file only includes data from BlazeMeter.
 
-  The call to ```${bamboo.build.working.directory}/py3env/bin/cdperfpromotion``` is actually running the program.
+  * The call to ```${bamboo.build.working.directory}/py3env/bin/cdperfpromotion``` is actually running the program.
 
-  Please note that this is a prototype tool and that while the setup in the CDK environment is currently a little bit complicated, the wrinkles will be ironed out in future releases.
+**Note:** this is a prototype tool and that while the setup in the CDK environment is currently a little bit complicated, the wrinkles will be ironed out in future releases.
