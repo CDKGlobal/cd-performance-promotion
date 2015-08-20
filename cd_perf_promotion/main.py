@@ -1,6 +1,7 @@
 from cd_perf_promotion.engines.configengine     import ConfigEngine
 from cd_perf_promotion.engines.dataengine       import DataEngine
 from cd_perf_promotion.engines.comparisonengine import ComparisonEngine
+import sys
 
 def main():
     """
@@ -24,7 +25,13 @@ def main():
     # Begin evaluating the build
     comparison_engine = ComparisonEngine()
     comparison_engine.process_data(config_data, perf_data)
-    comparison_engine.output_results()
+    build_passed = comparison_engine.output_results()
+    if (build_passed == True):
+        print("\nBuild Status: SUCCESS")
+        sys.exit(0)
+    else:
+        print("\nBuild Status: FAILURE")
+        sys.exit(1)
 
     if __name__ == '__main__':
         main()

@@ -166,11 +166,8 @@ class ComparisonEngine:
         # Let the user know where they can get all of the results
         print("\nPlease see {0} for more information".format(filename))
 
-        # Print the final build status to the console
-        if self.build_status_passed:
-            print("\nBuild Status: SUCCESS")
-        else:
-            print("\nBuild Status: FAILURE")
+        # Return the final build status
+        return self.build_status_passed
 
     def process_data(self, config_data, perf_data):
         """
