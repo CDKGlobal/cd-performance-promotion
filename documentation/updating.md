@@ -1,6 +1,6 @@
 # Updating the CD Performance Promotion Tool
 
-## Adding Additional Data items
+## Adding Data items
 #### Config Engine
 1. Go into the ```cd_perf_promotion/engines/configengine.py``` and navigate to the tool section your new data item belongs to.
 2. If your data item is a required data item used to perform the API calls, add another ```else if``` statement to the required section (usually titled, ```<TOOL NAME HERE> Configuration Information -- Required```).
@@ -141,10 +141,176 @@ Navigate to the ```cd_perf_promotion/modules``` directory and create a new Pytho
 Make sure to add your new module to the ```__init__.py``` file as well.
 
 #### Config Engine
-Coming Soon!
+1. Navigate to the ```cd_perf_promotion/engines/configengine``` file and the ```process_config``` function.
+2. Add your new tool to the section of code that checks if the tool is defined in the configuration file. It should look something like this:
+
+  ```
+  # Variables used to note whether or not these modules were set up in
+  # the configuration file. Default to False
+  appdynamics_exists = False
+  blazemeter_exists = False
+  webpagetest_exists = False
+  newtoolhere_exists = False
+
+  # Make sure that all of the config sections are there
+  if "appdynamics" in config_json:
+      appdynamics_exists = True
+  if "blazemeter" in config_json:
+      blazemeter_exists = True
+  if "webpagetest" in config_json:
+      webpagetest_exists = True
+  if "newtoolhere" in config_json:
+      newtoolhere_exists = True
+  if "promotion_gates" not in config_json:
+      # If the promotion gates aren't in there, there's no use running the program
+      self.required_config_error("promotion gates")
+  if (appdynamics_exists == False and blazemeter_exists == False and webpagetest_exists == False):
+      # If all of the modules don't exist, there's no way to get any data
+      self.required_config_error("AppDynamics, BlazeMeter or WebPageTest")
+  ```
+3. Add a section for your new tool underneath the other tool modules. This should serve as a good template:
+
+  ```
+  # NewToolHere Promotion Gates -- Optional
+  if (("data_1"     not in config_json["promotion_gates"]) and
+      ("data_2"     not in config_json["promotion_gates"]) and
+      ("data_3"     not in config_json["promotion_gates"])):
+      # NewToolHere configuration inforamtion exists, but none of the metrics do
+      # Pretend NewToolHere configuration information doesn't exist either so
+      # that we don't waste our time querying the NewToolHere API
+      newtoolhere_exists = False
+      config_output["newtoolhere"] = {"exists": False}
+  else:
+      # NewToolHere still exists, put it in the config
+      config_output["newtoolhere"]["exists"] = True
+
+      # Make sure that we can put in promotion gates
+      if ("promotion_gates" not in config_output):
+        config_output["promotion_gates"] = {}
+
+      # Data Item 1
+      if ("data_1" in config_json["promotion_gates"]):
+        config_output["promotion_gates"]["data_1"] = config_json["promotion_gates"]["data_1"]
+      else:
+        # 0 means that the user doesn't care about the metric
+        config_output["promotion_gates"]["data_1"] = 0
+
+      # Data Item 2
+      if ("data_2" in config_json["promotion_gates"]):
+        config_output["promotion_gates"]["data_2"] = config_json["promotion_gates"]["data_2"]
+      else:
+        config_output["promotion_gates"]["data_2"] = 0
+
+      # Data Item 3
+      if ("data_3" in config_json["promotion_gates"]):
+        config_output["promotion_gates"]["data_3"] = config_json["promotion_gates"]["data_3"]
+      else:
+        config_output["promotion_gates"]["data_3"] = 0
+  else:
+    config_output["newtoolhere"]["exists"] = False
+  ```
+To add on new data items, consider the **Adding Data Items** section of the documentation
 
 #### Data Engine
-Coming Soon!
+Navigate to the ```cd_perf_promotion/engines/dataengine.py``` file and the ```get_data`` function. Add a new section of code that processes the data from the module that you created earlier. It should look something like this:
+
+```
+# Check if the NewToolHere module was requested by the config
+if (config_data["newtoolhere"]["exists"] == True):
+  # Start up NewToolHere
+  newtoolhere = NewToolHere(config_data["newtoolhere"]["required_field_1"],
+                            config_data["newtoolhere"]["required_field_2"],
+                            config_data["newtoolhere"]["required_field_3"])
+  # NewToolHere data
+  all_data = newtoolhere.get_data()
+  perf_data["newtoolhere"] = {}
+  perf_data["newtoolhere"]["optional_key_here"] = all_data
+```
 
 #### Comparison Engine
-Coming Soon!
+1. Navigate to the ```cd_perf_promotion/engines/comparisonengine``` file and ```process_data``` function.
+2. Add a new section for your module. Here's a template that you can use:
+
+  ```
+  # NewToolHere Module
+  if (config_data["newtoolhere"]["exists"] == True):
+    # Compare NewToolHere metrics
+    # Add NewToolHere into the output file
+    self.output_json["newtoolhere"] = {"keynamehere": []}
+
+    # NOTE: operator.lt means that the configuration data must be less than the performance data
+    # operator.gt means the configuration data must be greater than the performance data
+    # Check out https://docs.python.org/3/library/operator.html for information on the list of available operators that you can use
+
+    # Data Item 1
+    self.compare_blazemeter("data_1", config_data["promotion_gates"]["data_1"], perf_data["newtoolhere"]["data_1"], index, operator.lt)
+    # Data Item 2
+    self.compare_blazemeter("data_2", config_data["promotion_gates"]["data_2"], perf_data["newtoolhere"]["data_2"], index, operator.gt)
+    # Data Item 3
+    self.compare_blazemeter("data_3", config_data["promotion_gates"]["data_3"], perf_data["newtoolhere"]["data_3"], index, operator.lt)
+  ```
+
+  If you need to iterate over an array within your JSON data set (like BlazeMeter's transactions), use something like this to handle that instead of just having the straight-up list of data item comparison function calls:
+
+  ```
+  # Compare NewToolHere metrics
+  # Add NewToolHere into the output file
+  self.output_json["newtoolhere"] = {"transactions": []}
+  for index, transaction in enumerate(perf_data["toolnamehere"]["transactions"]):
+    # Data Item 1
+    self.compare_blazemeter("data_1", config_data["promotion_gates"]["data_1], transaction["data_1"], index, operator.lt)
+    # Data Item 2
+    self.compare_blazemeter("data_2", config_data["promotion_gates"]["data_2"], transaction["data_2"], index, operator.gt)
+    # Data Item 3
+    self.compare_blazemeter("data_3", config_data["promotion_gates"]["data_3"], transaction["data_3"], index, operator.lt)
+  ```
+
+3. Create the function that actually compares the data from the configuration file against the real performance data. Here's an example of what that might look like:
+
+  ```
+  def compare_newtoolhere(self, metric_title, target_data, metric_data, transaction_index, operator):
+    """
+    Performs the comparison between configuration promotion gates and the
+    actual newtoolhere test data
+
+    Keyword arguments:
+    metric_title      - String title that indicates the data item that is being
+                        evaluated
+    target_data       - Number that indicates the cutoff point for the specific
+                        metric as determined by the user in the config
+    metric_data       - The actual performance data number that is compared
+                        against
+    transaction_index - The index of the transaction in the list of
+                        transactions
+    operator          - <, >, <=, >, == which is used to compare the real
+                        data against the config
+    """
+    if (target_data > 0):
+        # Metric is set in config, begin comparison
+
+        # Add the data to the output file
+        self.output_json["newtoolhere"]["transactions"][transaction_index][metric_title] = metric_data
+
+        # Get the "passed" JSON key name ready
+        metric_title_passed = metric_title + "_passed"
+
+        # Determine if promotion gate was met
+        # Uses the operator module so that the process_performance_data function can determine
+        # what operator (<, >, <=, >=, etc.) should be used
+        if operator(metric_data, target_data):
+            # Success
+            if metric_title_passed not in self.output_json["promotion_gates"]:
+                # Not mentioned before, add it in
+                # Not necessary to make the overall status True again if it's True
+                # and if it was False for one transaction the overall status should still be False
+                self.output_json["promotion_gates"][metric_title_passed] = True
+            # Regardless, add it into the transaction data
+            self.output_json["newtoolhere"]["transactions"][transaction_index][metric_title_passed] = True
+        else:
+            # Failure
+            self.output_json["promotion_gates"][metric_title_passed] = False
+            self.output_json["newtoolhere"]["transactions"][transaction_index][metric_title_passed] = False
+            self.build_status_passed = False
+  ```
+
+Unfortunately, it's not that easy to create a catch-all function for comparing data items from tools because the JSON data structure that any one tool uses is completely different from the structure of another tool. As a result, you have to come up with a separate comparison function for each tool. The example in Step 3 was based on the ```compare_blazemeter``` function, but that will not work for all tools. The majority of the BlazeMeter data is located in the ```transactions``` JSON array and the overall structure is a little complex. WebPageTest has two arrays. The point is, all you really need is a function that can be called by the ```process_data``` function, saves the comparison information as a new key in the output JSON file, is fairly modular, and easy to maintain. If you need help, look at the other comparison functions in the file to see how they handle things.
