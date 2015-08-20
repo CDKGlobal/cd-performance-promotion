@@ -82,7 +82,9 @@
 Navigate to the ```cd_perf_promotion/modules``` directory and create a new Python module with the same name as the performance testing tool you are planning to add. The template is as follows:
 
   ```
-  class NewToolNameHere:
+  from cd_perf_promotion.modules.perftools import PerfTools
+
+  class NewToolNameHere(PerfTools):
       """
       Handles all of the ToolNameHere API querying/data gathering
       """
@@ -98,11 +100,8 @@ Navigate to the ```cd_perf_promotion/modules``` directory and create a new Pytho
           # Test configuration information
           self.api_param_1 = api_param_1
           self.api_param_2 = api_param_2
-
-      def connection_error(self):
-          # User likely lost their internet connection or used incorrect credentials
-          print("ERROR: Unable to query TooolNameHere API")
-          sys.exit(1)
+          # Inherit methods from parent class "PerfTools"
+          PerfTools.__init__(self, "NewToolNameHere")
 
       def get_data(self):
             """
@@ -113,13 +112,13 @@ Navigate to the ```cd_perf_promotion/modules``` directory and create a new Pytho
             try:
                 test_summary_request = requests.get(test_summary_url)
             except:
-                self.connection_error()
+                self.connection_error() # Inherited from the parent class
 
             jsondata = []
 
             # Make sure that the module actually got something back
             if test_summary_request.status_code != 200:
-                self.connection_error()
+                self.connection_error() # Inherited from the parent class
 
             # Side Note -- This is looping over all of the "transactions" the data is retrieving,
             # but if you don't need that, just return all of the JSON data that you would ever
@@ -138,7 +137,8 @@ Navigate to the ```cd_perf_promotion/modules``` directory and create a new Pytho
             print("Retrieved ToolNameHere data")
 
             return jsondata
-    ```
+  ```
+Make sure to add your new module to the ```__init__.py``` file as well.
 
 #### Config Engine
 Coming Soon!
