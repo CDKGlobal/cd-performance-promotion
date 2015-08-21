@@ -11,8 +11,8 @@ CDK uses Atlassian Bamboo as its continuous integration/delivery/deployment plat
   source ${bamboo.build.working.directory}/py3env/bin/activate
   python3 -W ignore setup.py -q install
   cd config
-  sed -i s/apikeygoeshere/Cnzw3p7YIwdCvuz578YR/g config.json
-  sed -i s/testidgoeshere/5078402/g config.json
+  sed -i s/apikeygoeshere/${bamboo.blazemeter.apiKey}/g config.json
+  sed -i s/testidgoeshere/${bamboo.blazemeter.testId}/g config.json
   ${bamboo.build.working.directory}/py3env/bin/cdperfpromotion
   ```
 
