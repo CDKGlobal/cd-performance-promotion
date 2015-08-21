@@ -76,6 +76,14 @@ class BlazeMeter(PerfTools):
             self.connection_error()
 
         for transaction in test_summary_request.json()["result"]["summary"]:
+            # Have to correct for BlazeMeter improperly informing you that a transaction took 0 ms
+            if (transaction["duration"] == 0):
+                bandwidth_avg = 0
+                transaction_rate = 0
+            else:
+                bandwidth_avg = transaction["bytes"] / transaction["duration"]
+                transaction_rate = transaction["hits"] / transaction["duration"]
+
             alltransactions.append({
                     "transaction_id": transaction["id"],
                     "transaction_name": transaction["lb"],
@@ -89,8 +97,8 @@ class BlazeMeter(PerfTools):
                     "latency_max": transaction["latencyMax"],
                     "latency_avg": transaction["latencyAvg"],
                     "latency_stdev": transaction["latencySTD"],
-                    "bandwidth_avg": transaction["bytes"] / transaction["duration"],
-                    "transaction_rate": transaction["hits"] / transaction["duration"]
+                    "bandwidth_avg": bandwidth_avg,
+                    "transaction_rate": transaction_rate
                 })
 
         # Notify the user that the BlazeMeter data has grabbed
