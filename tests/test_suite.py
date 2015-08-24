@@ -9,37 +9,46 @@ class TestSuite(unittest.TestCase):
 
     def test_no_appdynamics_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("./test_configs/config_test1.json")
+        configengine = ConfigEngine("./test_configs/config_test1.json", None)
         config_data = configengine.process_config()
+
         # Grab the performance data
         dataengine = DataEngine()
+
         # Check for a system exit call
         with self.assertRaises(SystemExit) as cm:
             dataengine.get_data(config_data)
+
         # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
     def test_no_blazemeter_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("./test_configs/config_test2.json")
+        configengine = ConfigEngine("./test_configs/config_test2.json", None)
         config_data = configengine.process_config()
+
         # Grab the performance data
         dataengine = DataEngine()
+
         # Check for a system exit call
         with self.assertRaises(SystemExit) as cm:
             dataengine.get_data(config_data)
+
         # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
     def test_no_webpagetest_connection(self):
         # Grab the configuration information
-        configengine = ConfigEngine("./test_configs/config_test3.json")
+        configengine = ConfigEngine("./test_configs/config_test3.json", None)
         config_data = configengine.process_config()
+
         # Grab the performance data
         dataengine = DataEngine()
+
         # Check for a system exit call
         with self.assertRaises(SystemExit) as cm:
             dataengine.get_data(config_data)
+
         # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
