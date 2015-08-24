@@ -18,7 +18,8 @@ def main():
     arguments = ArgumentEngine().process_arguments()
 
     # Grab the configuration information
-    configengine = ConfigEngine("config.json", arguments['lr'], arguments['blzkey'], arguments['blztest'])
+    configengine = ConfigEngine("config.json", arguments['lr'], arguments['blzkey'], arguments['blztest'],
+                                arguments['appduser'], arguments['appdpass'], arguments['appdapp'])
     config_data = configengine.process_config()
 
     # Grab the performance data

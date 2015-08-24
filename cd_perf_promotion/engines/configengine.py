@@ -77,11 +77,11 @@ class ConfigEngine:
         config_output["appdynamics"] = {}
         if (appdynamics_exists):
             # AppDynamics Configuration Information -- Required
-            if ("username" not in config_json["appdynamics"]):
+            if ("username" not in config_json["appdynamics"]) and (self.arg_appduser == None):
                 self.required_config_error("AppDynamics username")
-            elif ("password" not in config_json["appdynamics"]):
+            elif ("password" not in config_json["appdynamics"]) and (self.arg_appdpass == None):
                 self.required_config_error("AppDynamics password")
-            elif ("application_name" not in config_json["appdynamics"]):
+            elif ("application_name" not in config_json["appdynamics"]) and (self.arg_appdapp == None):
                 self.required_config_error("AppDynamics application name")
             # Two ways to set length (load_test_length_min or load_test_start_ms and load_test_end_ms)
             # Check for:
@@ -91,9 +91,20 @@ class ConfigEngine:
                   (("load_test_length_min" in config_json["appdynamics"]) and (("load_test_start_ms" in config_json["appdynamics"]) or ("load_test_end_ms" in config_json["appdynamics"])))):
                 self.required_config_error("AppDynamics load test length")
             else:
-                config_output["appdynamics"]["username"] = config_json["appdynamics"]["username"]
-                config_output["appdynamics"]["password"] = config_json["appdynamics"]["password"]
-                config_output["appdynamics"]["application_name"] = config_json["appdynamics"]["application_name"]
+                if (self.arg_appduser == None):
+                    config_output["appdynamics"]["username"] = config_json["appdynamics"]["username"]
+                else:
+                    config_output["appdynamics"]["username"] = self.arg_appduser
+
+                if (self.arg_appdpass == None):
+                    config_output["appdynamics"]["password"] = config_json["appdynamics"]["password"]
+                else:
+                    config_output["appdynamics"]["password"] = self.arg_appdpass
+
+                if (self.arg_appdapp == None):
+                    config_output["appdynamics"]["application_name"] = config_json["appdynamics"]["application_name"]
+                else:
+                    config_output["appdynamics"]["application_name"] = self.arg_appdapp
 
                 # The complicated load test length stuff
                 if ("load_test_length_min" in config_json["appdynamics"]):
@@ -161,7 +172,7 @@ class ConfigEngine:
                     config_output["blazemeter"]["test_id"] = config_json["blazemeter"]["test_id"]
                 else:
                     config_output["blazemeter"]["test_id"] = self.arg_blztest
-                    
+
                 config_output["blazemeter"]["test_length_sec"] = config_json["blazemeter"]["test_length_sec"]
 
             # BlazeMeter Promotion Gates -- Optional
@@ -359,7 +370,7 @@ class ConfigEngine:
         # Return all of the now properly formatted config data
         return config_output
 
-    def __init__(self, filename, arg_lr, arg_blzkey, arg_blztest):
+    def __init__(self, filename, arg_lr, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp):
         """
         Class starting point
         """
@@ -371,3 +382,9 @@ class ConfigEngine:
         self.arg_blzkey = arg_blzkey
         # Argument - BlazeMeter API test ID
         self.arg_blztest = arg_blztest
+        # Argument - AppDynamics username
+        self.arg_appduser = arg_appduser
+        # Argument - AppDynamics password
+        self.arg_appdpass = arg_appdpass
+        # Argument - AppDynamics application name
+        self.arg_appdapp = arg_appdapp
