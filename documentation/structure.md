@@ -12,9 +12,11 @@
 | ``modules``                                   | Folder | cd_perf_promotion | Contains all of the python code for each performance tool                         |
 | ``tests``                                     | Folder | cd_perf_promotion | Contains all of the testing code                                                  |
 | ``main.py``                                   | File   | cd_perf_promotion | Main entry point to the program                                                   |
+| ``argumentengine.py``                         | File   | engines           | Processes the arguments from the command-line                                     |
 | ``comparisonengine.py``                       | File   | engines           | Performs comparisons between the configuration target metrics and actual data     |
 | ``configengine.py``                           | File   | engines           | Grabs the target metrics from the configuration file                              |
 | ``dataengine.py``                             | File   | engines           | Grabs the data from the tool modules and organizes it for the Comparison Engine   |
+| ``outputengine.py``                           | File   | engines           | Handles all of the data output logic                                              |
 | ``appdynamics.py``                            | File   | modules           | Grabs data from AppDynamics                                                       |
 | ``blazemeter.py``                             | File   | modules           | Grabs data from BlazeMeter                                                        |
 | ``webpagetest.py``                            | File   | modules           | Grabs data from WebPageTest                                                       |
