@@ -1,7 +1,5 @@
-import time
 import json
 import operator
-import sys
 
 class ComparisonEngine:
     """
@@ -151,24 +149,6 @@ class ComparisonEngine:
                     self.output_json["webpagetest"]["runs"][run_index][view][metric_title_passed] = False
                 self.build_status_passed = False
 
-    def output_results(self):
-        """
-        Output the results to a JSON file
-        """
-        filename = "cdperfpromodata_{0}.json".format(time.strftime("%m%d%y_%H%M%S"))
-        try:
-            with open(filename, "w") as jsonoutput:
-                json.dump(self.output_json, jsonoutput, indent = 4, sort_keys = True)
-        except:
-            print("ERROR: Unable to output results")
-            sys.exit(1)
-
-        # Let the user know where they can get all of the results
-        print("\nPlease see {0} for more information".format(filename))
-
-        # Return the final build status
-        return self.build_status_passed
-
     def process_data(self, config_data, perf_data):
         """
         Determines if the build meets promotion gate criteria based off of the
@@ -300,6 +280,8 @@ class ComparisonEngine:
 
         # We're done!
         print("Processed performance data")
+
+        return self.output_json
 
     def __init__(self):
         """

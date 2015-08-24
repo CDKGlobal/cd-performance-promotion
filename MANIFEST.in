@@ -1,1 +1,3 @@
 include documentation/*
+include README.md
+include LICENSE

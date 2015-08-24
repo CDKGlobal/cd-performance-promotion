@@ -1,8 +1,8 @@
-from cd_perf_promotion.engines.argumentengine     import ArgumentEngine
+from cd_perf_promotion.engines.argumentengine   import ArgumentEngine
 from cd_perf_promotion.engines.configengine     import ConfigEngine
 from cd_perf_promotion.engines.dataengine       import DataEngine
 from cd_perf_promotion.engines.comparisonengine import ComparisonEngine
-import sys
+from cd_perf_promotion.engines.outputengine     import OutputEngine
 
 def main():
     """
@@ -16,7 +16,6 @@ def main():
           "####################################################################\n")
 
     arguments = ArgumentEngine().process_arguments()
-    print(arguments);
 
     # Grab the configuration information
     configengine = ConfigEngine("config.json", arguments['lr'])
@@ -27,15 +26,12 @@ def main():
     perf_data = dataengine.get_data(config_data)
 
     # Begin evaluating the build
-    comparison_engine = ComparisonEngine()
-    comparison_engine.process_data(config_data, perf_data)
-    build_passed = comparison_engine.output_results()
-    if (build_passed == True):
-        print("\nBuild Status: SUCCESS")
-        sys.exit(0)
-    else:
-        print("\nBuild Status: FAILURE")
-        sys.exit(1)
+    comparisonengine = ComparisonEngine()
+    evaluation = comparisonengine.process_data(config_data, perf_data)
+
+    # Output the data
+    outputengine = OutputEngine()
+    outputengine.release_judgement(evaluation, arguments['oc'])
 
     if __name__ == '__main__':
         main()

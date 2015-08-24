@@ -17,7 +17,7 @@ class ArgumentEngine:
 
         parser = argparse.ArgumentParser()
         parser.add_argument("-lr", help="Executes the program with the configuration file located at the provided URL")
-        parser.add_argument("-oc", help="Prints the output to the console (ALPHA)", action="store_true")
+        parser.add_argument("-oc", help="Prints the output to the console", action="store_true")
         args = parser.parse_args()
 
         # Configuration file is located remotely
