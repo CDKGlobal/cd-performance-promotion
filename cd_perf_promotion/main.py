@@ -1,3 +1,4 @@
+from cd_perf_promotion.engines.argumentengine     import ArgumentEngine
 from cd_perf_promotion.engines.configengine     import ConfigEngine
 from cd_perf_promotion.engines.dataengine       import DataEngine
 from cd_perf_promotion.engines.comparisonengine import ComparisonEngine
@@ -14,8 +15,11 @@ def main():
           "CDK Global, LLC\n"
           "####################################################################\n")
 
+    arguments = ArgumentEngine().process_arguments()
+    print(arguments);
+
     # Grab the configuration information
-    configengine = ConfigEngine("config.json")
+    configengine = ConfigEngine("config.json", arguments['lr'])
     config_data = configengine.process_config()
 
     # Grab the performance data

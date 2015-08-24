@@ -24,11 +24,10 @@ class ConfigEngine:
         Finds the configuration file and grabs the JSON data out of it
         """
         # Look for arguments telling us where the config file is located
-        if ((len(sys.argv) >= 2) and (sys.argv[1] == "-lr")):
+        if (self.arg_lr != None):
             # Config is located remotely
             try:
-                #config_file = requests.get(sys.argv[2], auth=HTTPBasicAuth("petersja", "CDKcdk123"))
-                config_file = requests.get(sys.argv[2])
+                config_file = requests.get(self.arg_lr)
                 return config_file.json()
             except:
                 # Not able to find a configuration file at the specified location, quit out
@@ -352,9 +351,11 @@ class ConfigEngine:
         # Return all of the now properly formatted config data
         return config_output
 
-    def __init__(self, filename):
+    def __init__(self, filename, arg_lr):
         """
         Class starting point
         """
         # Configuration file name
         self.filename = filename
+        # Argument - Location Remote
+        self.arg_lr = arg_lr
