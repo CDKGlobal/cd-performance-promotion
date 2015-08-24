@@ -1,11 +1,13 @@
 # Arguments
 
 ## Dictionary
-| Argument | Value                                      | Explanation                                                                     |
-| :------- | :----------------------------------------- | :------------------------------------------------------------------------------ |
-| ``-h``   | N/A                                        | Help -- Lists all of the arguments and information about them                   |
-| ``-lr``  | (String) The URL of the configuration file | Executes the program with the configuration file located at the provided URL    |
-| ``-oc``  | N/A                                        | Prints the the output to the console (in addition to the normal output to file) |
+| Argument     | Value                  | Explanation                                                                     |
+| :----------- | :--------------------- | :------------------------------------------------------------------------------ |
+| ``-h``       | N/A                    | Help -- Lists all of the arguments and information about them                   |
+| ``-lr``      | Configuration file URL | Executes the program with the configuration file located at the provided URL    |
+| ``-blzkey``  | BlazeMeter API key     | Uses the given BlazeMeter API key instead                                       |
+| ``-blztest`` | BlazeMeter Test ID     | Uses the given BlazeMeter Test ID instead                                       |
+| ``-oc``      | N/A                    | Prints the the output to the console (in addition to the normal output to file) |
 
 ## Adding New Arguments
 1. Navigate to the ```cd_perf_promotion/engines/argumentengine.py``` file.

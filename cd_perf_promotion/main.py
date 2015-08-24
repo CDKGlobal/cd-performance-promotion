@@ -18,7 +18,7 @@ def main():
     arguments = ArgumentEngine().process_arguments()
 
     # Grab the configuration information
-    configengine = ConfigEngine("config.json", arguments['lr'])
+    configengine = ConfigEngine("config.json", arguments['lr'], arguments['blzkey'], arguments['blztest'])
     config_data = configengine.process_config()
 
     # Grab the performance data

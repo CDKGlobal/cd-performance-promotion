@@ -145,15 +145,23 @@ class ConfigEngine:
         config_output["blazemeter"] = {}
         if (blazemeter_exists):
             # BlazeMeter Configuration Information -- Required
-            if "api" not in config_json["blazemeter"]:
+            if ("api" not in config_json["blazemeter"]) and (self.arg_blzkey == None):
                 self.required_config_error("BlazeMeter API key")
-            elif "test_id" not in config_json["blazemeter"]:
+            elif ("test_id" not in config_json["blazemeter"]) and (self.arg_blztest == None):
                 self.required_config_error("BlazeMeter test ID")
             elif "test_length_sec" not in config_json["blazemeter"]:
                 self.required_config_error("BlazeMeter test length (seconds)")
             else:
-                config_output["blazemeter"]["api_key"] = config_json["blazemeter"]["api"]
-                config_output["blazemeter"]["test_id"] = config_json["blazemeter"]["test_id"]
+                if (self.arg_blzkey == None):
+                    config_output["blazemeter"]["api_key"] = config_json["blazemeter"]["api"]
+                else:
+                    config_output["blazemeter"]["api_key"] = self.arg_blzkey
+
+                if (self.arg_blztest == None):
+                    config_output["blazemeter"]["test_id"] = config_json["blazemeter"]["test_id"]
+                else:
+                    config_output["blazemeter"]["test_id"] = self.arg_blztest
+                    
                 config_output["blazemeter"]["test_length_sec"] = config_json["blazemeter"]["test_length_sec"]
 
             # BlazeMeter Promotion Gates -- Optional
@@ -351,7 +359,7 @@ class ConfigEngine:
         # Return all of the now properly formatted config data
         return config_output
 
-    def __init__(self, filename, arg_lr):
+    def __init__(self, filename, arg_lr, arg_blzkey, arg_blztest):
         """
         Class starting point
         """
@@ -359,3 +367,7 @@ class ConfigEngine:
         self.filename = filename
         # Argument - Location Remote
         self.arg_lr = arg_lr
+        # Argument - BlazeMeter API key
+        self.arg_blzkey = arg_blzkey
+        # Argument - BlazeMeter API test ID
+        self.arg_blztest = arg_blztest
