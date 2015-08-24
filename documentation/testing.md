@@ -1,7 +1,7 @@
 # Testing
 
 #### Run Manual Tests
-Navigate to the ```tests/``` directory via the command line and run ```python test_suite.py```. This will kick off all of the tests and output the testing results as JUnit XML.
+Navigate to the ```tests/``` directory via the command line and run ```python test_suite.py```. This will kick off all of the tests and output the testing results as JUnit XML. You may need to install the application first.
 
 #### Automated Tests with Atlassian Bamboo
 

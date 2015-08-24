@@ -10,6 +10,7 @@
 | ``-appduser`` | AppDynamics Username         | Uses the given AppDynamics username instead                                     |
 | ``-addppass`` | AppDynamics Password         | Uses the given AppDynamics password instead                                     |
 | ``-appdapp``  | AppDynamics Application Name | Uses the given AppDynamics application name instead                             |
+| ``-wpgttest`` | WebPageTest Test ID          | Uses the given WebPageTest Test ID instead                                      |
 | ``-oc``       | N/A                          | Prints the the output to the console (in addition to the normal output to file) |
 
 ## Adding New Arguments

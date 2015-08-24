@@ -282,11 +282,14 @@ class ConfigEngine:
         config_output["webpagetest"] = {}
         if (webpagetest_exists):
             # WebPageTest Configuration Information -- Required
-            if "test_id" not in config_json["webpagetest"]:
+            if ("test_id" not in config_json["webpagetest"]) and (self.arg_wpgttest == None):
                 self.required_config_error("WebPageTest test ID")
             else:
                 config_output["webpagetest"] = {}
-                config_output["webpagetest"]["test_id"] = config_json["webpagetest"]["test_id"]
+                if (self.arg_wpgttest == None):
+                    config_output["webpagetest"]["test_id"] = config_json["webpagetest"]["test_id"]
+                else:
+                    config_output["webpagetest"]["test_id"] = self.arg_wpgttest
 
             # WebPageTest Promotion Gates -- Optional
             if ("first_view" not in config_json["promotion_gates"] and
@@ -370,7 +373,7 @@ class ConfigEngine:
         # Return all of the now properly formatted config data
         return config_output
 
-    def __init__(self, filename, arg_lr, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp):
+    def __init__(self, filename, arg_lr, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp, arg_wpgttest):
         """
         Class starting point
         """
@@ -388,3 +391,5 @@ class ConfigEngine:
         self.arg_appdpass = arg_appdpass
         # Argument - AppDynamics application name
         self.arg_appdapp = arg_appdapp
+        # Argument - WebPageTest test ID
+        self.arg_wpgttest = arg_wpgttest

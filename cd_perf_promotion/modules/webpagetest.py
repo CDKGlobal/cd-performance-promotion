@@ -32,10 +32,15 @@ class WebPageTest(PerfTools):
         except:
             self.connection_error() # Inherited from the parent class
 
+        # Make sure WebPageTest sent us back a successful HTTP status
+        if (test_summary_request.status_code != 200):
+            # We basically have to be super rough on WebPageTest because the API is far from RESTful
+            self.connection_error() # Inherited from the parent class
+
         # Convert all of the WebPageTest data from XML to JSON and return it
         test_results = json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))
 
-        # Make sure that the module actually got something back
+        # Make sure that we actually got good data back
         # WebPageTest doesn't really offer a REST API, so we have to do some dumb hacks to get it working
         if test_results['response']['statusCode'] != '200':
             self.connection_error() # Inherited from the parent class

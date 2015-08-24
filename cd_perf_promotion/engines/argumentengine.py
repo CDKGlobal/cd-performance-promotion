@@ -17,7 +17,8 @@ class ArgumentEngine:
             'blztest': None,
             'appduser': None,
             'appdpass': None,
-            'appdapp': None
+            'appdapp': None,
+            'wpgttest': None
         }
 
         # Add all of the arguments
@@ -31,6 +32,8 @@ class ArgumentEngine:
         parser.add_argument("-appduser", help="Replaces the AppDynamics username in the configuration file")
         parser.add_argument("-appdpass", help="Replaces the AppDynamics password in the configuration file")
         parser.add_argument("-appdapp", help="Replaces the AppDynamics application name in the configuration file")
+        # All of the WebPageTest API credentials arguments
+        parser.add_argument("-wpgttest", help="Replaces the WebPageTest test ID in the configuration file")
         args = parser.parse_args()
 
         # Configuration file is located remotely
@@ -54,5 +57,8 @@ class ArgumentEngine:
         # Use the command line to set the AppDynamics username
         if args.appdapp:
             arguments['appdapp'] = args.appdapp
+        # Use the command line to set the WebPageTest Test ID
+        if args.wpgttest:
+            arguments['wpgttest'] = args.wpgttest
 
         return arguments;

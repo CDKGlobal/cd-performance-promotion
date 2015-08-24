@@ -19,7 +19,8 @@ def main():
 
     # Grab the configuration information
     configengine = ConfigEngine("config.json", arguments['lr'], arguments['blzkey'], arguments['blztest'],
-                                arguments['appduser'], arguments['appdpass'], arguments['appdapp'])
+                                arguments['appduser'], arguments['appdpass'], arguments['appdapp'],
+                                arguments['wpgttest'])
     config_data = configengine.process_config()
 
     # Grab the performance data
