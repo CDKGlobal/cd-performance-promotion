@@ -9,9 +9,8 @@ CDK uses Atlassian Bamboo as its continuous integration/delivery/deployment plat
   ```
   /opt/python3.4.3/bin/pyvenv ${bamboo.build.working.directory}/py3env
   source ${bamboo.build.working.directory}/py3env/bin/activate
-  python3 -W ignore setup.py -q install
-  cd config
-  ${bamboo.build.working.directory}/py3env/bin/cdperfpromotion -blzkey ${bamboo.blazemeter.apiKey} -blztest ${bamboo.blazemeter.testId} -oc
+  python3 setup.py install
+  ${bamboo.build.working.directory}/py3env/bin/cdperfpromotion -ll ./config/config.json -blzkey ${bamboo.blazemeter.apiKey} -blztest ${bamboo.blazemeter.testId} -oc
   ```
 
   * The ```sed``` commands replace part of the downloaded configuration file so that critical credentials (usernames/password, API keys, etc.) are not stored in source control. The ```sed``` commands in the above script are only replacing the BlazeMeter API key and and test ID since the configuration file only includes data from BlazeMeter.
