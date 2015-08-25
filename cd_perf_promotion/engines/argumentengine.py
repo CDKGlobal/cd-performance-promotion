@@ -1,9 +1,14 @@
 import argparse
+import sys
 
 class ArgumentEngine:
     """
     Handles all command-line arguments
     """
+
+    def conflicting_arg_error(self):
+        print("ERROR: Using conflicting arguments.")
+        sys.exit(1)
 
     def process_arguments(self):
         """
@@ -12,6 +17,7 @@ class ArgumentEngine:
         # Store all of our arguments
         arguments = {
             'lr': None,
+            'll': None,
             'oc': None,
             'blzkey': None,
             'blztest': None,
@@ -24,6 +30,7 @@ class ArgumentEngine:
         # Add all of the arguments
         parser = argparse.ArgumentParser()
         parser.add_argument("-lr", help="Executes the program with the configuration file located at the provided URL")
+        parser.add_argument("-ll", help="Executes the program with the configuration file located at the provided file path")
         parser.add_argument("-oc", help="Prints the output to the console", action="store_true")
         # All of the BlazeMeter API credentials arguments
         parser.add_argument("-blzkey", help="Replaces the BlazeMeter API key in the configuration file")
@@ -39,6 +46,8 @@ class ArgumentEngine:
         # Configuration file is located remotely
         if args.lr:
             arguments['lr'] = args.lr
+        if args.ll:
+            arguments['ll'] = args.ll
         # Print out data to the console as well
         if args.oc:
             arguments['oc'] = args.oc
@@ -60,5 +69,9 @@ class ArgumentEngine:
         # Use the command line to set the WebPageTest Test ID
         if args.wpgttest:
             arguments['wpgttest'] = args.wpgttest
+
+        # Make sure overriding arguments aren't used
+        if (args.lr and args.ll):
+            self.conflicting_arg_error()
 
         return arguments;

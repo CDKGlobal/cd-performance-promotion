@@ -24,7 +24,7 @@ class ConfigEngine:
         Finds the configuration file and grabs the JSON data out of it
         """
         # Look for arguments telling us where the config file is located
-        if (self.arg_lr != None):
+        if ((self.arg_lr != None)):
             # Config is located remotely
             try:
                 config_file = requests.get(self.arg_lr)
@@ -373,7 +373,7 @@ class ConfigEngine:
         # Return all of the now properly formatted config data
         return config_output
 
-    def __init__(self, filename, arg_lr, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp, arg_wpgttest):
+    def __init__(self, filename, arg_lr, arg_ll, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp, arg_wpgttest):
         """
         Class starting point
         """
@@ -381,6 +381,9 @@ class ConfigEngine:
         self.filename = filename
         # Argument - Location Remote
         self.arg_lr = arg_lr
+        # Argument - Location Local (Specific Directory)
+        if (arg_ll != None):
+            self.filename = arg_ll
         # Argument - BlazeMeter API key
         self.arg_blzkey = arg_blzkey
         # Argument - BlazeMeter API test ID

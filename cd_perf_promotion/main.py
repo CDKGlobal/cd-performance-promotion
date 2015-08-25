@@ -18,7 +18,7 @@ def main():
     arguments = ArgumentEngine().process_arguments()
 
     # Grab the configuration information
-    configengine = ConfigEngine("config.json", arguments['lr'], arguments['blzkey'], arguments['blztest'],
+    configengine = ConfigEngine("config.json", arguments['lr'], arguments['ll'], arguments['blzkey'], arguments['blztest'],
                                 arguments['appduser'], arguments['appdpass'], arguments['appdapp'],
                                 arguments['wpgttest'])
     config_data = configengine.process_config()
