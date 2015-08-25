@@ -6,12 +6,12 @@
 | ``-h``        | N/A                          | Help -- Lists all of the arguments and information about them                      |
 | ``-lr``       | Configuration file URL       | Executes the program with the configuration file located at the provided URL       |
 | ``-ll``       | Configuration file file path | Executes the program with the configuration file located at the provided file path |
-| ``-blzkey``   | BlazeMeter API key           | Uses the given BlazeMeter API key instead                                          |
-| ``-blztest``  | BlazeMeter Test ID           | Uses the given BlazeMeter Test ID instead                                          |
-| ``-appduser`` | AppDynamics Username         | Uses the given AppDynamics username instead                                        |
-| ``-addppass`` | AppDynamics Password         | Uses the given AppDynamics password instead                                        |
-| ``-appdapp``  | AppDynamics Application Name | Uses the given AppDynamics application name instead                                |
-| ``-wpgttest`` | WebPageTest Test ID          | Uses the given WebPageTest Test ID instead                                         |
+| ``-blzkey``   | BlazeMeter API key           | Replaces the BlazeMeter API key in the configuration file                          |
+| ``-blztest``  | BlazeMeter Test ID           | Replaces the BlazeMeter Test ID in the configuration file                          |
+| ``-appduser`` | AppDynamics Username         | Replaces the AppDynamics username in the configuration file                        |
+| ``-addppass`` | AppDynamics Password         | Replaces the AppDynamics password in the configuration file                        |
+| ``-appdapp``  | AppDynamics Application Name | Replaces the AppDynamics application name in the configuration file                |
+| ``-wpgtkey``  | WebPageTest API key          | Replaces the WebPageTest API key in the configuration file                         |
 | ``-oc``       | N/A                          | Prints the the output to the console (in addition to the normal output to file)    |
 
 ## Adding New Arguments

@@ -78,7 +78,7 @@ class DataEngine:
         # Check if the WebPageTest module was requested by the config
         if (config_data["webpagetest"]["exists"] == True):
             # Start up WebPageTest
-            webpagetest = WebPageTest(config_data["webpagetest"]["test_id"])
+            webpagetest = WebPageTest(config_data["webpagetest"]["url"], config_data["webpagetest"]["location"], config_data["webpagetest"]["api"])
             alldata = webpagetest.get_data()
             perf_data["webpagetest"] = { "average": { "first_view": alldata["response"]["data"]["average"]["firstView"], "repeat_view": alldata["response"]["data"]["average"]["repeatView"] }, "runs": [] }
             for run in alldata["response"]["data"]["run"]:

@@ -280,16 +280,36 @@ class ConfigEngine:
 
         # WebPageTest Module
         config_output["webpagetest"] = {}
+        # Have to have a list of locations that WebPageTest supports since the API
+        # doesn't have any sort of validation on this
+        available_locations = ["Dulles_IE9", "Dulles_IE10", "Dulles_IE_11", "Dulles:Chrome", "Dulles:Canary", "Dulles:Firefox",
+                               "Dulles:Firefox Nightly", "Dulles: Safari", "Dulles_MotoG:Motorola G - Chrome", "Dulles_MotoG:Motorola G - Chrome Beta",
+                               "Dulles_MotoG:Motorola G - Chrome Dev", "ec2-us-east-1:Chrome", "ec2-us-east-1:IE 11", "ec2-us-east-1:Firefox",
+                               "ec2-us-east-1:Safari", "ec2-us-west-1:Chrome", "ec2-us-west-1:IE 11", "ec2-us-west-1:Firefox", "ec2-us-west-1:Safari",
+                               "ec2-us-west-2:Chrome", "ec2-us-west-2:IE 11", "ec2-us-west-2:Firefox", "ec2-us-west-2:Safari", "ec2-eu-west-1:Chrome",
+                               "ec2-eu-west-1:IE 11", "ec2-eu-west-1:Firefox", "ec2-eu-west-1:Safari", "ec2-eu-central-1:Chrome", "ec2-eu-central-1:IE 11",
+                               "ec2-eu-central-1:Firefox", "ec2-eu-central-1:Safari", "ec2-ap-northeast-1:Chrome", "ec2-ap-northeast-1:IE 11",
+                               "ec2-ap-northeast-1:Firefox", "ec2-ap-northeast-1:Safari", "ec2-ap-southeast-2:Chrome", "ec2-ap-southeast-2:IE 11",
+                               "ec2-ap-southeast-2:Firefox", "ec2-ap-southeast-2:Safari", "ec2-sa-east-1:Chrome", "ec2-sa-east-1:IE 11",
+                               "ec2-sa-east-1:Firefox", "ec2-sa-east-1:Safari"]
         if (webpagetest_exists):
             # WebPageTest Configuration Information -- Required
-            if ("test_id" not in config_json["webpagetest"]) and (self.arg_wpgttest == None):
-                self.required_config_error("WebPageTest test ID")
+            if ("url" not in config_json["webpagetest"]):
+                self.required_config_error("WebPageTest url")
+            elif ("location" not in config_json["webpagetest"]):
+                self.required_config_error("WebPageTest location")
+            elif (config_json["webpagetest"]["location"] not in available_locations):
+                self.required_config_error("the specified WebPageTest location")
+            elif ("api" not in config_json["webpagetest"]) and (self.arg_wpgtkey == None):
+                self.required_config_error("WebPageTest API key")
             else:
                 config_output["webpagetest"] = {}
-                if (self.arg_wpgttest == None):
-                    config_output["webpagetest"]["test_id"] = config_json["webpagetest"]["test_id"]
+                config_output["webpagetest"]["url"] = config_json["webpagetest"]["url"]
+                config_output["webpagetest"]["location"] = config_json["webpagetest"]["location"]
+                if (self.arg_wpgtkey == None):
+                    config_output["webpagetest"]["api"] = config_json["webpagetest"]["api"]
                 else:
-                    config_output["webpagetest"]["test_id"] = self.arg_wpgttest
+                    config_output["webpagetest"]["api"] = self.arg_wpgtkey
 
             # WebPageTest Promotion Gates -- Optional
             if ("first_view" not in config_json["promotion_gates"] and
@@ -373,7 +393,7 @@ class ConfigEngine:
         # Return all of the now properly formatted config data
         return config_output
 
-    def __init__(self, filename, arg_lr, arg_ll, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp, arg_wpgttest):
+    def __init__(self, filename, arg_lr, arg_ll, arg_blzkey, arg_blztest, arg_appduser, arg_appdpass, arg_appdapp, arg_wpgtkey):
         """
         Class starting point
         """
@@ -394,5 +414,5 @@ class ConfigEngine:
         self.arg_appdpass = arg_appdpass
         # Argument - AppDynamics application name
         self.arg_appdapp = arg_appdapp
-        # Argument - WebPageTest test ID
-        self.arg_wpgttest = arg_wpgttest
+        # Argument - WebPageTest API key
+        self.arg_wpgtkey = arg_wpgtkey

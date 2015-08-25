@@ -29,7 +29,7 @@ class BlazeMeter(PerfTools):
         """
         api_headers = {"Content-Type": "application/json", "x-api-key": api_key}
 
-        # Run Performance test (HTTP GET request)
+        # Run performance test (HTTP GET request)
         run_test_url = "https://a.blazemeter.com/api/latest/tests/{0}/start".format(test_id)
         try:
             run_test_request = requests.get(run_test_url, headers=api_headers)
@@ -52,7 +52,6 @@ class BlazeMeter(PerfTools):
         """
         Gets the load test data from the API
         """
-        api_headers = {"Content-Type": "application/json", "x-api-key": self.api_key}
 
         # Run the test and get the test session ID
         session_id = self.run_test(self.api_key, self.test_id)
@@ -63,6 +62,7 @@ class BlazeMeter(PerfTools):
         time.sleep(self.test_length + 240)
 
         # Get all of the aggregate (HTTP GET request)
+        api_headers = {"Content-Type": "application/json", "x-api-key": self.api_key}
         test_summary_url = "https://a.blazemeter.com/api/latest/sessions/{0}/reports/main/summary".format(session_id)
         try:
             test_summary_request = requests.get(test_summary_url, headers=api_headers)

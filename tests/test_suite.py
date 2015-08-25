@@ -52,6 +52,21 @@ class TestSuite(unittest.TestCase):
         # Make sure that sys.exit(1) is called
         self.assertEqual(cm.exception.code, 1)
 
+    def test_bad_webpagetest_location(self):
+        # Grab the configuration information
+        configengine = ConfigEngine("./test_configs/config_test3.json", None, None, None, None, None, None, None, None)
+        config_data = configengine.process_config()
+
+        # Grab the performance data
+        dataengine = DataEngine()
+
+        # Check for a system exit call
+        with self.assertRaises(SystemExit) as cm:
+            dataengine.get_data(config_data)
+
+        # Make sure that sys.exit(1) is called
+        self.assertEqual(cm.exception.code, 1)
+
 
 if __name__ == '__main__':
     sys.stdout = open(os.devnull, 'w')

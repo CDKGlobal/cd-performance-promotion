@@ -11,11 +11,13 @@ All fields marked as required are only required if you want to use the tool asso
 | ``load_test_length_start_ms`` | Number  | appdynamics            | AppDynamics     | Time that you want to begin monitoring at. Format is milliseconds after Unix epoch time (January 1st, 1970) | Yes*     |
 | ``load_test_length_end_ms``   | Number  | appdynamics            | AppDynamics     | Time that you want to monitoring to stop. Format is milliseconds after Unix epoch time (January 1st, 1970)  | Yes*     |
 | ``blazemeter``                | Object  | None                   | BlazeMeter      | Contains all of the BlazeMeter specific information                                                         | Yes      |
-| ``api``                       | String  | blazemeter             | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
+| ``api``                       | String  | blazemeter             | BlazeMeter      | BlazeMeter API key                                                                                          | Yes      |
 | ``test_id``                   | String  | blazemeter             | BlazeMeter      | Unique BlazeMeter test ID -- used to run the BlazeMeter load test and gather data                           | Yes      |
 | ``test_length_sec``           | String  | blazemeter             | BlazeMeter      | How long the load test runs for -- used to initiate the BlazeMeter load test                                | Yes      |
 | ``webpagetest``               | Object  | None                   | WebPageTest     | Contains all of the WebPageTest specific information                                                        | Yes      |
-| ``test_id``                   | String  | webpagetest            | WebPageTest     | Unique WebPageTest test ID -- used to run the WebPageTest and gather UI data                                | Yes      |
+| ``url``                       | String  | webpagetest            | WebPageTest     | URL being tested                                                                                            | Yes      |
+| ``location``                  | String  | webpagetest            | WebPageTest     | Where the WebPageTest test will be run from. See below for a complete list of locations.                    | Yes      |
+| ``api``                       | String  | webpagetest            | WebPageTest     | WebPageTest API key                                                                                         | Yes      |
 | ``promotion_gates``           | Object  | None                   | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``response_time_avg``         | Number  | promotion_gates        | BlazeMeter      | Average response time (under BlazeMeter load)                                                               | No       |
 | ``response_time_max``         | Number  | promotion_gates        | BlazeMeter      | Maximum response time (under BlazeMeter load)                                                               | No       |
@@ -45,3 +47,52 @@ All fields marked as required are only required if you want to use the tool asso
 \*Either ``load_test_length_min`` or both ``load_test_length_start_ms`` and ``load_test_length_end_ms`` must be declared
 
 \*\*Required if you want to use any WebPageTest data
+
+#### Available WebPageTest Locations
+* Dulles_IE9
+* Dulles_IE10
+* Dulles_IE11
+* Dulles:Chrome
+* Dulles:Canary
+* Dulles:Firefox
+* Dulles:Firefox Nightly
+* Dulles:Safari
+* Dulles_MotoG:Motorola G - Chrome
+* Dulles_MotoG:Motorola G - Chrome Beta
+* Dulles_MotoG:Motorola G - Chrome Dev
+* ec2-us-east-1:Chrome
+* ec2-us-east-1:IE 11
+* ec2-us-east-1:Firefox
+* ec2-us-east-1:Safari
+* ec2-us-west-1:Chrome
+* ec2-us-west-1:IE 11
+* ec2-us-west-1:Firefox
+* ec2-us-west-1:Safari
+* ec2-us-west-2:Chrome
+* ec2-us-west-2:IE 11
+* ec2-us-west-2:Firefox
+* ec2-us-west-2:Safari
+* ec2-eu-west-1:Chrome
+* ec2-eu-west-1:IE 11
+* ec2-eu-west-1:Firefox
+* ec2-eu-west-1:Safari
+* ec2-eu-central-1:Chrome
+* ec2-eu-central-1:IE 11
+* ec2-eu-central-1:Firefox
+* ec2-eu-central-1:Safari
+* ec2-ap-northeast-1:Chrome
+* ec2-ap-northeast-1:IE 11
+* ec2-ap-northeast-1:Firefox
+* ec2-ap-northeast-1:Safari
+* ec2-ap-southeast-1:Chrome
+* ec2-ap-southeast-1:IE 11
+* ec2-ap-southeast-1:Firefox
+* ec2-ap-southeast-1:Safari
+* ec2-ap-southeast-2:Chrome
+* ec2-ap-southeast-2:IE 11
+* ec2-ap-southeast-2:Firefox
+* ec2-ap-southeast-2:Safari
+* ec2-sa-east-1:Chrome
+* ec2-sa-east-1:IE 11
+* ec2-sa-east-1:Firefox
+* ec2-sa-east-1:Safari
