@@ -44,10 +44,8 @@ class WebPageTest(PerfTools):
         # Get the test ID so that we can look at the results later
         test_id = run_test_request.json()["data"]["testId"]
 
-        # Notify the user that the WebPageTest test has run successfully
-        print("Started WebPageTest UI test")
-        print("Waiting for WebPageTest UI test to finish")
-
+        # Let the user know what's going on
+        print("Queued WebPageTest UI test")
         return test_id
 
     def get_data(self):
@@ -63,29 +61,47 @@ class WebPageTest(PerfTools):
         # do two runs :-/
         test_id = self.run_test(self.url, 2, self.location, self.api_key)
 
-        # Wait for the test to Complete
-        # TODO Implement better API checking
-        time.sleep(180)
+        # Wait until the test results are ready
+        checkStatusCode = 100
+        timePassed = 0
+        testStatus = ""
+        while (checkStatusCode != 200):
+            if (timePassed > 600):
+                # 10 minutes have passed, error out. Something probably went wrong.
+                #self.connection_error() # Inherited from the parent Class
+                print("timepassed broke")
+            else:
+                # Check the test results
+                test_summary_url = "http://www.webpagetest.org/xmlResult/{0}/".format(test_id)
+                try:
+                    test_summary_request = requests.get(test_summary_url)
+                except:
+                    self.connection_error() # Inherited from the parent class
 
-        # Get all of the aggregate (HTTP GET request)
-        test_summary_url = "http://www.webpagetest.org/xmlResult/{0}/".format(test_id)
-        try:
-            test_summary_request = requests.get(test_summary_url)
-        except:
-            self.connection_error() # Inherited from the parent class
-
-        # Make sure WebPageTest sent us back a successful HTTP status
-        if (test_summary_request.status_code != 200) or (test_summary_request.json()["statusCode"] != 200):
-            # We basically have to be super rough on WebPageTest because the API is far from RESTful
-            self.connection_error() # Inherited from the parent class
+                # Are the test results ready?
+                # Have to do some string to int conversions due to the XML stuff
+                if ((test_summary_request.status_code == 200) and
+                     (int(json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))["response"]["statusCode"]) == 200)):
+                    # Yes, break the loop and
+                    checkStatusCode = 200
+                elif ((test_summary_request.status_code == 200) and
+                      ((int(json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))["response"]["statusCode"]) < 200) and
+                       (int(json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))["response"]["statusCode"]) >= 100))):
+                    # Let the user know when the test has been started
+                    newStatus = json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))["response"]["statusText"]
+                    if newStatus != testStatus:
+                        if (newStatus == "Test Started"):
+                            print("Started WebPageTest UI test")
+                        testStatus = newStatus
+                    # Be nice to the WebPageTest API
+                    time.sleep(10)
+                    timePassed += 10
+                else:
+                    # Something broke
+                    self.connection_error() # Inherited from the parent class
 
         # Convert all of the WebPageTest data from XML to JSON and return it
         test_results = json.loads(json.dumps(xmltodict.parse(test_summary_request.content)))
-
-        # Make sure that we actually got good data back
-        # WebPageTest doesn't really offer a REST API, so we have to do some dumb hacks to get it working
-        if test_results['response']['statusCode'] != '200':
-            self.connection_error() # Inherited from the parent class
 
         # Notify the user that the WebPageTest data is being grabbed
         print("Retrieved WebPageTest data")
