@@ -14,7 +14,10 @@
   },
   "webpagetest":
   {
-    "test_id": "testidgoeshere"
+    "url": "applicationurlgoeshere",
+    "location": "locationgoeshere",
+    "runs": 2,
+    "api": "apikeygoeshere"
   },
   "promotion_gates":
   {

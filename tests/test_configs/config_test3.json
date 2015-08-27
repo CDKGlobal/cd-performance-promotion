@@ -3,6 +3,7 @@
   {
     "url": "http://www.google.com/",
     "location": "ec2-us-west-2:Chrome",
+    "runs": 1,
     "api": "fakeapikey"
   },
   "promotion_gates":

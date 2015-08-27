@@ -78,10 +78,10 @@ class DataEngine:
         # Check if the WebPageTest module was requested by the config
         if (config_data["webpagetest"]["exists"] == True):
             # Start up WebPageTest
-            webpagetest = WebPageTest(config_data["webpagetest"]["url"], config_data["webpagetest"]["location"], config_data["webpagetest"]["api"])
+            webpagetest = WebPageTest(config_data["webpagetest"]["url"], config_data["webpagetest"]["location"], config_data["webpagetest"]["runs"], config_data["webpagetest"]["api"])
             alldata = webpagetest.get_data()
-            perf_data["webpagetest"] = { "average": { "first_view": alldata["response"]["data"]["average"]["firstView"], "repeat_view": alldata["response"]["data"]["average"]["repeatView"] }, "runs": [] }
-            for run in alldata["response"]["data"]["run"]:
-                perf_data["webpagetest"]["runs"].append({"run_id": run["id"], "first_view": run["firstView"], "repeat_view": run["repeatView"]})
+            perf_data["webpagetest"] = { "average": { "first_view": alldata["data"]["average"]["firstView"], "repeat_view": alldata["data"]["average"]["repeatView"] }, "runs": [] }
+            for id, run in alldata["data"]["runs"].items():
+                perf_data["webpagetest"]["runs"].append({"run_id": id, "first_view": run["firstView"], "repeat_view": run["repeatView"]})
 
         return perf_data

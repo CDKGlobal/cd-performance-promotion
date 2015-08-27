@@ -300,12 +300,15 @@ class ConfigEngine:
                 self.required_config_error("WebPageTest location")
             elif (config_json["webpagetest"]["location"] not in available_locations):
                 self.required_config_error("the specified WebPageTest location")
+            elif ("runs" not in config_json["webpagetest"]):
+                self.required_config_error("WebPageTest runs")
             elif ("api" not in config_json["webpagetest"]) and (self.arg_wpgtkey == None):
                 self.required_config_error("WebPageTest API key")
             else:
                 config_output["webpagetest"] = {}
                 config_output["webpagetest"]["url"] = config_json["webpagetest"]["url"]
                 config_output["webpagetest"]["location"] = config_json["webpagetest"]["location"]
+                config_output["webpagetest"]["runs"] = config_json["webpagetest"]["runs"]
                 if (self.arg_wpgtkey == None):
                     config_output["webpagetest"]["api"] = config_json["webpagetest"]["api"]
                 else:

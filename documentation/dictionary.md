@@ -17,6 +17,7 @@ All fields marked as required are only required if you want to use the tool asso
 | ``webpagetest``               | Object  | None                   | WebPageTest     | Contains all of the WebPageTest specific information                                                        | Yes      |
 | ``url``                       | String  | webpagetest            | WebPageTest     | URL being tested                                                                                            | Yes      |
 | ``location``                  | String  | webpagetest            | WebPageTest     | Where the WebPageTest test will be run from. See below for a complete list of locations.                    | Yes      |
+| ``runs``                      | Number  | webpagetest            | WebPageTest     | The number of times that WebPageTest will execute the test                                                  | Yes      |
 | ``api``                       | String  | webpagetest            | WebPageTest     | WebPageTest API key                                                                                         | Yes      |
 | ``promotion_gates``           | Object  | None                   | BlazeMeter      | Contains all of the promotion gate criteria                                                                 | Yes      |
 | ``response_time_avg``         | Number  | promotion_gates        | BlazeMeter      | Average response time (under BlazeMeter load)                                                               | No       |

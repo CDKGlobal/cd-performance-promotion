@@ -257,23 +257,23 @@ class ComparisonEngine:
                             # Set up first_view for the run
                             self.output_json["webpagetest"]["runs"][run_id][view] = {}
                             # Speed Index
-                            self.compare_webpagetest("speed_index", config_data["promotion_gates"][view]["speed_index"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["SpeedIndex"], run_id, view, operator.gt)
+                            self.compare_webpagetest("speed_index", config_data["promotion_gates"][view]["speed_index"], perf_data["webpagetest"]["runs"][run_id][view]["SpeedIndex"], run_id, view, operator.gt)
                             # Time to First Paint
-                            self.compare_webpagetest("first_paint", config_data["promotion_gates"][view]["first_paint"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["firstPaint"], run_id, view, operator.lt)
+                            self.compare_webpagetest("first_paint", config_data["promotion_gates"][view]["first_paint"], perf_data["webpagetest"]["runs"][run_id][view]["firstPaint"], run_id, view, operator.lt)
                             # Time to First Byte
-                            self.compare_webpagetest("first_byte", config_data["promotion_gates"][view]["first_byte"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["TTFB"], run_id, view, operator.lt)
+                            self.compare_webpagetest("first_byte", config_data["promotion_gates"][view]["first_byte"], perf_data["webpagetest"]["runs"][run_id][view]["TTFB"], run_id, view, operator.lt)
                             # Time to Fully Loaded
-                            self.compare_webpagetest("fully_loaded", config_data["promotion_gates"][view]["fully_loaded"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["fullyLoaded"], run_id, view, operator.lt)
+                            self.compare_webpagetest("fully_loaded", config_data["promotion_gates"][view]["fully_loaded"], perf_data["webpagetest"]["runs"][run_id][view]["fullyLoaded"], run_id, view, operator.lt)
                             # Time to Visual Complete
-                            self.compare_webpagetest("visual_complete", config_data["promotion_gates"][view]["visual_complete"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["visualComplete"], run_id, view, operator.lt)
+                            self.compare_webpagetest("visual_complete", config_data["promotion_gates"][view]["visual_complete"], perf_data["webpagetest"]["runs"][run_id][view]["visualComplete"], run_id, view, operator.lt)
                             # Time to Start Render
-                            self.compare_webpagetest("start_render", config_data["promotion_gates"][view]["start_render"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["render"], run_id, view, operator.lt)
+                            self.compare_webpagetest("start_render", config_data["promotion_gates"][view]["start_render"], perf_data["webpagetest"]["runs"][run_id][view]["render"], run_id, view, operator.lt)
                             # Time to Last Visual Change
-                            self.compare_webpagetest("last_visual_change", config_data["promotion_gates"][view]["last_visual_change"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["lastVisualChange"], run_id, view, operator.lt)
+                            self.compare_webpagetest("last_visual_change", config_data["promotion_gates"][view]["last_visual_change"], perf_data["webpagetest"]["runs"][run_id][view]["lastVisualChange"], run_id, view, operator.lt)
                             # Time to <title></title> Tags Loaded
-                            self.compare_webpagetest("title_time", config_data["promotion_gates"][view]["title_time"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["titleTime"], run_id, view, operator.lt)
+                            self.compare_webpagetest("title_time", config_data["promotion_gates"][view]["title_time"], perf_data["webpagetest"]["runs"][run_id][view]["titleTime"], run_id, view, operator.lt)
                             # Page Size (Bytes In)
-                            self.compare_webpagetest("page_size", config_data["promotion_gates"][view]["page_size"], perf_data["webpagetest"]["runs"][run_id][view]["results"]["bytesIn"], run_id, view, operator.lt)
+                            self.compare_webpagetest("page_size", config_data["promotion_gates"][view]["page_size"], perf_data["webpagetest"]["runs"][run_id][view]["bytesIn"], run_id, view, operator.lt)
 
         # Set the overall status in the output JSON file
         self.output_json["promotion_gates"]["passed"] = self.build_status_passed
