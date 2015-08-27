@@ -11,7 +11,7 @@ setup(
                   "cd_perf_promotion.engines",
                   "cd_perf_promotion.modules"],
       install_requires = ["requests",
-                           "unittest-xml-reporting"],
+                          "unittest-xml-reporting"],
       entry_points={
         "console_scripts": ["cdperfpromotion=cd_perf_promotion.main:main"]
       },

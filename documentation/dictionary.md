@@ -13,7 +13,6 @@ All fields marked as required are only required if you want to use the tool asso
 | ``blazemeter``                | Object  | None                   | BlazeMeter      | Contains all of the BlazeMeter specific information                                                         | Yes      |
 | ``api``                       | String  | blazemeter             | BlazeMeter      | BlazeMeter API key                                                                                          | Yes      |
 | ``test_id``                   | String  | blazemeter             | BlazeMeter      | Unique BlazeMeter test ID -- used to run the BlazeMeter load test and gather data                           | Yes      |
-| ``test_length_sec``           | String  | blazemeter             | BlazeMeter      | How long the load test runs for -- used to initiate the BlazeMeter load test                                | Yes      |
 | ``webpagetest``               | Object  | None                   | WebPageTest     | Contains all of the WebPageTest specific information                                                        | Yes      |
 | ``url``                       | String  | webpagetest            | WebPageTest     | URL being tested                                                                                            | Yes      |
 | ``location``                  | String  | webpagetest            | WebPageTest     | Where the WebPageTest test will be run from. See below for a complete list of locations.                    | Yes      |

@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import sys
 from cd_perf_promotion.modules.perftools import PerfTools
 
 class WebPageTest(PerfTools):
@@ -24,6 +25,13 @@ class WebPageTest(PerfTools):
         # Inherit methods from parent class "PerfTools"
         PerfTools.__init__(self, "WebPageTest")
 
+    def api_key_error(self):
+        """
+        Let the user know that their WebPageTest API key limit has been exceeded
+        """
+        print("ERROR: WebPageTest API key daily limit has been reached")
+        sys.exit(1)
+
     def run_test(self, url, location, runs, api_key):
         """
         Runs the UI test
@@ -39,13 +47,16 @@ class WebPageTest(PerfTools):
         # Covers cases where users enter crazy parameters or WebPageTest miraculously
         # determines your query is bad
         if (run_test_request.status_code != 200) or (run_test_request.json()["statusCode"] != 200):
-            self.connection_error() # Inherited from the parent class
+            if run_test_request.json()["statusCode"] == 400:
+                self.api_key_error()
+            else:
+                self.connection_error() # Inherited from the parent class
 
         # Get the test ID so that we can look at the results later
         test_id = run_test_request.json()["data"]["testId"]
 
         # Let the user know what's going on
-        print("Queued WebPageTest UI test")
+        print("Queueing WebPageTest UI test...")
         return test_id
 
     def get_data(self):
@@ -83,7 +94,7 @@ class WebPageTest(PerfTools):
                     newStatus = test_summary_request.json()["statusText"]
                     if newStatus != testStatus:
                         if (newStatus == "Test Started"):
-                            print("Started WebPageTest UI test")
+                            print("Running WebPageTest UI test...")
                         testStatus = newStatus
                     # Be nice to the WebPageTest API
                     time.sleep(10)

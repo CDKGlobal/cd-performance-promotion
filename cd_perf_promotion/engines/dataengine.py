@@ -45,6 +45,16 @@ class DataEngine:
         # Output dictionary that has all of the data
         perf_data = {}
 
+        # Check if the BlazeMeter module was requested by the config
+        if (config_data["blazemeter"]["exists"] == True):
+            # Start up BlazeMeter
+            blazemeter = BlazeMeter(config_data["blazemeter"]["api_key"],
+                                    config_data["blazemeter"]["test_id"])
+            # BlazeMeter data
+            transactions = blazemeter.get_data()
+            perf_data["blazemeter"] = {}
+            perf_data["blazemeter"]["transactions"] = transactions
+
         # Check if the AppDynamics module was requested by the config
         if (config_data["appdynamics"]["exists"] == True):
             # Get the time stuff setup if the user hasn't specified a start and end time
@@ -63,17 +73,6 @@ class DataEngine:
             healthrule_violations = appdynamics.get_data()
             perf_data["appdynamics"] = {}
             perf_data["appdynamics"]["healthrule_violations"] = healthrule_violations
-
-        # Check if the BlazeMeter module was requested by the config
-        if (config_data["blazemeter"]["exists"] == True):
-            # Start up BlazeMeter
-            blazemeter = BlazeMeter(config_data["blazemeter"]["api_key"],
-                                    config_data["blazemeter"]["test_id"],
-                                    config_data["blazemeter"]["test_length_sec"])
-            # BlazeMeter data
-            transactions = blazemeter.get_data()
-            perf_data["blazemeter"] = {}
-            perf_data["blazemeter"]["transactions"] = transactions
 
         # Check if the WebPageTest module was requested by the config
         if (config_data["webpagetest"]["exists"] == True):

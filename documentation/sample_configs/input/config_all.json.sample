@@ -9,8 +9,7 @@
   "blazemeter":
   {
     "api": "apikeygoeshere",
-    "test_id": "testidgoeshere",
-    "test_length_sec": 300
+    "test_id": "testidgoeshere"
   },
   "webpagetest":
   {

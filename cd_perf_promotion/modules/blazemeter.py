@@ -7,19 +7,17 @@ class BlazeMeter(PerfTools):
     Handles all of the BlazeMeter API querying/data gathering
     """
 
-    def __init__(self, api_key, test_id, test_length_sec):
+    def __init__(self, api_key, test_id):
         """
         Sets up all of the instance variables
 
         Keyword arguments:
         api_key - The BlazeMeter API key (string)
         test_id - The BlazeMeter Test ID (string)
-        test_length_sec - How long the BlazeMeter load test will take
         """
         # Test configuration information
         self.api_key = api_key
         self.test_id = test_id
-        self.test_length = test_length_sec
         # Inherit methods from parent class "PerfTools"
         PerfTools.__init__(self, "BlazeMeter")
 
@@ -43,8 +41,7 @@ class BlazeMeter(PerfTools):
         session_id = run_test_request.json()["result"]["sessionsId"][0]
 
         # Notify the user that the BlazeMeter test has run successfully
-        print("Started BlazeMeter load test")
-        print("Waiting for BlazeMeter load test to finish")
+        print("Booting up BlazeMeter servers...")
 
         return session_id
 
@@ -56,12 +53,44 @@ class BlazeMeter(PerfTools):
         # Run the test and get the test session ID
         session_id = self.run_test(self.api_key, self.test_id)
 
-        # Wait for the test to Complete
-        # It takes max 4 minutes to launch test servers, so add how long it takes to run the test_summary_url
-        # with how long it takes to get servers up.
-        time.sleep(self.test_length + 240)
+        # Wait for the test to complete
+        finished = False
+        current_status = "BOOT_STARTING"
+        while (finished == False):
+            # Check the test status
+            api_headers = {"Content-Type": "application/json", "x-api-key": self.api_key}
+            status_url = "https://a.blazemeter.com/api/latest/sessions/"
+            try:
+                sessions_request = requests.get(status_url, headers=api_headers)
+            except:
+                self.connection_error()
 
-        # Get all of the aggregate (HTTP GET request)
+            # Make sure we got something back
+            if sessions_request.status_code != 200:
+                self.connection_error()
+
+            # Examine the data
+            sessions_data = sessions_request.json()
+
+            for session in sessions_data["result"]:
+                # Find our test session
+                if session["id"] == session_id:
+                    # Update the user on the current status
+                    if (session["status"] == "INIT_SCRIPT") and (session["status"] != current_status):
+                        print("Initializing BlazeMeter load test...")
+                        current_status = session["status"]
+                    elif (session["status"] == "DATA_RECIEVED") and (session["status"] != current_status):
+                        print("Running BlazeMeter load test...")
+                        current_status = session["status"]
+                    elif (session["status"] == "ENDED"):
+                        # Test is complete
+                        finished = True
+                        break
+                    # We already found our session, no need to continue looping over the sessions
+                    # returned by this request
+                    break
+
+        # Get all of the aggregate data (HTTP GET request)
         api_headers = {"Content-Type": "application/json", "x-api-key": self.api_key}
         test_summary_url = "https://a.blazemeter.com/api/latest/sessions/{0}/reports/main/summary".format(session_id)
         try:
