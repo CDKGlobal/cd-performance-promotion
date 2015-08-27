@@ -2,8 +2,8 @@
 
 CDK uses Atlassian Bamboo as its continuous integration/delivery/deployment platform. To use this program with Bamboo, please add the following tasks:
 
-1. Source Code Checkout of ```CD Performance Promotion``` (this tool)
-2. Source Code Checkout of ```INSERT YOUR CONFIG.JSON REPO HERE``` with a Checkout Directory of ```./config```
+1. Source Code Checkout of ```CD Performance Promotion``` (this tool) with ``Force Clean Build`` checked
+2. Source Code Checkout of ```INSERT YOUR CONFIG.JSON REPO HERE``` with a Checkout Directory of ```./config``` and with ``Force Clean Build`` checked
 3. Script:
 
   ```
