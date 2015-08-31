@@ -6,3 +6,4 @@ build/*
 dist/*
 cd_perf_promotion.egg-info
 config.json
+configs/*
