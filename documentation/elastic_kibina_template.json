@@ -1,4 +1,5 @@
 {
+	"mappings": {
 		"blazemeter.transactions":
 		{
 			"properties":
@@ -121,3 +122,4 @@
 			}
 		}
 	}
+}

@@ -32,6 +32,13 @@ class WebPageTest(PerfTools):
         print("ERROR: WebPageTest API key daily limit has been reached")
         sys.exit(1)
 
+    def timeout_error(self):
+        """
+        Let the user know that their WebPageTest UI test has timed out
+        """
+        print("ERROR: WebPageTest has timed out")
+        sys.exit(1)
+
     def run_test(self, url, location, runs, api_key):
         """
         Runs the UI test
@@ -70,9 +77,9 @@ class WebPageTest(PerfTools):
         timePassed = 0
         testStatus = ""
         while (checkStatusCode != 200):
-            if (timePassed > 600):
-                # 10 minutes have passed, error out. Something probably went wrong.
-                self.connection_error() # Inherited from the parent Class
+            if (timePassed > 1800):
+                # 30 minutes have passed, error out. Something probably went wrong.
+                self.timeout_error() # Inherited from the parent Class
             else:
                 # Check the test results
                 test_summary_url = "http://www.webpagetest.org/jsonResult.php?test={0}".format(test_id)
