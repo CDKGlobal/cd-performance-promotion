@@ -1,0 +1,123 @@
+{
+		"blazemeter.transactions":
+		{
+			"properties":
+			{
+				"DateTime": { "type": "date", "format": "dateOptionalTime" },
+				"bandwidth_avg": { "type": "float" },
+				"bandwidth_avg_passed": { "type": "boolean" },
+				"latency_avg": { "type": "float" },
+				"latency_avg_passed": { "type": "boolean" },
+				"latency_max": { "type": "float" },
+				"latency_max_passed": { "type": "boolean" },
+				"latency_stdev": { "type": "float" },
+				"latency_stdev_passed": { "type": "float" },
+				"response_time_avg": { "type": "float" },
+				"response_time_avg_passed": { "type": "boolean" },
+				"response_time_geomean": { "type": "float" },
+				"response_time_geomean_passed": { "type": "boolean" },
+				"response_time_max": { "type": "float" },
+				"response_time_max_passed": { "type": "boolean" },
+				"response_time_stdev": { "type": "float" },
+				"response_time_stdev_passed": { "type": "boolean" },
+				"response_time_tp99": { "type": "float" },
+				"response_time_tp99_passed": { "type": "boolean" },
+				"transaction_id": { "type": "string", "index" : "not_analyzed" },
+				"transaction_name": { "type": "string", "index" : "not_analyzed" },
+				"transaction_rate": { "type": "float" },
+				"transaction_rate_passed": { "type": "boolean" }
+			}
+		},
+		"appdynamics.healthrule_violations" :
+		{
+			"properties":
+			{
+				"DateTime": { "type": "date", "format": "dateOptionalTime" },
+				"description": {"type": "string", "index" : "not_analyzed"},
+				"endTimeInMillis":{"type": "long"},
+				"id": { "type": "long" },
+				"incidentStatus": { "type": "string", "index" : "not_analyzed" },
+				"name": { "type": "string", "index" : "not_analyzed" },
+				"severity": { "type": "string", "index" : "not_analyzed" },
+				"startTimeInMillis": {	"type": "long" }
+			}
+		},
+		"promotion_gates" :
+		{
+			"properties":
+			{
+				"DateTime": { "type": "date", "format": "dateOptionalTime" },
+				"appdynamics_health": { "type": "boolean" },
+				"bandwidth_avg_passed": { "type": "boolean" },
+				"first_byte_passed": { "type": "boolean" },
+				"first_paint_passed": { "type": "boolean" },
+				"fully_loaded_passed": { "type": "boolean" },
+				"last_visual_change_passed": { "type": "boolean" },
+				"latency_avg_passed": { "type": "boolean" },
+				"latency_max_passed": { "type": "boolean" },
+				"latency_stdev_passed": { "type": "boolean" },
+				"page_size_passed": { "type": "boolean" },
+				"passed": { "type": "boolean" },
+				"response_time_avg_passed": { "type": "boolean" },
+				"response_time_geomean_passed": { "type": "boolean" },
+				"response_time_max_passed": { "type": "boolean" },
+				"response_time_stdev_passed": { "type": "boolean" },
+				"response_time_tp99_passed": { "type": "boolean" },
+				"speed_index_passed": { "type": "boolean" },
+				"start_render_passed": { "type": "boolean" },
+				"title_time_passed": { "type": "boolean" },
+				"transaction_rate_passed": { "type": "boolean" },
+				"visual_complete_passed": { "type": "boolean" }
+			}
+		},
+		"webpagetest.first_view" :
+		{
+			"properties":
+			{
+				"DateTime": { "type": "date", "format": "dateOptionalTime" },
+				"first_byte": {	"type": "long" },
+				"first_byte_passed": { "type": "boolean" },
+				"first_paint": {	"type": "long" },
+				"first_paint_passed": { "type": "boolean" },
+				"fully_loaded": {	"type": "long" },
+				"fully_loaded_passed": { "type": "boolean" },
+				"last_visual_change": {	"type": "long" },
+				"last_visual_change_passed": { "type": "boolean" },
+				"page_size": {	"type": "long" },
+				"page_size_passed": { "type": "boolean" },
+				"speed_index": {	"type": "long" },
+				"speed_index_passed": { "type": "boolean" },
+				"start_render": {	"type": "long" },
+				"start_render_passed": { "type": "boolean" },
+				"title_time": {	"type": "long" },
+				"title_time_passed": { "type": "boolean" },
+				"visual_complete": {	"type": "long" },
+				"visual_complete_passed": { "type": "boolean" }
+			}
+		},
+		"webpagetest.repeat_view" :
+		{
+			"properties":
+			{
+				"DateTime": { "type": "date", "format": "dateOptionalTime" },
+				"first_byte": {	"type": "long" },
+				"first_byte_passed": { "type": "boolean" },
+				"first_paint": {	"type": "long" },
+				"first_paint_passed": { "type": "boolean" },
+				"fully_loaded": {	"type": "long" },
+				"fully_loaded_passed": { "type": "boolean" },
+				"last_visual_change": {	"type": "long" },
+				"last_visual_change_passed": { "type": "boolean" },
+				"page_size": {	"type": "long" },
+				"page_size_passed": { "type": "boolean" },
+				"speed_index": {	"type": "long" },
+				"speed_index_passed": { "type": "boolean" },
+				"start_render": {	"type": "long" },
+				"start_render_passed": { "type": "boolean" },
+				"title_time": {	"type": "long" },
+				"title_time_passed": { "type": "boolean" },
+				"visual_complete": {	"type": "long" },
+				"visual_complete_passed": { "type": "boolean" }
+			}
+		}
+	}
