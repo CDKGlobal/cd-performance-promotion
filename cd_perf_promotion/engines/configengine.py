@@ -404,7 +404,7 @@ class ConfigEngine:
                 config_output["elastic_kibana"]["index"] = config_json["elastic_kibana"]["index"]
                 config_output["elastic_kibana"]["exists"] = True
         else:
-            config_output["elastic_kibana"]["exists"] = False
+            config_output["elastic_kibana"] = {"exists": False}
 
 
         # Return all of the now properly formatted config data
