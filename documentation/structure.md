@@ -25,8 +25,14 @@
 | ``config_test#.json``                         | File   | test_configs      | Configuration file for the tests                                                  |
 | ``sample_configs``                            | Folder | documentation     | Contains all of the sample configuration files and respective sample output files |
 | ``screenshots``                               | Folder | documentation     | Contains all of the screenshots for the documentation                             |
+| ``arguments.md``                              | File   | documentation     | Information on all of the available arguments and how to add new ones             |
+| ``bamboo.md``                                 | File   | documentation     | Information on how to integrate the tool with Bamboo                              |
 | ``dictionary.md``                             | File   | documentation     | Information on all of the data items that can be used                             |
+| ``elastic_kibana.md``                         | File   | documentation     | Information on how to output the data to an ElasticSearch/Kibana dashboard        |
+| ``elastic_kibana_template.json``              | File   | documentation     | Mapping template for use in creating an ElasticSearch index                       |
 | ``structure.md``                              | File   | documentation     | This file :-)                                                                     |
+| ``testing.md``                                | File   | documentation     | Information on the tests and automated testing with Bamboo                        |
+| ``updating.md``                               | File   | documentation     | Information on how to update the program with new tools and data items            |
 | ``input``                                     | Folder | sample_configs    | Contains all of the sample configuration files                                    |
 | ``output``                                    | Folder | sample_configs    | Contains all of the sample output files                                           |
 | ``config_all.json.sample``                    | File   | input             | Sample configuration file (includes all data items)                               |

@@ -43,6 +43,9 @@ All fields marked as required are only required if you want to use the tool asso
 | ``last_visual_change``        | Number  | first_view/repeat_view | WebPageTest     | Time to when the last visual change to the page is made (ms)                                                | No       |
 | ``title_time``                | Number  | first_view/repeat_view | WebPageTest     | Time to when the HTML <Title></Title> tags are loaded (ms)                                                  | No       |
 | ``page_size``                 | Number  | first_view/repeat_view | WebPageTest     | The amount of data that the browser has to download in order to load the page (bytes)                       | No       |
+| ``elastic_kibana``            | Object  | None                   | Elastic/Kibana  | Contains all of the ElasticSearch/Kibana information for outputting the data to a Kibana dashboard          | Yes      |
+| ``elastic_server``            | String  | elastic_kibana         | Elastic/Kibana  | The server name (with port) of the ElasticSearch instance used for your Kibana dashboard                    | Yes      |
+| ``index``                     | String  | elastic_kibana         | Elastic/Kibana  | The name of the index you are using for your Kibana dashboard                                               | Yes      |
 
 \*Either ``load_test_length_min`` or both ``load_test_length_start_ms`` and ``load_test_length_end_ms`` must be declared
 

@@ -81,7 +81,7 @@ class OutputEngine:
                     requests.post("{0}/{1}/webpagetest.repeat_view".format(server, index), data=json.dumps(webpagetest["runs"][idx]["repeat_view"]))
             # Promotion Gates
             if ("promotion_gates" in evaluation):
-                promotion_gates["Date"] = timestamp
+                promotion_gates["DateTime"] = timestamp
                 requests.post("{0}/{1}/promotion_gates".format(server, index), data=json.dumps(promotion_gates))
         except:
             print("ERROR: Unable to output the results to ElasticSearch/Kibana")
