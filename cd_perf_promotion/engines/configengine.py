@@ -58,6 +58,7 @@ class ConfigEngine:
         appdynamics_exists = False
         blazemeter_exists = False
         webpagetest_exists = False
+        elastic_kibana_exists = False
 
         # Make sure that all of the config sections are there
         if "appdynamics" in config_json:
@@ -69,6 +70,8 @@ class ConfigEngine:
         if "promotion_gates" not in config_json:
             # If the promotion gates aren't in there, there's no use running the program
             self.required_config_error("promotion gates")
+        if "elastic_kibana" in config_json:
+            elastic_kibana_exists = True
         if (appdynamics_exists == False and blazemeter_exists == False and webpagetest_exists == False):
             # If all of the modules don't exist, there's no way to get any data
             self.required_config_error("AppDynamics, BlazeMeter or WebPageTest")
@@ -388,6 +391,21 @@ class ConfigEngine:
                             config_output["promotion_gates"][view]["page_size"] = 0
         else:
             config_output["webpagetest"]["exists"] = False
+
+        if (elastic_kibana_exists):
+            # ElasticSearch/Kibana Configuration Information -- Required
+            if ("elastic_server" not in config_json["elastic_kibana"]):
+                self.required_config_error("ElasticSearch server")
+            elif ("index" not in config_json["elastic_kibana"]):
+                self.required_config_error("ElasticSearch index")
+            else:
+                config_output["elastic_kibana"] = {}
+                config_output["elastic_kibana"]["elastic_server"] = config_json["elastic_kibana"]["elastic_server"]
+                config_output["elastic_kibana"]["index"] = config_json["elastic_kibana"]["index"]
+                config_output["elastic_kibana"]["exists"] = True
+        else:
+            config_output["elastic_kibana"]["exists"] = False
+
 
         # Return all of the now properly formatted config data
         return config_output

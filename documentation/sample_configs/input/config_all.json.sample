@@ -55,5 +55,10 @@
       "title_time": 1000,
       "page_size": 25000
     }
+  },
+  "elastic_kibana":
+  {
+    "elastic_server": "serverwithportgoeshere",
+    "index": "elasticindexgoeshere"
   }
 }

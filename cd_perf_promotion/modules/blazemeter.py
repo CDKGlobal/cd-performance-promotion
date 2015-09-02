@@ -41,7 +41,7 @@ class BlazeMeter(PerfTools):
         session_id = run_test_request.json()["result"]["sessionsId"][0]
 
         # Notify the user that the BlazeMeter test has run successfully
-        print("Booting up BlazeMeter servers...")
+        print("Booting up BlazeMeter servers... ({0})".format(session_id))
 
         return session_id
 

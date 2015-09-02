@@ -63,7 +63,7 @@ class WebPageTest(PerfTools):
         test_id = run_test_request.json()["data"]["testId"]
 
         # Let the user know what's going on
-        print("Queueing WebPageTest UI test...")
+        print("Queueing WebPageTest UI test... ({0})".format(test_id))
         return test_id
 
     def get_data(self):
@@ -76,13 +76,14 @@ class WebPageTest(PerfTools):
         checkStatusCode = 100
         timePassed = 0
         testStatus = ""
+        test_summary_url = "http://www.webpagetest.org/jsonResult.php?test={0}".format(test_id)
         while (checkStatusCode != 200):
-            if (timePassed > 1800):
-                # 30 minutes have passed, error out. Something probably went wrong.
+            if (timePassed > 3600):
+                # 60 minutes (3600 seconds) have passed, error out. Something probably went wrong.
+                # Pretty much have to have this timeout because WebPageTest can't be trusted
                 self.timeout_error() # Inherited from the parent Class
             else:
                 # Check the test results
-                test_summary_url = "http://www.webpagetest.org/jsonResult.php?test={0}".format(test_id)
                 try:
                     test_summary_request = requests.get(test_summary_url)
                 except:

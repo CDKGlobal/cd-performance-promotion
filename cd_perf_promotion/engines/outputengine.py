@@ -33,26 +33,23 @@ class OutputEngine:
         """
         filename = "cdperfeval_{0}.json".format(time.strftime("%m%d%y_%H%M%S"))
         try:
-            print("Saving data to file...")
+            print("Saving data to file... ({0})".format(filename))
             with open(filename, "w") as jsonoutput:
                 json.dump(evaluation, jsonoutput, indent = 4, sort_keys = True)
         except:
             print("ERROR: Unable to save results file")
             sys.exit(1)
 
-        print("Data saved to {0}".format(filename))
+        print("Data saved to file")
 
-    def output_kibana(self, evaluation):
+    def output_kibana(self, evaluation, server, index):
         """
         Send the data to Kibana/ElasticSearch
         """
-        print("Sending data to Kibana...")
+        print("Sending data to ElasticSearch/Kibana...")
 
         # Singular time record used for ElasticSearch
         timestamp = strftime("%Y-%m-%dT%H:%M:%S", gmtime())
-
-        # ElasticSearch URL
-        elastic_base = "http://c03duselk20.dslab.ad.adp.com:9200"
 
         # Prepare the data for ElasticSearch consumption
         if ("appdynamics" in evaluation):
@@ -67,32 +64,32 @@ class OutputEngine:
         try:
             # AppDynamics
             if ("appdynamics" in evaluation):
-                for index, violation in enumerate(appdynamics["healthrule_violations"]):
-                    appdynamics["healthrule_violations"][index]["Date"] = timestamp
-                    requests.post("{0}/{1}/appdynamics.healthrule_violations".format(elastic_base, "cdperf-om"), data=json.dumps(appdynamics["healthrule_violations"][index]))
+                for idx, violation in enumerate(appdynamics["healthrule_violations"]):
+                    appdynamics["healthrule_violations"][idx]["DateTime"] = timestamp
+                    requests.post("{0}/{1}/appdynamics.healthrule_violations".format(server, index), data=json.dumps(appdynamics["healthrule_violations"][idx]))
             # BlazeMeter
             if ("blazemeter" in evaluation):
-                for index, transaction in enumerate(blazemeter["transactions"]):
-                    blazemeter["transactions"][index]["Date"] = timestamp
-                    requests.post("{0}/{1}/blazemeter.transactions".format(elastic_base, "cdperf-om"), data=json.dumps(appdynamics["healthrule_violations"][index]))
+                for idx, transaction in enumerate(blazemeter["transactions"]):
+                    blazemeter["transactions"][idx]["DateTime"] = timestamp
+                    requests.post("{0}/{1}/blazemeter.transactions".format(server, index), data=json.dumps(blazemeter["transactions"][idx]))
             # WebPageTest
             if ("webpagetest" in evaluation):
-                for index, transaction in enumerate(webpagetest["runs"]):
-                    webpagetest["runs"][index]["first_view"]["Date"] = timestamp
-                    webpagetest["runs"][index]["repeat_view"]["Date"] = timestamp
-                    requests.post("{0}/{1}/webpagetest.first_view".format(elastic_base, "cdperf-om"), data=json.dumps(webpagetest["runs"][index]["first_view"]))
-                    requests.post("{0}/{1}/webpagetest.repeat_view".format(elastic_base, "cdperf-om"), data=json.dumps(webpagetest["runs"][index]["repeat_view"]))
+                for idx, transaction in enumerate(webpagetest["runs"]):
+                    webpagetest["runs"][idx]["first_view"]["DateTime"] = timestamp
+                    webpagetest["runs"][idx]["repeat_view"]["DateTime"] = timestamp
+                    requests.post("{0}/{1}/webpagetest.first_view".format(server, index), data=json.dumps(webpagetest["runs"][idx]["first_view"]))
+                    requests.post("{0}/{1}/webpagetest.repeat_view".format(server, index), data=json.dumps(webpagetest["runs"][idx]["repeat_view"]))
             # Promotion Gates
             if ("promotion_gates" in evaluation):
                 promotion_gates["Date"] = timestamp
-                requests.post("{0}/{1}/promotion_gates".format(elastic_base, "cdperf-om"), data=json.dumps(promotion_gates))
+                requests.post("{0}/{1}/promotion_gates".format(server, index), data=json.dumps(promotion_gates))
         except:
-            print("ERROR: Unable to output the results to Kibana")
+            print("ERROR: Unable to output the results to ElasticSearch/Kibana")
             sys.exit(1)
 
         print("Data sent to Kibana")
 
-    def release_judgement(self, evaluation, arg_oc):
+    def release_judgement(self, evaluation, arg_oc, elastic_kibana):
         """
         Handle the results output -- Basically serve as the switchboard for the output engine
         """
@@ -100,9 +97,9 @@ class OutputEngine:
         filename = self.output_file(evaluation)
 
         # Check if we need to output the data to Kibana
-        if (True):
+        if (elastic_kibana["exists"] == True):
             # Send it over to Kibana/ElasticSearch
-            self.output_kibana(evaluation)
+            self.output_kibana(evaluation, elastic_kibana["elastic_server"], elastic_kibana["index"])
 
         # Check if we need to print it out to the console as well
         if (arg_oc):

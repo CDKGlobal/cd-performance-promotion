@@ -33,7 +33,7 @@ def main():
 
     # Output the data
     outputengine = OutputEngine()
-    outputengine.release_judgement(evaluation, arguments['oc'])
+    outputengine.release_judgement(evaluation, arguments['oc'], config_data["elastic_kibana"])
 
     if __name__ == '__main__':
         main()
