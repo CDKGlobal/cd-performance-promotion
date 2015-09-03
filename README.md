@@ -5,11 +5,16 @@ The Continuous Delivery Performance Promotion Tool is a Python program that is u
 
 # Getting Started
 
-## Installation
+## Installation (Basic)
+1. Run ``pip install cd_perf_promotion``
+2. You're done!
+
+## Installation (Advanced)
 1. Make sure that you have the latest version of Python and Pip installed and that you can run both via your command-line interface (CLI).
 2. Download the source code and navigate to it using your CLI.
 3. Inside the cd_perf_promotion downloaded directory, run ``python setup.py install`` to begin installation.
 4. The application will download the necessary dependencies via Pip and install itself. You will now be able to run the program from your CLI via the command ``cdperfpromotion``.
+5. You're done!
 
 ## Defining Your Promotion Criteria
 Your ``config.json`` file contains all of the configuration information that the tool needs to retrieve data from your performance tools and evaluate whether your application meets your performance standards. We've provided some sample configuration files (located in ``documentation/sample_configs/input``) to help you get started. A complete list of all of the available data items that can be used to evaluate the performance of your application and information on what they really mean is available in the ``dictionary.md`` file inside the ``documentation`` directory.

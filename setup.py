@@ -2,11 +2,12 @@ from setuptools import setup
 
 setup(
       name = "cd_perf_promotion",
-      version = "0.1",
-      description = "Continuous Delivery Performance Promotion Tool",
+      version = "1.0.0",
+      description = "Evaluate and promote builds on a CI/CD platform based on performance",
       author = "Jared Petersen",
       author_email = "Jared.Petersen@cdk.com",
-      license = "Copyright 2015 CDK Global, LLC",
+      url = "https://github.com/CDKGlobal/cd-performance-promotion",
+      license = "MIT",
       packages = ["cd_perf_promotion",
                   "cd_perf_promotion.engines",
                   "cd_perf_promotion.modules"],
