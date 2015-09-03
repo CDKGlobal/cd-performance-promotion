@@ -73,6 +73,9 @@
     ```
 3. Save the file. The application is now able to evaluate your data item against the configuration file.
 
+#### ElasticSearch/Kibana
+If you're outputting your data to ElasticSearch/Kibana at the end of each run, update your mapping and the JSON template file included in the source code.
+
 #### Documentation
 1. Add an entry for your data item in the``dictionary.md`` file and save your changes.
 2. Success! You're done!
@@ -314,3 +317,8 @@ if (config_data["newtoolhere"]["exists"] == True):
   ```
 
 Unfortunately, it's not that easy to create a catch-all function for comparing data items from tools because the JSON data structure that any one tool uses is completely different from the structure of another tool. As a result, you have to come up with a separate comparison function for each tool. The example in Step 3 was based on the ```compare_blazemeter``` function, but that will not work for all tools. The majority of the BlazeMeter data is located in the ```transactions``` JSON array and the overall structure is a little complex. WebPageTest has two arrays. The point is, all you really need is a function that can be called by the ```process_data``` function, saves the comparison information as a new key in the output JSON file, is fairly modular, and easy to maintain. If you need help, look at the other comparison functions in the file to see how they handle things.
+
+#### ElasticSearch/Kibana
+If you're outputting your data to ElasticSearch/Kibana at the end of each run, update your mapping and the JSON template file included in the source code.
+
+You're done!
